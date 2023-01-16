@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.6611, g: 2264.9023, b: 3288.3008, a: 1}
+  m_IndirectSpecularColor: {r: 2160.4053, g: 2264.6074, b: 3288.0938, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -607,7 +607,7 @@ Transform:
   m_GameObject: {fileID: 1433514455}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2111877135}
@@ -984,7 +984,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: c7006315568c5ed43922264653a4a5fe, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.45
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -1019,7 +1019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71468683de0107940bc4e8fcab6903bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 465701551}
 --- !u!114 &2115074541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,9 +1031,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe9167bbe17c074ba39039a890dcc08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 951592149}
   orientation: {fileID: 465701551}
-  cameraHead: {fileID: 951592149}
-  sensitivity: 10
+  verticalSensitivity: 10
+  horizontalSensitivity: 10
 --- !u!114 &2115074542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,20 +1047,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f874fb9629ae544a343ecdc264116c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orientation: {fileID: 465701551}
+  walkingSpeed: 40
+  walkingAirSpeedMult: 0.1
+  maxWalkingSpeed: 6
+  walkingSpeedUpMult: 4
+  groundDrag: 7
+  jumpForce: 5
+  jumpRate: 0.1
   groundCheckRadius: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheck: {fileID: 287999713}
-  walkSpeed: 40
-  jumpSpeedMultiplier: 0.1
-  maxWalkSpeed: 4
-  groundDrag: 6
-  jumpForce: 5
-  jumpRate: 0.7
-  floatingSpeed: 25
-  floatingMaxSpeed: 6
-  floatingDrag: 2
+  groundCheckTransform: {fileID: 287999713}
+  floatingSpeed: 50
+  maxFloatingSpeed: 6
+  floatingDrag: 5
+  floatingSpeedUpMult: 4
 --- !u!54 &2115074543
 Rigidbody:
   m_ObjectHideFlags: 0
