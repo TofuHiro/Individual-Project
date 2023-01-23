@@ -160,12 +160,6 @@ public class PlayerMotor : MonoBehaviour
             GroundCheck();
             Jump();
         }
-
-        //
-        if (Input.GetKeyDown(KeyCode.Tab)) {
-            SetFloatingMode(!IsFloating);
-        }
-        //
     }
 
     /// <summary>
