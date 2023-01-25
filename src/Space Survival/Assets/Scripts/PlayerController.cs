@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     PlayerInputs playerInputs;
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
+    PlayerInventory playerInventory;
+    PlayerInteraction playerInteraction;
 
     //Singleton Reference
     public static PlayerController Instance;
@@ -28,14 +30,18 @@ public class PlayerController : MonoBehaviour
 
         //Reference init
         playerInputs = new PlayerInputs();
-        playerMotor = GetComponent<PlayerMotor>();
-        playerCamera = GetComponent<PlayerCamera>();
     }
 
     void Start() { 
         //Lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        //Reference init
+        playerMotor = GetComponent<PlayerMotor>();
+        playerCamera = GetComponent<PlayerCamera>();
+        playerInventory = PlayerInventory.Instance;
+        playerInteraction = PlayerInteraction.Instance;
     }
 
     void OnEnable()
@@ -44,9 +50,10 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.Enable();
         playerInputs.Player.SpeedUp.started += SpeedUp;
         playerInputs.Player.SpeedUp.canceled += SpeedUp;
-        /*playerInputs.Player.Interaction.performed += Interact;
-        playerInputs.Player.Fire.started += UseItem;
-        playerInputs.Player.Fire.canceled += UseItem;*/
+        playerInputs.Player.ToggleInventory.performed += ToggleInventory;
+        playerInputs.Player.Interaction.performed += Interact;
+        //playerInputs.Player.Fire.started += UseItem;
+        //playerInputs.Player.Fire.canceled += UseItem;
     }
     void OnDisable()
     {
@@ -54,9 +61,20 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.Disable();
         playerInputs.Player.SpeedUp.canceled -= SpeedUp;
         playerInputs.Player.SpeedUp.started -= SpeedUp;
-        /*playerInputs.Player.Interaction.performed -= Interact;
-        playerInputs.Player.Fire.started -= UseItem;
-        playerInputs.Player.Fire.canceled -= UseItem;*/
+        playerInputs.Player.ToggleInventory.performed -= ToggleInventory;
+        playerInputs.Player.Interaction.performed -= Interact;
+        //playerInputs.Player.Fire.started -= UseItem;
+        //playerInputs.Player.Fire.canceled -= UseItem;
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        return transform.position;
+    }
+
+    public Transform GetOrientation()
+    {
+        return playerMotor.GetOrientation();
     }
 
     void Update()
@@ -105,14 +123,25 @@ public class PlayerController : MonoBehaviour
             playerMotor.SpeedUp(false);
     }
 
-    /*
+    void ToggleInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            bool _state = playerInventory.IsEnabled;
+            playerInventory.ToggleInventory(!_state);
+            playerCamera.ToggleRotation(_state);
+            playerInteraction.ToggleInteraction(_state);
+        }
+    }
+    
     void Interact(InputAction.CallbackContext context)
     {
         if (context.performed) {
-            //
+            playerInteraction.Interact();
         }
     }
 
+
+    /*
     void UseItem(InputAction.CallbackContext context)
     {
         if (context.started)

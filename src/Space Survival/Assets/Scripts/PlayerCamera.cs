@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    public bool CanRotate { get; private set; } = true;
+
     [Tooltip("The head transform of the player")]
     [SerializeField] Transform head;
     [Tooltip("The orientation transform of the player")]
@@ -23,9 +25,16 @@ public class PlayerCamera : MonoBehaviour
         rotationDir = _rotDir;
     }
 
+    public void ToggleRotation(bool _state)
+    {
+        CanRotate = _state;
+    }
+
     void Update()
     {
-        Rotation();
+        if (CanRotate) {
+            Rotation();
+        }
     }
 
     void Rotation()

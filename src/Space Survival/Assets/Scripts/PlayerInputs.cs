@@ -80,6 +80,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""43c21d45-53b8-4f38-bfcb-827c8c4a1d66"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""SpeedUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3be72196-6cb5-4310-b613-76560c9a412c"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -501,6 +521,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_SpeedUp = m_Player.FindAction("SpeedUp", throwIfNotFound: true);
+        m_Player_ToggleInventory = m_Player.FindAction("ToggleInventory", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -576,6 +597,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_SpeedUp;
+    private readonly InputAction m_Player_ToggleInventory;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -586,6 +608,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @SpeedUp => m_Wrapper.m_Player_SpeedUp;
+        public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -613,6 +636,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SpeedUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
                 @SpeedUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
                 @SpeedUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
+                @ToggleInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -635,6 +661,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SpeedUp.started += instance.OnSpeedUp;
                 @SpeedUp.performed += instance.OnSpeedUp;
                 @SpeedUp.canceled += instance.OnSpeedUp;
+                @ToggleInventory.started += instance.OnToggleInventory;
+                @ToggleInventory.performed += instance.OnToggleInventory;
+                @ToggleInventory.canceled += instance.OnToggleInventory;
             }
         }
     }
@@ -781,6 +810,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnSpeedUp(InputAction.CallbackContext context);
+        void OnToggleInventory(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
