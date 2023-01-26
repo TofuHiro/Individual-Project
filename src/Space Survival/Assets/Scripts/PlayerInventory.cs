@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
+[RequireComponent(typeof(ItemDisplayUI))]
 public class PlayerInventory : MonoBehaviour
 {
     #region Singleton
@@ -28,16 +27,14 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] GameObject inventory, hotBar;
     [SerializeField] Transform inventorySlotsHolder, armourSlotsHolder, weaponSlotsHolder, upgradeSlotsHolder;
 
-    [Header("Item Display")]
-    [SerializeField] RawImage displayIcon;
-    [SerializeField] TMP_Text displayNameText;
-    [SerializeField] TMP_Text displayText; 
+    ItemDisplayUI itemDisplay;
 
     //Variables
     InventorySlot[] inventorySlots, armourSlots, weaponSlots, upgradeSlots;
 
     void Start()
     {
+        itemDisplay = GetComponent<ItemDisplayUI>();
         inventorySlots = inventorySlotsHolder.GetComponentsInChildren<InventorySlot>();
         armourSlots = armourSlotsHolder.GetComponentsInChildren<ArmourSlot>();
         weaponSlots = weaponSlotsHolder.GetComponentsInChildren<WeaponSlot>();
@@ -112,17 +109,6 @@ public class PlayerInventory : MonoBehaviour
 
     public void DisplayItem(IPickable _newItem)
     {
-        if (_newItem != null) {
-            displayIcon.enabled = true;
-            displayIcon.texture = _newItem.ItemScriptableObject.icon;
-            displayNameText.text = _newItem.ItemScriptableObject.name;
-            displayText.text = _newItem.ItemScriptableObject.description;
-        }
-        else {
-            displayIcon.enabled = false;
-            displayIcon.texture = null;
-            displayNameText.text = "";
-            displayText.text = "";
-        }
+        itemDisplay.SetItem(_newItem);
     }
 }

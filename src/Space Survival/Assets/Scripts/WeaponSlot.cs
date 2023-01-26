@@ -1,9 +1,9 @@
 public class WeaponSlot : InventorySlot
 {
 
-    public override void AssignItem(IPickable _newItem)
+    public override bool AssignItem(IPickable _newItem)
     {
-        base.AssignItem(_newItem);
+        return base.AssignItem(_newItem);
         //Assign to correspoding hotbar
 
     }

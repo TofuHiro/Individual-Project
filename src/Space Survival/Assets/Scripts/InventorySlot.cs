@@ -4,9 +4,11 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
-    public static InventorySlot CurrentSelected { get; private set; }
+    public static InventorySlot CurrentSlotSelected { get; private set; }
     public bool IsOccupied { get; private set; } = false;
-    
+
+    [SerializeField] ItemType itemType;
+
     PlayerInventory inventory;
     SlotUI UI;
 
@@ -17,14 +19,18 @@ public class InventorySlot : MonoBehaviour
         inventory = PlayerInventory.Instance;
         UI = GetComponent<SlotUI>();
 
-        CurrentSelected = null;
+        CurrentSlotSelected = null;
     }
 
-    public virtual void AssignItem(IPickable _newItem)
+    public virtual bool AssignItem(IPickable _newItem)
     {
+        if ((_newItem.ItemScriptableObject.type != itemType) && (itemType != ItemType.Item))
+            return false;
+
         currentItem = _newItem;
         UI.SetIcon(_newItem.ItemScriptableObject.icon);
         IsOccupied = true;
+        return true;
     }
 
     protected virtual void ClearItem()
@@ -48,7 +54,7 @@ public class InventorySlot : MonoBehaviour
 
         PointerEventData _pointerData = (PointerEventData)_data;
         if (_pointerData.button == PointerEventData.InputButton.Left) {
-            CurrentSelected = this;
+            CurrentSlotSelected = this;
             DragIcon.SetIcon(currentItem.ItemScriptableObject.icon);
             DragIcon.FollowCursor(true);
         }
@@ -57,24 +63,29 @@ public class InventorySlot : MonoBehaviour
     //Event Trigger on child object "Icon"
     public void OnDrop(BaseEventData _data)
     {
+        //Left mouse release
         PointerEventData _pointerData = (PointerEventData)_data;
         if (_pointerData.button == PointerEventData.InputButton.Left) {
-            //If player release mouse while dragging other icon
-            if (CurrentSelected != null) {
-                //Swap items in inventory
-                if (currentItem != null) {
-                    IPickable _oldItem = currentItem;
-                    AssignItem(CurrentSelected.currentItem);
-                    CurrentSelected.AssignItem(_oldItem);
-                } 
-                //Replace item in inventory
-                else {
-                    AssignItem(CurrentSelected.currentItem);
-                    CurrentSelected.ClearItem();
-                }
 
-                ResetSelection();
+            //If release mouse while not dragging other icon
+            if (CurrentSlotSelected == null)
+                return;
+
+            //Swap items in inventory
+            if (currentItem != null) {
+                IPickable _otherItem = CurrentSlotSelected.currentItem;
+                //SWAPPING item can be placed in slot, or ITEM TO SWAP is in the invent slot
+                if (CurrentSlotSelected.currentItem.ItemScriptableObject.type == this.itemType || itemType == ItemType.Item)
+                    if (CurrentSlotSelected.AssignItem(currentItem))
+                        AssignItem(_otherItem);
             }
+            //Replace item in inventory
+            else {
+                if (AssignItem(CurrentSlotSelected.currentItem))
+                    CurrentSlotSelected.ClearItem();
+            }
+
+            ResetSelection();
         }
     }
 
@@ -89,6 +100,6 @@ public class InventorySlot : MonoBehaviour
     {
         DragIcon.SetIcon(null);
         DragIcon.FollowCursor(false);
-        CurrentSelected = null;
+        CurrentSlotSelected = null;
     }
 }
