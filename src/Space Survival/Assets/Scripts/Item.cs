@@ -29,4 +29,9 @@ public class Item : MonoBehaviour, IPickable
         transform.position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
         gameObject.SetActive(true);
     }
+
+    public ItemType GetItemType()
+    {
+        return ItemScriptableObject.type;
+    }
 }

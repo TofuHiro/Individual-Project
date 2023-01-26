@@ -1,14 +1,16 @@
+using UnityEngine.EventSystems;
+
 public class UpgradeSlot : InventorySlot
 {
 
-    public override bool AssignItem(IPickable _newItem)
+    public override void AssignItem(IPickable _newItem)
     {
-        return base.AssignItem(_newItem);
+        base.AssignItem(_newItem);
         //Apply effects
 
     }
 
-    protected override void ClearItem()
+    public override void ClearItem()
     {
         base.ClearItem();
         //remove efects

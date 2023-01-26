@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
-    public static InventorySlot CurrentSlotSelected { get; private set; }
+    public IPickable CurrentItem { get; private set; }
     public bool IsOccupied { get; private set; } = false;
 
     [SerializeField] ItemType itemType;
@@ -12,94 +12,60 @@ public class InventorySlot : MonoBehaviour
     PlayerInventory inventory;
     SlotUI UI;
 
-    protected IPickable currentItem;
-
     void Start()
     {
         inventory = PlayerInventory.Instance;
         UI = GetComponent<SlotUI>();
-
-        CurrentSlotSelected = null;
     }
 
-    public virtual bool AssignItem(IPickable _newItem)
+    public ItemType GetSlotType()
     {
-        if ((_newItem.ItemScriptableObject.type != itemType) && (itemType != ItemType.Item))
-            return false;
+        return itemType;
+    }
 
-        currentItem = _newItem;
+    public virtual void AssignItem(IPickable _newItem)
+    {
+        CurrentItem = _newItem;
         UI.SetIcon(_newItem.ItemScriptableObject.icon);
         IsOccupied = true;
-        return true;
     }
 
-    protected virtual void ClearItem()
+    public virtual void ClearItem()
     {
-        currentItem = null;
+        CurrentItem = null;
         UI.SetIcon(null);
         IsOccupied = false;
     }
 
-    //Event Trigger on child object "Icon"
+    //Event Trigger
     public void DisplayInfo()
     {
-        inventory.DisplayItem(currentItem);
+        inventory.SetHoveredSlot(this);
     }
 
-    //Event Trigger on child object "Icon"
+    //Event Trigger
     public void OnDrag(BaseEventData _data)
     {
-        if (currentItem == null) 
-            return;
-
+        //Left mouse hold
         PointerEventData _pointerData = (PointerEventData)_data;
         if (_pointerData.button == PointerEventData.InputButton.Left) {
-            CurrentSlotSelected = this;
-            DragIcon.SetIcon(currentItem.ItemScriptableObject.icon);
-            DragIcon.FollowCursor(true);
+            inventory.SetSelectedSlot(this);
         }
     }
 
-    //Event Trigger on child object "Icon"
+    //Event Trigger
     public void OnDrop(BaseEventData _data)
     {
         //Left mouse release
         PointerEventData _pointerData = (PointerEventData)_data;
         if (_pointerData.button == PointerEventData.InputButton.Left) {
-
-            //If release mouse while not dragging other icon
-            if (CurrentSlotSelected == null)
-                return;
-
-            //Swap items in inventory
-            if (currentItem != null) {
-                IPickable _otherItem = CurrentSlotSelected.currentItem;
-                //SWAPPING item can be placed in slot, or ITEM TO SWAP is in the invent slot
-                if (CurrentSlotSelected.currentItem.ItemScriptableObject.type == this.itemType || itemType == ItemType.Item)
-                    if (CurrentSlotSelected.AssignItem(currentItem))
-                        AssignItem(_otherItem);
-            }
-            //Replace item in inventory
-            else {
-                if (AssignItem(CurrentSlotSelected.currentItem))
-                    CurrentSlotSelected.ClearItem();
-            }
-
-            ResetSelection();
+            inventory.SwitchSelectedSlot(this);
         }
     }
 
     public void DropItem()
     {
-        currentItem.Drop();
-        ResetSelection();
+        inventory.DropItem(this);
         ClearItem();
-    }
-
-    void ResetSelection()
-    {
-        DragIcon.SetIcon(null);
-        DragIcon.FollowCursor(false);
-        CurrentSlotSelected = null;
     }
 }

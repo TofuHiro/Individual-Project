@@ -5,13 +5,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerCamera))]
 public class PlayerController : MonoBehaviour
 {
+    public delegate void PlayerActions();
+    public static event PlayerActions OnInventoryToggle, OnInteraction, OnUIRightClick;
+
     //References
     PlayerInputs playerInputs;
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
-    PlayerInventory playerInventory;
-    PlayerInteraction playerInteraction;
-
+    
     //Singleton Reference
     public static PlayerController Instance;
 
@@ -40,13 +41,10 @@ public class PlayerController : MonoBehaviour
         //Reference init
         playerMotor = GetComponent<PlayerMotor>();
         playerCamera = GetComponent<PlayerCamera>();
-        playerInventory = PlayerInventory.Instance;
-        playerInteraction = PlayerInteraction.Instance;
     }
 
     void OnEnable()
     {
-        //Subscribe methods to inputs
         playerInputs.Player.Enable();
         playerInputs.Player.SpeedUp.started += SpeedUp;
         playerInputs.Player.SpeedUp.canceled += SpeedUp;
@@ -54,17 +52,23 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.Interaction.performed += Interact;
         //playerInputs.Player.Fire.started += UseItem;
         //playerInputs.Player.Fire.canceled += UseItem;
+
+        playerInputs.UI.Enable();
+        playerInputs.UI.RightClick.performed += RightClickUI;
     }
     void OnDisable()
     {
         //Unsubscribe methods to inputs
         playerInputs.Player.Disable();
-        playerInputs.Player.SpeedUp.canceled -= SpeedUp;
         playerInputs.Player.SpeedUp.started -= SpeedUp;
+        playerInputs.Player.SpeedUp.canceled -= SpeedUp;
         playerInputs.Player.ToggleInventory.performed -= ToggleInventory;
         playerInputs.Player.Interaction.performed -= Interact;
         //playerInputs.Player.Fire.started -= UseItem;
         //playerInputs.Player.Fire.canceled -= UseItem;
+
+        playerInputs.UI.Enable();
+        playerInputs.UI.RightClick.performed -= RightClickUI;
     }
 
     public Vector3 GetPlayerPosition()
@@ -126,20 +130,23 @@ public class PlayerController : MonoBehaviour
     void ToggleInventory(InputAction.CallbackContext context)
     {
         if (context.performed) {
-            bool _state = playerInventory.IsEnabled;
-            playerInventory.ToggleInventory(!_state);
-            playerCamera.ToggleRotation(_state);
-            playerInteraction.ToggleInteraction(_state);
+            OnInventoryToggle?.Invoke();
         }
     }
     
     void Interact(InputAction.CallbackContext context)
     {
         if (context.performed) {
-            playerInteraction.Interact();
+            OnInteraction?.Invoke();
         }
     }
 
+    void RightClickUI(InputAction.CallbackContext context)
+    { 
+        if (context.performed) {
+            OnUIRightClick?.Invoke();
+        }
+    }
 
     /*
     void UseItem(InputAction.CallbackContext context)

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DragIcon : MonoBehaviour
+public class DragIconUI : MonoBehaviour
 {
     static RawImage icon;
     static bool isFollowingCursor = false;
@@ -13,12 +13,12 @@ public class DragIcon : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerInventory.OnInventoryClose += ResetIcon;
+        PlayerInventory.OnItemChange += ResetIcon;
     }
 
     void OnDisable()
     {
-        PlayerInventory.OnInventoryClose -= ResetIcon;
+        PlayerInventory.OnItemChange -= ResetIcon;
     }
 
     void Update()

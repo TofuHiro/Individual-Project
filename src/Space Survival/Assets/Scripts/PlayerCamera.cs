@@ -20,6 +20,18 @@ public class PlayerCamera : MonoBehaviour
     Vector2 rotationDir;
     float headRotation = 0f, bodyRotation = 0f;
 
+    void OnEnable()
+    {
+        PlayerInventory.OnInventoryOpen += DisableRotation;
+        PlayerInventory.OnInventoryClose += EnableRotation;
+    }
+
+    void OnDisable()
+    {
+        PlayerInventory.OnInventoryOpen -= DisableRotation;
+        PlayerInventory.OnInventoryClose -= EnableRotation;
+    }
+
     public void SetRotation(Vector2 _rotDir)
     {
         rotationDir = _rotDir;
@@ -28,6 +40,16 @@ public class PlayerCamera : MonoBehaviour
     public void ToggleRotation(bool _state)
     {
         CanRotate = _state;
+    }
+
+    void EnableRotation()
+    {
+        ToggleRotation(true);
+    }
+
+    void DisableRotation()
+    {
+        ToggleRotation(false);
     }
 
     void Update()

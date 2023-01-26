@@ -27,10 +27,35 @@ public class PlayerInteraction : MonoBehaviour
     IInteractable target;
     RaycastHit hit;
 
+    void OnEnable()
+    {
+        PlayerController.OnInteraction += Interact;
+        PlayerInventory.OnInventoryOpen += DisableInteraction;
+        PlayerInventory.OnInventoryClose += EnableInteraction;
+    }
+
+    void OnDisable()
+    {
+        PlayerController.OnInteraction -= Interact;
+        PlayerInventory.OnInventoryOpen -= DisableInteraction;
+        PlayerInventory.OnInventoryClose -= EnableInteraction;
+    }
+
     public void ToggleInteraction(bool _state)
     {
         CanInteract = _state;
     }
+
+    void EnableInteraction()
+    {
+        ToggleInteraction(true);
+    }
+
+    void DisableInteraction()
+    {
+        ToggleInteraction(false);
+    }
+
     void Update()
     {
         if (CanInteract) {
@@ -53,9 +78,9 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void Interact()
+    void Interact()
     {
-        if (target == null)
+        if (target == null || !CanInteract)
             return;
 
         target.Interact();
