@@ -89,6 +89,69 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchScroll"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9e33b22-7b95-469d-a774-a85dba11dbaa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo1"",
+                    ""type"": ""Button"",
+                    ""id"": ""e25d4ca0-e37c-48e9-9336-4b63362fe145"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo2"",
+                    ""type"": ""Button"",
+                    ""id"": ""10bf7f1f-67ef-4fe9-aa7c-b7203240fe0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo3"",
+                    ""type"": ""Button"",
+                    ""id"": ""a8369732-e674-4df4-8563-46c9c997cfe6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo4"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec117a83-0248-453f-a053-911f99ff98e8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo5"",
+                    ""type"": ""Button"",
+                    ""id"": ""c734233a-831c-4c53-b809-aefa8a96a290"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTo6"",
+                    ""type"": ""Button"",
+                    ""id"": ""30ed4724-f8d7-4c7f-bc6c-62645ace4344"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -234,6 +297,105 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""id"": ""d3af1e4d-323a-426e-8c63-7ad64e5ff169"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": ""Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""SwitchScroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""190be972-20a9-443b-be3f-0b199dbbd528"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""3d9e4389-f7c7-4931-a976-c3484eafe0e4"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""210c5afb-0021-477c-aff6-2c062e3938c8"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2179a080-d825-4d8c-bfdd-26103c95b3c9"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45823ec2-5e54-49cd-836e-06e5952d6671"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a29dd10e-3b81-4e0c-bd19-a73b0e3772b7"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef79981e-e598-4422-8495-1520300622b5"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25ba1116-87ac-4349-8bd5-dbac63e0b377"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchTo6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -243,12 +405,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""3f1d502e-7525-4014-a228-7977010e3cec"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Submit"",
@@ -270,7 +432,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Point"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""3d76c24d-1ba4-4d3d-a3d8-c127db86b7e3"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -279,7 +441,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Click"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""a14a96be-3396-49c3-aede-ad30874e9f39"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -288,16 +450,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""ScrollWheel"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""fe3fffe4-cdda-431c-a711-fd40bcfdd649"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MiddleClick"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""773a84a4-c7cb-4679-a5d3-858f91e8605d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -306,7 +468,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""b97baa31-818c-44a5-99e5-2109caf6205a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -522,6 +684,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_SpeedUp = m_Player.FindAction("SpeedUp", throwIfNotFound: true);
         m_Player_ToggleInventory = m_Player.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_Player_SwitchScroll = m_Player.FindAction("SwitchScroll", throwIfNotFound: true);
+        m_Player_SwitchTo1 = m_Player.FindAction("SwitchTo1", throwIfNotFound: true);
+        m_Player_SwitchTo2 = m_Player.FindAction("SwitchTo2", throwIfNotFound: true);
+        m_Player_SwitchTo3 = m_Player.FindAction("SwitchTo3", throwIfNotFound: true);
+        m_Player_SwitchTo4 = m_Player.FindAction("SwitchTo4", throwIfNotFound: true);
+        m_Player_SwitchTo5 = m_Player.FindAction("SwitchTo5", throwIfNotFound: true);
+        m_Player_SwitchTo6 = m_Player.FindAction("SwitchTo6", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -598,6 +767,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_SpeedUp;
     private readonly InputAction m_Player_ToggleInventory;
+    private readonly InputAction m_Player_SwitchScroll;
+    private readonly InputAction m_Player_SwitchTo1;
+    private readonly InputAction m_Player_SwitchTo2;
+    private readonly InputAction m_Player_SwitchTo3;
+    private readonly InputAction m_Player_SwitchTo4;
+    private readonly InputAction m_Player_SwitchTo5;
+    private readonly InputAction m_Player_SwitchTo6;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -609,6 +785,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @SpeedUp => m_Wrapper.m_Player_SpeedUp;
         public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
+        public InputAction @SwitchScroll => m_Wrapper.m_Player_SwitchScroll;
+        public InputAction @SwitchTo1 => m_Wrapper.m_Player_SwitchTo1;
+        public InputAction @SwitchTo2 => m_Wrapper.m_Player_SwitchTo2;
+        public InputAction @SwitchTo3 => m_Wrapper.m_Player_SwitchTo3;
+        public InputAction @SwitchTo4 => m_Wrapper.m_Player_SwitchTo4;
+        public InputAction @SwitchTo5 => m_Wrapper.m_Player_SwitchTo5;
+        public InputAction @SwitchTo6 => m_Wrapper.m_Player_SwitchTo6;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -639,6 +822,27 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ToggleInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
                 @ToggleInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
                 @ToggleInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @SwitchScroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchScroll;
+                @SwitchScroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchScroll;
+                @SwitchScroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchScroll;
+                @SwitchTo1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo1;
+                @SwitchTo1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo1;
+                @SwitchTo1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo1;
+                @SwitchTo2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo2;
+                @SwitchTo2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo2;
+                @SwitchTo2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo2;
+                @SwitchTo3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo3;
+                @SwitchTo3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo3;
+                @SwitchTo3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo3;
+                @SwitchTo4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo4;
+                @SwitchTo4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo4;
+                @SwitchTo4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo4;
+                @SwitchTo5.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo5;
+                @SwitchTo5.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo5;
+                @SwitchTo5.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo5;
+                @SwitchTo6.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
+                @SwitchTo6.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
+                @SwitchTo6.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -664,6 +868,27 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ToggleInventory.started += instance.OnToggleInventory;
                 @ToggleInventory.performed += instance.OnToggleInventory;
                 @ToggleInventory.canceled += instance.OnToggleInventory;
+                @SwitchScroll.started += instance.OnSwitchScroll;
+                @SwitchScroll.performed += instance.OnSwitchScroll;
+                @SwitchScroll.canceled += instance.OnSwitchScroll;
+                @SwitchTo1.started += instance.OnSwitchTo1;
+                @SwitchTo1.performed += instance.OnSwitchTo1;
+                @SwitchTo1.canceled += instance.OnSwitchTo1;
+                @SwitchTo2.started += instance.OnSwitchTo2;
+                @SwitchTo2.performed += instance.OnSwitchTo2;
+                @SwitchTo2.canceled += instance.OnSwitchTo2;
+                @SwitchTo3.started += instance.OnSwitchTo3;
+                @SwitchTo3.performed += instance.OnSwitchTo3;
+                @SwitchTo3.canceled += instance.OnSwitchTo3;
+                @SwitchTo4.started += instance.OnSwitchTo4;
+                @SwitchTo4.performed += instance.OnSwitchTo4;
+                @SwitchTo4.canceled += instance.OnSwitchTo4;
+                @SwitchTo5.started += instance.OnSwitchTo5;
+                @SwitchTo5.performed += instance.OnSwitchTo5;
+                @SwitchTo5.canceled += instance.OnSwitchTo5;
+                @SwitchTo6.started += instance.OnSwitchTo6;
+                @SwitchTo6.performed += instance.OnSwitchTo6;
+                @SwitchTo6.canceled += instance.OnSwitchTo6;
             }
         }
     }
@@ -811,6 +1036,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnInteraction(InputAction.CallbackContext context);
         void OnSpeedUp(InputAction.CallbackContext context);
         void OnToggleInventory(InputAction.CallbackContext context);
+        void OnSwitchScroll(InputAction.CallbackContext context);
+        void OnSwitchTo1(InputAction.CallbackContext context);
+        void OnSwitchTo2(InputAction.CallbackContext context);
+        void OnSwitchTo3(InputAction.CallbackContext context);
+        void OnSwitchTo4(InputAction.CallbackContext context);
+        void OnSwitchTo5(InputAction.CallbackContext context);
+        void OnSwitchTo6(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

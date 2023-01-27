@@ -25,7 +25,7 @@ public class PlayerInventory : MonoBehaviour
     public delegate void InventoryActions();
     public static event InventoryActions OnInventoryOpen, OnInventoryClose, OnItemChange;
 
-    [SerializeField] GameObject inventory, hotBar;
+    [SerializeField] GameObject inventoryGameObject;
     [SerializeField] Transform inventorySlotsHolder, armourSlotsHolder, weaponSlotsHolder, upgradeSlotsHolder;
 
     ItemDisplayUI itemDisplay;
@@ -80,8 +80,7 @@ public class PlayerInventory : MonoBehaviour
 
     void OpenInventory()
     {
-        inventory.SetActive(true);
-        hotBar.SetActive(false);
+        inventoryGameObject.SetActive(true);
         IsEnabled = true;
         PlayerController.OnUIRightClick += QuickEquipItem;
         OnInventoryOpen?.Invoke();
@@ -89,8 +88,7 @@ public class PlayerInventory : MonoBehaviour
 
     void CloseInventory()
     {
-        inventory.SetActive(false);
-        hotBar.SetActive(true);
+        inventoryGameObject.SetActive(false);
         IsEnabled = false;
         PlayerController.OnUIRightClick -= QuickEquipItem;
         OnInventoryClose?.Invoke();
@@ -108,7 +106,7 @@ public class PlayerInventory : MonoBehaviour
         DisplayItemInfo(_slot.CurrentItem);
     }
 
-    public bool AddItem(IPickable _newItem)
+    public bool AddItem(Item _newItem)
     {
         foreach (InventorySlot slot in inventorySlots) {
             if (!slot.IsOccupied) {
@@ -147,7 +145,7 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        IPickable _temp = SelectedSlot.CurrentItem;
+        Item _temp = SelectedSlot.CurrentItem;
         if (_to.CurrentItem != null)
             SelectedSlot.AssignItem(_to.CurrentItem);
         else
@@ -209,12 +207,12 @@ public class PlayerInventory : MonoBehaviour
         SelectedSlot = null;
     }
 
-    public void DisplayItemInfo(IPickable _newItem)
+    public void DisplayItemInfo(Item _newItem)
     {
         itemDisplay.SetItem(_newItem);
     }
 
-    public void DisplayDragItem(IPickable _newItem)
+    public void DisplayDragItem(Item _newItem)
     {
         if (_newItem != null)
             DragIconUI.SetIcon(_newItem.ItemScriptableObject.icon);

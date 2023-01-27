@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 public class UpgradeSlot : InventorySlot
 {
 
-    public override void AssignItem(IPickable _newItem)
+    public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);
         //Apply effects

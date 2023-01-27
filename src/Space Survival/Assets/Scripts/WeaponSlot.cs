@@ -1,19 +1,24 @@
-using UnityEngine.EventSystems;
-
 public class WeaponSlot : InventorySlot
 {
+    PlayerWeapons player;
 
-    public override void AssignItem(IPickable _newItem)
+    protected override void Start()
+    {
+        base.Start();
+        player = PlayerWeapons.Instance;
+    }
+
+    public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);
-        //Assign to correspoding hotbar
-
+        //Assign to corresponding hotbar
+        player.AssignWeaponSlot(this);
     }
 
     public override void ClearItem()
     {
         base.ClearItem();
-        //remove from hotbar
-
+        //Remove from hotbar
+        player.ClearWeaponSlot(this);
     }
 }

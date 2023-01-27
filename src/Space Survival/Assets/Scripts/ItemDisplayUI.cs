@@ -8,7 +8,7 @@ public class ItemDisplayUI : MonoBehaviour
     [SerializeField] TMP_Text displayNameText;
     [SerializeField] TMP_Text displayText;
 
-    public void SetItem(IPickable _newItem)
+    public void SetItem(Item _newItem)
     {
         if (_newItem != null) {
             displayIcon.enabled = true;

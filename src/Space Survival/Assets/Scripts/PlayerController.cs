@@ -5,19 +5,24 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerCamera))]
 public class PlayerController : MonoBehaviour
 {
+    //Singleton Reference
+    public static PlayerController Instance;
+
     public delegate void PlayerActions();
-    public static event PlayerActions OnInventoryToggle, OnInteraction, OnUIRightClick;
+    public static event PlayerActions
+        OnInventoryToggle,
+        OnInteraction,
+        OnUIRightClick,
+        OnStartPrimaryAttack,
+        OnStopPrimaryAttack;
+
+    public delegate void HotbarActions(int _num);
+    public static event HotbarActions OnScroll, OnSwitchTo;
 
     //References
     PlayerInputs playerInputs;
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
-    
-    //Singleton Reference
-    public static PlayerController Instance;
-
-    //Variables
-    bool fireKeyHeld = false, sprintKeyHeld = false;
 
     void Awake()
     {
@@ -33,7 +38,8 @@ public class PlayerController : MonoBehaviour
         playerInputs = new PlayerInputs();
     }
 
-    void Start() { 
+    void Start()
+    {
         //Lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -46,29 +52,48 @@ public class PlayerController : MonoBehaviour
     void OnEnable()
     {
         playerInputs.Player.Enable();
+        #region Subscribe Player Inputs
         playerInputs.Player.SpeedUp.started += SpeedUp;
         playerInputs.Player.SpeedUp.canceled += SpeedUp;
         playerInputs.Player.ToggleInventory.performed += ToggleInventory;
         playerInputs.Player.Interaction.performed += Interact;
-        //playerInputs.Player.Fire.started += UseItem;
-        //playerInputs.Player.Fire.canceled += UseItem;
+        playerInputs.Player.Fire.started += PrimaryAttack;
+        playerInputs.Player.Fire.canceled += PrimaryAttack;
+        playerInputs.Player.SwitchTo1.performed += SwitchTo1;
+        playerInputs.Player.SwitchTo2.performed += SwitchTo2;
+        playerInputs.Player.SwitchTo3.performed += SwitchTo3;
+        playerInputs.Player.SwitchTo4.performed += SwitchTo4;
+        playerInputs.Player.SwitchTo5.performed += SwitchTo5;
+        playerInputs.Player.SwitchTo6.performed += SwitchTo6;
+        #endregion
 
         playerInputs.UI.Enable();
-        playerInputs.UI.RightClick.performed += RightClickUI;
+        #region Subscribe UI Inputs
+        playerInputs.UI.RightClick.started += RightClickUI;
+        #endregion
     }
     void OnDisable()
     {
-        //Unsubscribe methods to inputs
         playerInputs.Player.Disable();
+        #region Unsubscribe Player Inputs
         playerInputs.Player.SpeedUp.started -= SpeedUp;
         playerInputs.Player.SpeedUp.canceled -= SpeedUp;
         playerInputs.Player.ToggleInventory.performed -= ToggleInventory;
         playerInputs.Player.Interaction.performed -= Interact;
-        //playerInputs.Player.Fire.started -= UseItem;
-        //playerInputs.Player.Fire.canceled -= UseItem;
+        playerInputs.Player.Fire.started -= PrimaryAttack;
+        playerInputs.Player.Fire.canceled -= PrimaryAttack;
+        playerInputs.Player.SwitchTo1.performed -= SwitchTo1;
+        playerInputs.Player.SwitchTo2.performed -= SwitchTo2;
+        playerInputs.Player.SwitchTo3.performed -= SwitchTo3;
+        playerInputs.Player.SwitchTo4.performed -= SwitchTo4;
+        playerInputs.Player.SwitchTo5.performed -= SwitchTo5;
+        playerInputs.Player.SwitchTo6.performed -= SwitchTo6;
+        #endregion
 
         playerInputs.UI.Enable();
-        playerInputs.UI.RightClick.performed -= RightClickUI;
+        #region Unsubscribe UI Inputs
+        playerInputs.UI.RightClick.started -= RightClickUI;
+        #endregion
     }
 
     public Vector3 GetPlayerPosition()
@@ -86,8 +111,7 @@ public class PlayerController : MonoBehaviour
         Movement();
         VerticalMovement();
         Rotation();
-
-        //if (fireKeyHeld) Use();
+        SwitchScroll();
     }
 
     /// <summary>
@@ -133,7 +157,7 @@ public class PlayerController : MonoBehaviour
             OnInventoryToggle?.Invoke();
         }
     }
-    
+
     void Interact(InputAction.CallbackContext context)
     {
         if (context.performed) {
@@ -142,19 +166,60 @@ public class PlayerController : MonoBehaviour
     }
 
     void RightClickUI(InputAction.CallbackContext context)
-    { 
-        if (context.performed) {
+    {
+        if (context.started) {
             OnUIRightClick?.Invoke();
         }
     }
 
-    /*
-    void UseItem(InputAction.CallbackContext context)
+    void PrimaryAttack(InputAction.CallbackContext context)
     {
         if (context.started)
-            fireKeyHeld = true;
+            OnStartPrimaryAttack?.Invoke();
         if (context.canceled)
-            fireKeyHeld = false;
+            OnStopPrimaryAttack?.Invoke();
     }
-    */
+
+    void SwitchScroll()
+    {
+        float _scrollAxis = playerInputs.Player.SwitchScroll.ReadValue<float>();
+        if (_scrollAxis != 0f)
+            OnScroll?.Invoke((int)_scrollAxis);
+    }
+    void SwitchTo1(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(0);
+        }
+    }
+    void SwitchTo2(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(1);
+        }
+    }
+    void SwitchTo3(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(2);
+        }
+    }
+    void SwitchTo4(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(3);
+        }
+    }
+    void SwitchTo5(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(4);
+        }
+    }
+    void SwitchTo6(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSwitchTo?.Invoke(5);
+        }
+    }
 }

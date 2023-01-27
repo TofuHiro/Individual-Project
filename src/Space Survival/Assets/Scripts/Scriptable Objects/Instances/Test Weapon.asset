@@ -22,3 +22,4 @@ MonoBehaviour:
   maxAmmo: 50
   clipSize: 5
   maxRange: 100
+  attackRate: 0.8

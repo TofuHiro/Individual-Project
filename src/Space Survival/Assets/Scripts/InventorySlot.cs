@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
-    public IPickable CurrentItem { get; private set; }
+    public Item CurrentItem { get; private set; }
     public bool IsOccupied { get; private set; } = false;
 
     [SerializeField] ItemType itemType;
@@ -12,7 +12,7 @@ public class InventorySlot : MonoBehaviour
     PlayerInventory inventory;
     SlotUI UI;
 
-    void Start()
+    protected virtual void Start()
     {
         inventory = PlayerInventory.Instance;
         UI = GetComponent<SlotUI>();
@@ -23,7 +23,7 @@ public class InventorySlot : MonoBehaviour
         return itemType;
     }
 
-    public virtual void AssignItem(IPickable _newItem)
+    public virtual void AssignItem(Item _newItem)
     {
         CurrentItem = _newItem;
         UI.SetIcon(_newItem.ItemScriptableObject.icon);

@@ -8,5 +8,5 @@ public class WeaponScriptable : ItemScriptable
     public int maxAmmo;
     public int clipSize;
     public float maxRange;
-
+    public float attackRate;
 }
