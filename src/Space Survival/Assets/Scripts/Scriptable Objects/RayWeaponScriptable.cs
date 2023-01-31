@@ -8,4 +8,5 @@ public class RayWeaponScriptable : WeaponScriptable
     public int maxAmmo;
     public int clipSize;
     public float knockbackForce;
+    public float reloadTime;
 }

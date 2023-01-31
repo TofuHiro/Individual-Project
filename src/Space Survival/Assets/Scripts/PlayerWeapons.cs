@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(HotbarUI))]
+[RequireComponent(typeof(WeaponUI))]
 public class PlayerWeapons : MonoBehaviour
 {
     #region Singleton
@@ -31,17 +32,17 @@ public class PlayerWeapons : MonoBehaviour
 
     [SerializeField] Transform weaponSlotsTransform;
     [SerializeField] Transform handTransform;
-    [SerializeField] Transform playerHead;
-
-    HotbarUI UI;
-    Weapon currentWeapon;
 
     WeaponSlot[] weaponSlots;
     Item[] hotbar;
+    HotbarUI hotbarUI;
+    WeaponUI weaponUI;
+    Weapon currentWeapon;
 
     void Start()
     {
-        UI = GetComponent<HotbarUI>();
+        hotbarUI = GetComponent<HotbarUI>();
+        weaponUI = GetComponent<WeaponUI>();
         weaponSlots = weaponSlotsTransform.GetComponentsInChildren<WeaponSlot>();
         hotbar = new Item[weaponSlots.Length];
     }
@@ -81,7 +82,7 @@ public class PlayerWeapons : MonoBehaviour
                     hotbar[i] = _newWeaponSlot.CurrentItem;
                 else
                     hotbar[i] = null;
-                UI.UpdateUI(hotbar);
+                hotbarUI.UpdateUI(hotbar);
                 return;
             }
         }
@@ -93,7 +94,7 @@ public class PlayerWeapons : MonoBehaviour
             //Find corresponding slot to hotbar
             if (weaponSlots[i].name == _weaponSlot.name) {
                 hotbar[i] = null;
-                UI.UpdateUI(hotbar);
+                hotbarUI.UpdateUI(hotbar);
                 return;
             }
         }
@@ -113,24 +114,26 @@ public class PlayerWeapons : MonoBehaviour
 
     void ChangeWeapon(Item _newWeapon)
     {
+        //If currently holding weapon before switching
         if (currentWeapon != null) {
-            currentWeapon.SetHolder(null);
-            currentWeapon.transform.SetParent(null);
             currentWeapon.Holster();
+            currentWeapon.SetHolder(null);
         }
 
+        //Switch to weapon
         if (_newWeapon != null) {
             currentWeapon = _newWeapon.GetComponent<Weapon>();
-            currentWeapon.SetHolder(playerHead);
-            currentWeapon.transform.SetParent(handTransform);
-            currentWeapon.Equip();
+            currentWeapon.SetHolder(this);
+            currentWeapon.Equip(handTransform);
         }
+        //Switch to nothing
         else {
             currentWeapon = null;
         }
 
         //Hold weapon
-        UI.UpdateSelectorUI(ActiveHotbar);
+        
+        hotbarUI.UpdateSelectorPosition(ActiveHotbar);
     }
 
     void CheckActiveHotbar()
@@ -162,5 +165,15 @@ public class PlayerWeapons : MonoBehaviour
     {
         if (currentWeapon != null)
             currentWeapon.TriggerReload();
+    }
+
+    public void UpdateAmmoUI(int _clip, int _ammo)
+    {
+        weaponUI.UpdateUI(_clip, _ammo);
+    }
+
+    public void ToggleAmmoUI(bool _state)
+    {
+        weaponUI.ToggleUI(_state);
     }
 }

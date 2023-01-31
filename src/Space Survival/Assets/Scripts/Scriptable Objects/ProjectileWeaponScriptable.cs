@@ -5,6 +5,7 @@ public class ProjectileWeaponScriptable : WeaponScriptable
 {
     public int maxAmmo;
     public int clipSize;
+    public float reloadTime;
     public string projectileName;
     public GameObject projectile;
     public float projectileSpeed;

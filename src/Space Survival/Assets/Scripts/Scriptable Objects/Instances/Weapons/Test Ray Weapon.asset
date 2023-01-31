@@ -18,9 +18,10 @@ MonoBehaviour:
   description: Testing ray gun that shoots strong beams
   weaponType: 1
   maxDurability: 100
-  damage: 15
+  damage: 20
   maxRange: 200
-  attackRate: 1
-  maxAmmo: 100
+  attackRate: 0.2
+  maxAmmo: 15
   clipSize: 10
-  knockbackForce: 2
+  knockbackForce: 30
+  reloadTime: 2

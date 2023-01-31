@@ -23,12 +23,13 @@ MonoBehaviour:
   attackRate: 1
   maxAmmo: 40
   clipSize: 4
+  reloadTime: 3
   projectileName: Bean
   projectile: {fileID: 7391857257458935099, guid: 3521fe49d645d024e849f11d41b3facc,
     type: 3}
   projectileSpeed: 5
   projectileLifeTime: 3
   explosionRadius: 5
-  explosionForce: 150
+  explosionForce: 250
   explodeOnContact: 0
   useGravity: 1

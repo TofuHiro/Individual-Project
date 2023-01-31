@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
+    [SerializeField] Transform hitStartPoint;
+
     IDamagable colliderHit;
     Rigidbody hitRigidbody;
     RaycastHit hit;
 
     new MeleeWeaponScriptable weaponScriptable;
-    protected float knockbackForce;
+    float knockbackForce;
 
     protected override void Start()
     {
         base.Start();
         weaponScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
+        knockbackForce = weaponScriptable.knockbackForce;
     }
 
     protected override void Attack()
     {
         base.Attack();
-        Physics.Raycast(currentHolder.position, currentHolder.forward, out hit);
+        Physics.Raycast(hitStartPoint.position, hitStartPoint.forward, out hit, range);
         if (hit.transform != null) {
             colliderHit = hit.transform.GetComponent<IDamagable>();
             if (colliderHit != null) {
@@ -29,7 +32,7 @@ public class MeleeWeapon : Weapon
 
             hitRigidbody = hit.transform.GetComponent<Rigidbody>();
             if (hitRigidbody != null) {
-                hitRigidbody.AddForceAtPosition(-hit.normal * weaponScriptable.knockbackForce, hit.point);
+                hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
             }
         }
     }

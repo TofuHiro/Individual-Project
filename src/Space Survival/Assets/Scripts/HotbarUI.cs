@@ -16,7 +16,7 @@ public class HotbarUI : MonoBehaviour
                 hotbarIcon[i].texture = null;
         }
     }
-    public void UpdateSelectorUI(int _hotbarNum)
+    public void UpdateSelectorPosition(int _hotbarNum)
     {
         selector.position = hotbarIcon[_hotbarNum].transform.position;
     }

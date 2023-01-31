@@ -3,18 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(Item))]
 public abstract class Weapon : MonoBehaviour
 {
-    protected WeaponScriptable weaponScriptable;
-    
-    protected float damage, range;
-    protected float attackRate, nextTimeToAttack, attackTimer;
-    protected float maxDurablity, durablity;
-    WeaponType weaponType;
-    bool isAttacking, isSecondaryAttacking;
-
-    protected Transform currentHolder;
+    protected PlayerWeapons currentHolder;
     Animator animator;
     Rigidbody rb;
     Collider[] weaponColliders;
+
+    protected WeaponScriptable weaponScriptable;
+    protected float damage, range;
+    protected float attackRate, nextTimeToAttack, attackTimer;
+    protected float maxDurablity, durablity;
+    bool isAttacking, isSecondaryAttacking;
+    WeaponType weaponType;
 
     protected virtual void Start()
     {
@@ -41,7 +40,7 @@ public abstract class Weapon : MonoBehaviour
         return weaponType;
     }
 
-    public void SetHolder(Transform _newHolder)
+    public void SetHolder(PlayerWeapons _newHolder)
     {
         currentHolder = _newHolder;
     }
@@ -61,26 +60,28 @@ public abstract class Weapon : MonoBehaviour
         Reload();
     }
 
-    public void Holster()
-    {
-        gameObject.SetActive(false);
-        rb.isKinematic = false;
-        isAttacking = false;
-        isSecondaryAttacking = false;
-        foreach (Collider _collider in weaponColliders) {
-            _collider.enabled = true;
-        }
-    }
-
-    public void Equip()
+    public virtual void Equip(Transform _parent)
     {
         gameObject.SetActive(true);
         rb.isKinematic = true;
+        transform.SetParent(_parent);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.Euler(Vector3.zero);
         foreach (Collider _collider in weaponColliders) {
             _collider.enabled = false;
         }
+    }
+
+    public virtual void Holster()
+    {
+        rb.isKinematic = false;
+        transform.SetParent(null);
+        isAttacking = false;
+        isSecondaryAttacking = false;
+        foreach (Collider _collider in weaponColliders) {
+            _collider.enabled = true;
+        }
+        gameObject.SetActive(false);
     }
 
     void Update()
