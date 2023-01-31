@@ -78,6 +78,18 @@ public class PlayerInventory : MonoBehaviour
         ResetInventory();
     }
 
+    public void SetSelectedSlot(InventorySlot _slot)
+    {
+        SelectedSlot = _slot;
+        DisplayDragItem(_slot.CurrentItem);
+    }
+
+    public void SetHoveredSlot(InventorySlot _slot)
+    {
+        hoveredSlot = _slot;
+        DisplayItemInfo(_slot.CurrentItem);
+    }
+
     void OpenInventory()
     {
         inventoryGameObject.SetActive(true);
@@ -92,18 +104,6 @@ public class PlayerInventory : MonoBehaviour
         IsEnabled = false;
         PlayerController.OnUIRightClick -= QuickEquipItem;
         OnInventoryClose?.Invoke();
-    }
-
-    public void SetSelectedSlot(InventorySlot _slot)
-    {
-        SelectedSlot = _slot;
-        DisplayDragItem(_slot.CurrentItem);
-    }
-
-    public void SetHoveredSlot(InventorySlot _slot)
-    {
-        hoveredSlot = _slot;
-        DisplayItemInfo(_slot.CurrentItem);
     }
 
     public bool AddItem(Item _newItem)
@@ -194,9 +194,8 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void DropItem(InventorySlot _slot)
+    public void DropItem()
     {
-        _slot.CurrentItem.Drop();
         OnItemChange?.Invoke();
     }
 

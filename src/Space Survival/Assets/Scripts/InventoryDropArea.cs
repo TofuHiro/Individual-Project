@@ -14,7 +14,7 @@ public class InventoryDropArea : MonoBehaviour
     {
         PointerEventData _pointerData = (PointerEventData)_data;
         if (_pointerData.button == PointerEventData.InputButton.Left) {
-            if (inventory.SelectedSlot != null) {
+            if (inventory.SelectedSlot.CurrentItem != null) {
                 inventory.SelectedSlot.DropItem();
             }
         }

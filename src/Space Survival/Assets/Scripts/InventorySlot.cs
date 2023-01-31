@@ -26,15 +26,22 @@ public class InventorySlot : MonoBehaviour
     public virtual void AssignItem(Item _newItem)
     {
         CurrentItem = _newItem;
-        UI.SetIcon(_newItem.ItemScriptableObject.icon);
         IsOccupied = true;
+        UI.SetIcon(_newItem.ItemScriptableObject.icon);
     }
 
     public virtual void ClearItem()
     {
         CurrentItem = null;
-        UI.SetIcon(null);
         IsOccupied = false;
+        UI.SetIcon(null);
+    }
+
+    public void DropItem()
+    {
+        CurrentItem.Drop();
+        inventory.DropItem();
+        ClearItem();
     }
 
     //Event Trigger
@@ -61,11 +68,5 @@ public class InventorySlot : MonoBehaviour
         if (_pointerData.button == PointerEventData.InputButton.Left) {
             inventory.SwitchSelectedSlot(this);
         }
-    }
-
-    public void DropItem()
-    {
-        inventory.DropItem(this);
-        ClearItem();
     }
 }

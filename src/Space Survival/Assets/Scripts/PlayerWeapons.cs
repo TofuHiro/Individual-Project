@@ -100,6 +100,17 @@ public class PlayerWeapons : MonoBehaviour
         }
     }
 
+    public void DropWeapon()
+    {
+        if (currentWeapon == null)
+            return;
+
+        currentWeapon.Holster();
+        currentWeapon.SetHolder(null);
+        currentWeapon.gameObject.SetActive(true);
+        currentWeapon = null;
+    }
+
     void ScrollHotbar(int _dir)
     {
         ActiveHotbar += _dir;
@@ -118,6 +129,7 @@ public class PlayerWeapons : MonoBehaviour
         if (currentWeapon != null) {
             currentWeapon.Holster();
             currentWeapon.SetHolder(null);
+            currentWeapon.gameObject.SetActive(false);
         }
 
         //Switch to weapon
@@ -125,6 +137,7 @@ public class PlayerWeapons : MonoBehaviour
             currentWeapon = _newWeapon.GetComponent<Weapon>();
             currentWeapon.SetHolder(this);
             currentWeapon.Equip(handTransform);
+            currentWeapon.gameObject.SetActive(true);
         }
         //Switch to nothing
         else {

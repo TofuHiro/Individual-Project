@@ -62,7 +62,6 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Equip(Transform _parent)
     {
-        gameObject.SetActive(true);
         rb.isKinematic = true;
         transform.SetParent(_parent);
         transform.localPosition = Vector3.zero;
@@ -81,7 +80,6 @@ public abstract class Weapon : MonoBehaviour
         foreach (Collider _collider in weaponColliders) {
             _collider.enabled = true;
         }
-        gameObject.SetActive(false);
     }
 
     void Update()
