@@ -17,8 +17,6 @@ public class PlayerWeapons : MonoBehaviour
     }
     #endregion
 
-    [SerializeField] GameObject hotbarGameObject;
-
     public int ActiveHotbar { get { return activeHotbar; }
         set {
             activeHotbar = value;
@@ -32,14 +30,14 @@ public class PlayerWeapons : MonoBehaviour
     int activeHotbar;
 
     [SerializeField] Transform weaponSlotsTransform;
+    [SerializeField] Transform handTransform;
+    [SerializeField] Transform playerHead;
 
     HotbarUI UI;
+    Weapon currentWeapon;
 
     WeaponSlot[] weaponSlots;
     Item[] hotbar;
-
-    Weapon currentWeapon;
-    bool isAttacking;
 
     void Start()
     {
@@ -53,6 +51,12 @@ public class PlayerWeapons : MonoBehaviour
         PlayerController.OnScroll += ScrollHotbar;
         PlayerController.OnSwitchTo += SwitchHotbar;
         PlayerInventory.OnItemChange += CheckActiveHotbar;
+
+        PlayerController.OnStartPrimaryAttack += StartPrimaryAttacking;
+        PlayerController.OnStopPrimaryAttack += StopPrimaryAttacking;
+        PlayerController.OnStartSecondaryAttack += StartSecondaryAttacking;
+        PlayerController.OnStopSecondaryAttack += StopSecondaryAttacking;
+        PlayerController.OnReload += Reload;
     }
 
     void OnDisable()
@@ -60,6 +64,12 @@ public class PlayerWeapons : MonoBehaviour
         PlayerController.OnScroll -= ScrollHotbar;
         PlayerController.OnSwitchTo -= SwitchHotbar;
         PlayerInventory.OnItemChange -= CheckActiveHotbar;
+
+        PlayerController.OnStartPrimaryAttack -= StartPrimaryAttacking;
+        PlayerController.OnStopPrimaryAttack -= StopPrimaryAttacking;
+        PlayerController.OnStartSecondaryAttack -= StartSecondaryAttacking;
+        PlayerController.OnStopSecondaryAttack -= StopSecondaryAttacking;
+        PlayerController.OnReload -= Reload;
     }
 
     public void AssignWeaponSlot(WeaponSlot _newWeaponSlot)
@@ -103,36 +113,54 @@ public class PlayerWeapons : MonoBehaviour
 
     void ChangeWeapon(Item _newWeapon)
     {
+        if (currentWeapon != null) {
+            currentWeapon.SetHolder(null);
+            currentWeapon.transform.SetParent(null);
+            currentWeapon.Holster();
+        }
+
         if (_newWeapon != null) {
             currentWeapon = _newWeapon.GetComponent<Weapon>();
-            PlayerController.OnStartPrimaryAttack += StartPrimaryAttacking;
-            PlayerController.OnStopPrimaryAttack += StopPrimaryAttacking;
+            currentWeapon.SetHolder(playerHead);
+            currentWeapon.transform.SetParent(handTransform);
+            currentWeapon.Equip();
         }
         else {
             currentWeapon = null;
-            PlayerController.OnStartPrimaryAttack -= StartPrimaryAttacking;
-            PlayerController.OnStopPrimaryAttack -= StopPrimaryAttacking;
         }
+
+        //Hold weapon
         UI.UpdateSelectorUI(ActiveHotbar);
-    }
-
-    void StartPrimaryAttacking()
-    {
-        isAttacking = true;
-    }
-    void StopPrimaryAttacking()
-    {
-        isAttacking = false;
-    }
-
-    void Update()
-    {
-        if (isAttacking)
-            currentWeapon.Use();
     }
 
     void CheckActiveHotbar()
     {
         ChangeWeapon(hotbar[ActiveHotbar]);
+    }
+
+    void StartPrimaryAttacking()
+    {
+        if (currentWeapon != null)
+            currentWeapon.SetPrimaryAttack(true);
+    }
+    void StopPrimaryAttacking()
+    {
+        if (currentWeapon != null)
+            currentWeapon.SetPrimaryAttack(false);
+    }
+    void StartSecondaryAttacking()
+    {
+        if (currentWeapon != null)
+            currentWeapon.SetSecondaryAttack(true);
+    }
+    void StopSecondaryAttacking()
+    {
+        if (currentWeapon != null)
+            currentWeapon.SetSecondaryAttack(false);
+    }
+    void Reload()
+    {
+        if (currentWeapon != null)
+            currentWeapon.TriggerReload();
     }
 }

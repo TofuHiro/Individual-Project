@@ -42,6 +42,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SecondaryFire",
+                    "type": "Button",
+                    "id": "33fb971c-585f-4bab-a6aa-4159998574ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "227980fa-fec2-49a0-a8d3-db8631c4779c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Interaction",
                     "type": "Button",
                     "id": "b34ae1d9-715a-4d88-b543-5cb219e4e07e",
@@ -372,6 +390,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "SwitchTo6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b27efeb-3cc9-4c0d-8a5d-3ce7a2a85808",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SecondaryFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "688aaa55-627c-42f2-b77f-e45af78c0e55",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

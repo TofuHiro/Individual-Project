@@ -64,6 +64,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""SecondaryFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""33fb971c-585f-4bab-a6aa-4159998574ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""227980fa-fec2-49a0-a8d3-db8631c4779c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Interaction"",
                     ""type"": ""Button"",
                     ""id"": ""b34ae1d9-715a-4d88-b543-5cb219e4e07e"",
@@ -396,6 +414,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""SwitchTo6"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b27efeb-3cc9-4c0d-8a5d-3ce7a2a85808"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SecondaryFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""688aaa55-627c-42f2-b77f-e45af78c0e55"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -681,6 +721,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_VerticalMove = m_Player.FindAction("VerticalMove", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_SecondaryFire = m_Player.FindAction("SecondaryFire", throwIfNotFound: true);
+        m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_SpeedUp = m_Player.FindAction("SpeedUp", throwIfNotFound: true);
         m_Player_ToggleInventory = m_Player.FindAction("ToggleInventory", throwIfNotFound: true);
@@ -764,6 +806,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_VerticalMove;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_SecondaryFire;
+    private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_SpeedUp;
     private readonly InputAction m_Player_ToggleInventory;
@@ -782,6 +826,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @VerticalMove => m_Wrapper.m_Player_VerticalMove;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @SecondaryFire => m_Wrapper.m_Player_SecondaryFire;
+        public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @SpeedUp => m_Wrapper.m_Player_SpeedUp;
         public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
@@ -813,6 +859,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                @SecondaryFire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
+                @SecondaryFire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
+                @SecondaryFire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
+                @Reload.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Interaction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
                 @Interaction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
                 @Interaction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
@@ -859,6 +911,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @SecondaryFire.started += instance.OnSecondaryFire;
+                @SecondaryFire.performed += instance.OnSecondaryFire;
+                @SecondaryFire.canceled += instance.OnSecondaryFire;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
                 @Interaction.started += instance.OnInteraction;
                 @Interaction.performed += instance.OnInteraction;
                 @Interaction.canceled += instance.OnInteraction;
@@ -1033,6 +1091,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnVerticalMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnSecondaryFire(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnSpeedUp(InputAction.CallbackContext context);
         void OnToggleInventory(InputAction.CallbackContext context);

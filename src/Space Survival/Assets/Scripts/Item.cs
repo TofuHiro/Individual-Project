@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Item : MonoBehaviour, IPickable
 {
     public ItemScriptable ItemScriptableObject { get { return item; } set { item = value; } }

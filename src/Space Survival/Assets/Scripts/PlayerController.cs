@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour
         OnInteraction,
         OnUIRightClick,
         OnStartPrimaryAttack,
-        OnStopPrimaryAttack;
+        OnStopPrimaryAttack,
+        OnStartSecondaryAttack,
+        OnStopSecondaryAttack,
+        OnReload;
 
     public delegate void HotbarActions(int _num);
     public static event HotbarActions OnScroll, OnSwitchTo;
@@ -59,6 +62,9 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.Interaction.performed += Interact;
         playerInputs.Player.Fire.started += PrimaryAttack;
         playerInputs.Player.Fire.canceled += PrimaryAttack;
+        playerInputs.Player.SecondaryFire.started += SecondaryAttack;
+        playerInputs.Player.SecondaryFire.canceled += SecondaryAttack;
+        playerInputs.Player.Reload.performed += Reload;
         playerInputs.Player.SwitchTo1.performed += SwitchTo1;
         playerInputs.Player.SwitchTo2.performed += SwitchTo2;
         playerInputs.Player.SwitchTo3.performed += SwitchTo3;
@@ -82,6 +88,9 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.Interaction.performed -= Interact;
         playerInputs.Player.Fire.started -= PrimaryAttack;
         playerInputs.Player.Fire.canceled -= PrimaryAttack;
+        playerInputs.Player.SecondaryFire.started -= SecondaryAttack;
+        playerInputs.Player.SecondaryFire.canceled -= SecondaryAttack;
+        playerInputs.Player.Reload.performed -= Reload;
         playerInputs.Player.SwitchTo1.performed -= SwitchTo1;
         playerInputs.Player.SwitchTo2.performed -= SwitchTo2;
         playerInputs.Player.SwitchTo3.performed -= SwitchTo3;
@@ -178,6 +187,20 @@ public class PlayerController : MonoBehaviour
             OnStartPrimaryAttack?.Invoke();
         if (context.canceled)
             OnStopPrimaryAttack?.Invoke();
+    }
+
+    void SecondaryAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            OnStartSecondaryAttack?.Invoke();
+        if (context.canceled)
+            OnStopSecondaryAttack?.Invoke();
+    }
+
+    void Reload(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            OnReload?.Invoke();
     }
 
     void SwitchScroll()
