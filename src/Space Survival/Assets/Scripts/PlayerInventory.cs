@@ -56,6 +56,29 @@ public class PlayerInventory : MonoBehaviour
         PlayerController.OnInventoryToggle -= ToggleInventory;
     }
 
+    public List<ItemScriptable> GetItems()
+    {
+        List<ItemScriptable> _items = new List<ItemScriptable>();
+        foreach (InventorySlot _item in inventorySlots) {
+            if (_item.CurrentItem != null) {
+                _items.Add(_item.CurrentItem.ItemScriptableObject);
+            }
+        }
+
+        return _items;
+    }
+
+    public void RemoveItem(ItemScriptable _item)
+    {
+        foreach (InventorySlot _slot in inventorySlots) {
+            if (_slot.CurrentItem != null) {
+                if (_slot.CurrentItem.ItemScriptableObject == _item) {
+                    _slot.ClearItem();
+                }
+            }
+        }
+    }
+
     void ToggleInventory()
     {
         SetInventory(!IsEnabled);

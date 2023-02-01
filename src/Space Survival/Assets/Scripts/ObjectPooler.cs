@@ -32,7 +32,7 @@ public class ObjectPooler : MonoBehaviour
             _newObject.SetActive(true);
             return _newObject;
         }
-        else {
+        else { 
             return Instantiate(_object);
         }
     }

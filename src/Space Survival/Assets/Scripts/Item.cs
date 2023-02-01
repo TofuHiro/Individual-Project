@@ -19,6 +19,9 @@ public class Item : MonoBehaviour, IPickable
 
     public void Interact()
     {
+        //if null, set
+        inventory ??= PlayerInventory.Instance;
+
         bool _success = inventory.AddItem(this);
         if (_success) {
             gameObject.SetActive(false);
@@ -27,6 +30,8 @@ public class Item : MonoBehaviour, IPickable
     
     public void Drop()
     {
+        player ??= PlayerController.Instance;
+
         transform.position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
         gameObject.SetActive(true);
     }

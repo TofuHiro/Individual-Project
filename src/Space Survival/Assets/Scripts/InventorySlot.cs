@@ -40,8 +40,8 @@ public class InventorySlot : MonoBehaviour
     public void DropItem()
     {
         CurrentItem.Drop();
-        inventory.DropItem();
         ClearItem();
+        inventory.DropItem();
     }
 
     //Event Trigger
