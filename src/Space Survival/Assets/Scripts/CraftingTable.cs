@@ -9,6 +9,8 @@ public class CraftingTable : MonoBehaviour, IInteractable
     CraftingManager craftingManager;
     PlayerInventory playerInventory;
 
+    bool inUse;
+
     void Start()
     {
         craftingManager = CraftingManager.Instance;
@@ -17,7 +19,20 @@ public class CraftingTable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        craftingManager.ToggleCraftingInterface(stationType);
-        playerInventory.SetInventory(true);
+        if (!inUse) {
+            craftingManager.ToggleCraftingInterface(stationType);
+            playerInventory.SetInventory(true);
+            inUse = true;
+        }
+        else {
+            CloseCrafting();
+        }
+    }
+
+    void CloseCrafting()
+    {
+        craftingManager.CloseInterface();
+        playerInventory.SetInventory(false);
+        inUse = false;
     }
 }

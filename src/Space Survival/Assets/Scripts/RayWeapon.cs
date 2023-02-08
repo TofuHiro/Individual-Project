@@ -32,9 +32,9 @@ public class RayWeapon : Weapon
     float reloadTime;
     bool isReloading;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         weaponScriptable = (RayWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = weaponScriptable.knockbackForce;
         CurrentAmmo = weaponScriptable.maxAmmo;

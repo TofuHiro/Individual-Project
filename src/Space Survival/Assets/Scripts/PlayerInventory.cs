@@ -19,7 +19,7 @@ public class PlayerInventory : MonoBehaviour
     }
     #endregion
 
-    public bool IsEnabled { get; private set; }
+    public static bool IsEnabled { get; private set; }
     public InventorySlot SelectedSlot { get; private set;}
 
     public delegate void InventoryActions();

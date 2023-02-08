@@ -33,9 +33,9 @@ public class ProjectileWeapon : Weapon
     int clipSize;
     float reloadTime;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         objectPooler = ObjectPooler.Instance;
         weaponScriptable = (ProjectileWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         projectileName = weaponScriptable.projectileName;

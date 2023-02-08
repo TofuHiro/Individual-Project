@@ -49,6 +49,7 @@ public class PlayerMotor : MonoBehaviour
     float nextTimeToJump = 0f;
     bool isGrounded;
     bool isSpeedingUp;
+    bool canMove;
 
     public bool IsFloating { get { return isFloating; }
         private set {
@@ -57,6 +58,28 @@ public class PlayerMotor : MonoBehaviour
         }
     }
     private bool isFloating = false;
+
+    void OnEnable()
+    {
+        CraftingManager.OnCraftingOpen += DisableMovement;
+        CraftingManager.OnCraftingClose += EnableMovement;
+    }
+
+    void OnDisable()
+    {
+        CraftingManager.OnCraftingOpen -= DisableMovement;
+        CraftingManager.OnCraftingClose -= EnableMovement;
+    }
+
+    void DisableMovement()
+    {
+        canMove = false;
+    }
+
+    void EnableMovement()
+    {
+        canMove = true;
+    }
 
     /// <summary>
     /// Returns the current orientation of the player
@@ -140,6 +163,9 @@ public class PlayerMotor : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+            return;
+
         if (isFloating) {
             FloatingMovement();
             LimitFloatingMovement();
@@ -152,6 +178,9 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
+        if (!canMove)
+            return;
+
         if (isFloating) {
             FloatingDrag();
         }

@@ -108,7 +108,7 @@ public class CraftingManager : MonoBehaviour
         OnCraftingOpen?.Invoke();
     }
     
-    void CloseInterface()
+    public void CloseInterface()
     {
         standardRecipeScrollBox.gameObject.SetActive(false);
         weaponRecipeScrollBox.gameObject.SetActive(false);

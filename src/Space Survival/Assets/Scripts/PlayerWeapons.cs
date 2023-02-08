@@ -156,27 +156,27 @@ public class PlayerWeapons : MonoBehaviour
 
     void StartPrimaryAttacking()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled)
             currentWeapon.SetPrimaryAttack(true);
     }
     void StopPrimaryAttacking()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled)
             currentWeapon.SetPrimaryAttack(false);
     }
     void StartSecondaryAttacking()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled)
             currentWeapon.SetSecondaryAttack(true);
     }
     void StopSecondaryAttacking()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled)
             currentWeapon.SetSecondaryAttack(false);
     }
     void Reload()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled)
             currentWeapon.TriggerReload();
     }
 

@@ -32,8 +32,9 @@ public class ObjectPooler : MonoBehaviour
             _newObject.SetActive(true);
             return _newObject;
         }
-        else { 
-            return Instantiate(_object);
+        else {
+            GameObject _newObject = Instantiate(_object);
+            return _newObject;
         }
     }
 

@@ -13,9 +13,9 @@ public class MeleeWeapon : Weapon
     new MeleeWeaponScriptable weaponScriptable;
     float knockbackForce;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         weaponScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = weaponScriptable.knockbackForce;
     }

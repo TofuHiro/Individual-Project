@@ -15,7 +15,7 @@ public abstract class Weapon : MonoBehaviour
     bool isAttacking, isSecondaryAttacking;
     WeaponType weaponType;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         weaponScriptable = (WeaponScriptable)GetComponent<Item>().ItemScriptableObject;
 
