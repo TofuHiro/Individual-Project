@@ -163,9 +163,6 @@ public class PlayerMotor : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!canMove)
-            return;
-
         if (isFloating) {
             FloatingMovement();
             LimitFloatingMovement();
@@ -178,9 +175,6 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
-        if (!canMove)
-            return;
-
         if (isFloating) {
             FloatingDrag();
         }
@@ -196,6 +190,9 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void Movement()
     {
+        if (!canMove)
+            return;
+
         //If walking
         if (isGrounded) {
             Vector3 _vel = moveDir.normalized * walkingSpeed * rb.mass;
@@ -251,6 +248,9 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void Jump()
     {
+        if (!canMove)
+            return;
+
         if (isGrounded && (verticalDir > 0) && (Time.time > nextTimeToJump)) {
             rb.AddForce(Vector3.up * jumpForce * rb.mass, ForceMode.Impulse);
             nextTimeToJump = Time.time + jumpRate;
@@ -263,6 +263,9 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void FloatingMovement()
     {
+        if (!canMove)
+            return;
+
         //If any key pressed
         if (moveDir.magnitude > 0f) {
             Vector3 _horiDir = moveDir.normalized * floatingSpeed * rb.mass;
