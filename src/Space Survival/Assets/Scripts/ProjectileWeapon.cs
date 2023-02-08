@@ -36,7 +36,6 @@ public class ProjectileWeapon : Weapon
     protected override void Awake()
     {
         base.Awake();
-        objectPooler = ObjectPooler.Instance;
         weaponScriptable = (ProjectileWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         projectileName = weaponScriptable.projectileName;
         projectilePrefab = weaponScriptable.projectile;
@@ -51,6 +50,11 @@ public class ProjectileWeapon : Weapon
         CurrentClip = weaponScriptable.clipSize;
         clipSize = weaponScriptable.clipSize;
         reloadTime = weaponScriptable.reloadTime;
+    }
+
+    void Start()
+    {
+        objectPooler = ObjectPooler.Instance;
     }
 
     public override void Equip(Transform _parent)

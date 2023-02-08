@@ -10,32 +10,36 @@ public class Item : MonoBehaviour, IPickable
     //References
     PlayerInventory inventory;
     PlayerController player;
+    ObjectPooler objectPooler;
 
     //For object pool instantiation
     void Awake()
     {
-        inventory = PlayerInventory.Instance;
-        player = PlayerController.Instance;
+        inventory ??= PlayerInventory.Instance;
+        player ??= PlayerController.Instance;
+        objectPooler ??= ObjectPooler.Instance;
     }
 
     void Start()
     {
-        inventory = PlayerInventory.Instance;
-        player = PlayerController.Instance;
+        inventory ??= PlayerInventory.Instance;
+        player ??= PlayerController.Instance;
+        objectPooler ??= ObjectPooler.Instance;
     }
+
 
     public void Interact()
     {
         bool _success = inventory.AddItem(this);
         if (_success) {
-            gameObject.SetActive(false);
+            objectPooler.PoolObject(item.name, gameObject);
         }
     }
     
     public void Drop()
     {
-        transform.position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        gameObject.SetActive(true);
+        Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
+        objectPooler.GetObject(item.name, gameObject, _position, transform.rotation);
     }
 
     public ItemType GetItemType()

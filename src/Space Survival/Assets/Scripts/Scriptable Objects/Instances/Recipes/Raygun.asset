@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Raygun
+  m_EditorClassIdentifier: 
+  productGameObject: {fileID: 3375713808153150583, guid: c2e1c29e904d1914c84e36143947d663,
+    type: 3}
+  productItem: {fileID: 11400000, guid: 9ec5cf54d95a3314886f408242858d81, type: 2}
+  ingredientItems:
+  - {fileID: 11400000, guid: 5a004d30e33ff70458d0371cec1337bb, type: 2}
+  - {fileID: 11400000, guid: 5a004d30e33ff70458d0371cec1337bb, type: 2}
+  - {fileID: 11400000, guid: 6608cdbefda4f2545b36b688de892c61, type: 2}

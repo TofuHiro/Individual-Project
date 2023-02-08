@@ -143,17 +143,15 @@ public class CraftingManager : MonoBehaviour
 
     public void CraftRecipe(ItemRecipe _recipe)
     {
+        foreach (ItemScriptable _item in _recipe.ingredientItems) {
+            playerInventory.RemoveItem(_item);
+        }
+
         GameObject _newObject = objectPooler.GetObject(_recipe.productItem.name, _recipe.productGameObject);
         Item _newItem = _newObject.GetComponent<Item>();
         objectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
-        bool _success = playerInventory.AddItem(_newItem);
+        playerInventory.AddItem(_newItem);
 
-        if (_success) {
-            foreach (ItemScriptable _item in _recipe.ingredientItems) {
-                playerInventory.RemoveItem(_item);
-            }
-
-            CheckPlayerItems();
-        }
+        CheckPlayerItems();
     }
 }

@@ -19,8 +19,13 @@ public class WeaponSlot : InventorySlot
     {
         base.ClearItem();
         //Remove from hotbar
-        player.DropWeapon();
         player.ClearWeaponSlot(this);
         player.ToggleAmmoUI(false);
+    }
+
+    public override void DropItem()
+    {
+        player.DropWeapon();
+        base.DropItem();
     }
 }

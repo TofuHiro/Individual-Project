@@ -74,6 +74,7 @@ public class PlayerInventory : MonoBehaviour
             if (_slot.CurrentItem != null) {
                 if (_slot.CurrentItem.ItemScriptableObject == _item) {
                     _slot.ClearItem();
+                    return;
                 }
             }
         }

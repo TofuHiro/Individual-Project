@@ -37,7 +37,7 @@ public class InventorySlot : MonoBehaviour
         UI.SetIcon(null);
     }
 
-    public void DropItem()
+    public virtual void DropItem()
     {
         CurrentItem.Drop();
         ClearItem();
