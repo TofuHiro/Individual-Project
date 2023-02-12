@@ -2,6 +2,11 @@ using UnityEngine.EventSystems;
 
 public class UpgradeSlot : InventorySlot
 {
+    protected override void Start()
+    {
+        base.Start();
+        itemType = ItemType.Upgrade;
+    }
 
     public override void AssignItem(Item _newItem)
     {

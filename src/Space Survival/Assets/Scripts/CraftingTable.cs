@@ -6,18 +6,15 @@ public class CraftingTable : MonoBehaviour, IInteractable
 {
     [SerializeField] CraftingStationType stationType;
 
-    CraftingManager craftingManager;
-    PlayerInventory playerInventory;
+    InterfaceManager interfaceManager;
 
     void Start()
     {
-        craftingManager = CraftingManager.Instance;
-        playerInventory = PlayerInventory.Instance;
+        interfaceManager = InterfaceManager.Instance;
     }
 
     public void Interact()
     {
-        craftingManager.ToggleCraftingInterface(stationType);
-        playerInventory.SetInventory(true);
+        interfaceManager.OpenCrafting(stationType);
     }
 }

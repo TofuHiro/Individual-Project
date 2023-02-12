@@ -29,7 +29,7 @@ public class CraftingManager : MonoBehaviour
     public delegate void CraftingActions();
     public static event CraftingActions OnCraftingOpen, OnCraftingClose;
 
-    [SerializeField] GameObject interfaceGameObject;
+    [SerializeField] GameObject UIGameObject;
     [SerializeField] Transform standardRecipeScrollBox, weaponRecipeScrollBox;
     [SerializeField] CraftingRecipeBlock recipeBlockPrefab;
     [SerializeField] List<CraftingTypeSet> recipeSets;
@@ -50,13 +50,11 @@ public class CraftingManager : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerController.OnInventoryToggle += CloseInterface;
         PlayerInventory.OnItemChange += CheckPlayerItems;
     }
 
     void OnDisable()
     {
-        PlayerController.OnInventoryToggle -= CloseInterface;
         PlayerInventory.OnItemChange -= CheckPlayerItems;
     }
 
@@ -82,7 +80,7 @@ public class CraftingManager : MonoBehaviour
         _recipeBlock.Init(_recipe);
     }
 
-    public void ToggleCraftingInterface(CraftingStationType _type)
+    public void OpenCraftingInterface(CraftingStationType _type)
     {
         OpenInterface();
         GetRecipeScrollBox(_type).gameObject.SetActive(true);
@@ -102,20 +100,20 @@ public class CraftingManager : MonoBehaviour
 
     void OpenInterface()
     {
-        interfaceGameObject.SetActive(true);
         IsEnabled = true;
+        UIGameObject.SetActive(true);
         CheckPlayerItems();
         OnCraftingOpen?.Invoke();
     }
     
-    void CloseInterface()
+    public void CloseInterface()
     {
+        IsEnabled = false;
+        UIGameObject.SetActive(false);
+        OnCraftingClose?.Invoke();
+
         standardRecipeScrollBox.gameObject.SetActive(false);
         weaponRecipeScrollBox.gameObject.SetActive(false);
-
-        interfaceGameObject.SetActive(false);
-        IsEnabled = false;
-        OnCraftingClose?.Invoke();
     }
 
     void CheckPlayerItems()

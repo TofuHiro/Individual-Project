@@ -6,6 +6,7 @@ public class WeaponSlot : InventorySlot
     {
         base.Start();
         player = PlayerWeapons.Instance;
+        itemType = ItemType.Weapon;
     }
 
     public override void AssignItem(Item _newItem)

@@ -7,7 +7,7 @@ public class InventorySlot : MonoBehaviour
     public Item CurrentItem { get; private set; }
     public bool IsOccupied { get; private set; } = false;
 
-    [SerializeField] ItemType itemType;
+    protected ItemType itemType;
 
     PlayerInventory inventory;
     SlotUI UI;
@@ -16,6 +16,8 @@ public class InventorySlot : MonoBehaviour
     {
         inventory = PlayerInventory.Instance;
         UI = GetComponent<SlotUI>();
+
+        itemType = ItemType.Item;
     }
 
     public ItemType GetSlotType()
@@ -41,32 +43,17 @@ public class InventorySlot : MonoBehaviour
     {
         CurrentItem.Drop();
         ClearItem();
-        inventory.DropItem();
     }
 
     //Event Trigger
-    public void DisplayInfo()
+    public void MouseEnter()
     {
         inventory.SetHoveredSlot(this);
     }
 
     //Event Trigger
-    public void OnDrag(BaseEventData _data)
+    public void MouseExit()
     {
-        //Left mouse hold
-        PointerEventData _pointerData = (PointerEventData)_data;
-        if (_pointerData.button == PointerEventData.InputButton.Left) {
-            inventory.SetSelectedSlot(this);
-        }
-    }
-
-    //Event Trigger
-    public void OnDrop(BaseEventData _data)
-    {
-        //Left mouse release
-        PointerEventData _pointerData = (PointerEventData)_data;
-        if (_pointerData.button == PointerEventData.InputButton.Left) {
-            inventory.SwitchSelectedSlot(this);
-        }
+        inventory.SetHoveredSlot(null);
     }
 }

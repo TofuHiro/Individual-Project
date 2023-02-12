@@ -3,6 +3,12 @@ using UnityEngine.EventSystems;
 public class ArmourSlot : InventorySlot
 {
 
+    protected override void Start()
+    {
+        base.Start();
+        itemType = ItemType.Armour;
+    }
+
     public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);

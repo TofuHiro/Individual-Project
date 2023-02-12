@@ -12,12 +12,14 @@ public class PlayerController : MonoBehaviour
     public static event PlayerActions
         OnInventoryToggle,
         OnInteraction,
-        OnUIRightClick,
         OnStartPrimaryAttack,
         OnStopPrimaryAttack,
         OnStartSecondaryAttack,
         OnStopSecondaryAttack,
-        OnReload;
+        OnReload,
+        OnUIRightClick,
+        OnUIClickStarted,
+        OnUIClickCancelled;
 
     public delegate void HotbarActions(int _num);
     public static event HotbarActions OnScroll, OnSwitchTo;
@@ -73,9 +75,10 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.SwitchTo6.performed += SwitchTo6;
         #endregion
 
-        playerInputs.UI.Enable();
         #region Subscribe UI Inputs
         playerInputs.UI.RightClick.started += RightClickUI;
+        playerInputs.UI.Click.started += ClickUI;
+        playerInputs.UI.Click.canceled += ClickUI;
         #endregion
     }
     void OnDisable()
@@ -99,9 +102,11 @@ public class PlayerController : MonoBehaviour
         playerInputs.Player.SwitchTo6.performed -= SwitchTo6;
         #endregion
 
-        playerInputs.UI.Enable();
+        playerInputs.UI.Disable();
         #region Unsubscribe UI Inputs
         playerInputs.UI.RightClick.started -= RightClickUI;
+        playerInputs.UI.Click.started -= ClickUI;
+        playerInputs.UI.Click.canceled -= ClickUI;
         #endregion
     }
 
@@ -113,6 +118,14 @@ public class PlayerController : MonoBehaviour
     public Transform GetOrientation()
     {
         return playerMotor.GetOrientation();
+    }
+
+    public void ToggleInterfaceInputs(bool _state)
+    {
+        if (_state == true) 
+            playerInputs.UI.Enable();
+        else 
+            playerInputs.UI.Disable();
     }
 
     void Update()
@@ -171,6 +184,16 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed) {
             OnInteraction?.Invoke();
+        }
+    }
+
+    void ClickUI(InputAction.CallbackContext context)
+    {
+        if (context.started) {
+            OnUIClickStarted?.Invoke();
+        }
+        else if (context.canceled) {
+            OnUIClickCancelled?.Invoke();
         }
     }
 

@@ -25,7 +25,7 @@ public class PlayerInventory : MonoBehaviour
     public delegate void InventoryActions();
     public static event InventoryActions OnInventoryOpen, OnInventoryClose, OnItemChange;
 
-    [SerializeField] GameObject inventoryGameObject;
+    [SerializeField] GameObject UIGameObject;
     [SerializeField] Transform inventorySlotsHolder, armourSlotsHolder, weaponSlotsHolder, upgradeSlotsHolder;
 
     ItemDisplayUI itemDisplay;
@@ -37,6 +37,7 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         itemDisplay = GetComponent<ItemDisplayUI>();
+
         inventorySlots = inventorySlotsHolder.GetComponentsInChildren<InventorySlot>();
         armourSlots = armourSlotsHolder.GetComponentsInChildren<ArmourSlot>();
         weaponSlots = weaponSlotsHolder.GetComponentsInChildren<WeaponSlot>();
@@ -48,12 +49,16 @@ public class PlayerInventory : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerController.OnInventoryToggle += ToggleInventory;
+        PlayerController.OnUIRightClick += QuickEquipItem;
+        PlayerController.OnUIClickStarted += SelectHoveredSlot;
+        PlayerController.OnUIClickCancelled += SwitchSlots;
     }
 
     void OnDisable()
     {
-        PlayerController.OnInventoryToggle -= ToggleInventory;
+        PlayerController.OnUIRightClick -= QuickEquipItem;
+        PlayerController.OnUIClickStarted -= SelectHoveredSlot;
+        PlayerController.OnUIClickCancelled -= SwitchSlots;
     }
 
     public List<ItemScriptable> GetItems()
@@ -68,28 +73,11 @@ public class PlayerInventory : MonoBehaviour
         return _items;
     }
 
-    public void RemoveItem(ItemScriptable _item)
-    {
-        foreach (InventorySlot _slot in inventorySlots) {
-            if (_slot.CurrentItem != null) {
-                if (_slot.CurrentItem.ItemScriptableObject == _item) {
-                    _slot.ClearItem();
-                    return;
-                }
-            }
-        }
-    }
-
-    void ToggleInventory()
-    {
-        SetInventory(!IsEnabled);
-    }
-
     public void SetInventory(bool _state)
     {
         if (_state == true) {
             OpenInventory();
-
+            
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -102,31 +90,36 @@ public class PlayerInventory : MonoBehaviour
         ResetInventory();
     }
 
-    public void SetSelectedSlot(InventorySlot _slot)
+    void SelectHoveredSlot()
     {
-        SelectedSlot = _slot;
-        DisplayDragItem(_slot.CurrentItem);
+        if (hoveredSlot == null)
+            return;
+
+        SelectedSlot = hoveredSlot;
+        DisplayDragItem(SelectedSlot.CurrentItem);
     }
 
     public void SetHoveredSlot(InventorySlot _slot)
     {
         hoveredSlot = _slot;
-        DisplayItemInfo(_slot.CurrentItem);
+        
+        if (hoveredSlot != null)
+            DisplayItemInfo(hoveredSlot.CurrentItem);
+        else
+            DisplayItemInfo(null);
     }
 
     void OpenInventory()
     {
-        inventoryGameObject.SetActive(true);
         IsEnabled = true;
-        PlayerController.OnUIRightClick += QuickEquipItem;
+        UIGameObject.SetActive(true);
         OnInventoryOpen?.Invoke();
     }
 
     void CloseInventory()
     {
-        inventoryGameObject.SetActive(false);
         IsEnabled = false;
-        PlayerController.OnUIRightClick -= QuickEquipItem;
+        UIGameObject.SetActive(false);
         OnInventoryClose?.Invoke();
     }
 
@@ -142,39 +135,57 @@ public class PlayerInventory : MonoBehaviour
         return false;
     }
 
-    public void SwitchSelectedSlot(InventorySlot _to) 
+    public void RemoveItem(ItemScriptable _item)
+    {
+        foreach (InventorySlot _slot in inventorySlots) {
+            if (_slot.CurrentItem != null) {
+                if (_slot.CurrentItem.ItemScriptableObject == _item) {
+                    _slot.ClearItem();
+                    return;
+                }
+            }
+        }
+    }
+
+    void SwitchSlots()
     {
         //If no selected slot set
-        if (SelectedSlot == null) {
-            ResetInventory();
-            return;
-        }
-        //If selected slot does not have an item
-        if (SelectedSlot.CurrentItem == null) {
-            ResetInventory();
-            return;
-        }
-        //If selected item type is moving to invalid slot where slot is not item slot
-        if (SelectedSlot.CurrentItem.GetItemType() != _to.GetSlotType() && _to.GetSlotType() != ItemType.Item) {
-            //Reset drag icon ui
+        if (SelectedSlot == null || SelectedSlot.CurrentItem == null) {
             ResetInventory();
             return;
         }
         //For swaps, if item TO swap with is moving to invalid slot where slot is not item slot
-        if (_to.CurrentItem != null) {
-            if (_to.CurrentItem.GetItemType() != SelectedSlot.GetSlotType() && SelectedSlot.GetSlotType() != ItemType.Item) {
-                //Reset drag icon ui
+        if (hoveredSlot != null && hoveredSlot.CurrentItem != null) {
+            if (hoveredSlot.CurrentItem.GetItemType() != SelectedSlot.GetSlotType() && SelectedSlot.GetSlotType() != ItemType.Item) {
                 ResetInventory();
                 return;
             }
         }
+        //If mouse up on no slot
+        if (hoveredSlot == null) {
+            DropItem();
+            return;
+        }
+        //If selected item type is moving to invalid slot where slot is not item slot
+        if (SelectedSlot.CurrentItem.GetItemType() != hoveredSlot.GetSlotType() && hoveredSlot.GetSlotType() != ItemType.Item) {
+            ResetInventory();
+            return;
+        }
 
-        Item _temp = SelectedSlot.CurrentItem;
-        if (_to.CurrentItem != null)
-            SelectedSlot.AssignItem(_to.CurrentItem);
-        else
-            SelectedSlot.ClearItem();
-        _to.AssignItem(_temp);
+        SwitchSelectedSlot(SelectedSlot, hoveredSlot);
+    }
+
+    void SwitchSelectedSlot(InventorySlot _from, InventorySlot _to) 
+    {
+        if (_to.CurrentItem != null) {
+            Item _temp = _from.CurrentItem;
+            _from.AssignItem(_to.CurrentItem);
+            _to.AssignItem(_temp);
+        }
+        else {
+            _to.AssignItem(_from.CurrentItem);
+            _from.ClearItem();
+        }
 
         ResetInventory();
         OnItemChange?.Invoke();
@@ -182,9 +193,11 @@ public class PlayerInventory : MonoBehaviour
 
     void QuickEquipItem()
     {
+        //If mouse not over a slot/slot does not hav an item
         if (hoveredSlot == null || hoveredSlot.CurrentItem == null)
             return;
 
+        //Click
         SelectedSlot = hoveredSlot;
         ItemType _type = SelectedSlot.CurrentItem.GetItemType();
 
@@ -198,7 +211,7 @@ public class PlayerInventory : MonoBehaviour
 
         foreach (InventorySlot _slot in _slots) {
             if (!_slot.IsOccupied) {
-                SwitchSelectedSlot(_slot);
+                SwitchSelectedSlot(SelectedSlot, _slot);
                 return;
             }
         }
@@ -218,8 +231,9 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void DropItem()
+    void DropItem()
     {
+        SelectedSlot.DropItem();
         OnItemChange?.Invoke();
     }
 
