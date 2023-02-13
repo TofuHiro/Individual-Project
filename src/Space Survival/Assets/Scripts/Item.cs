@@ -39,7 +39,7 @@ public class Item : MonoBehaviour, IPickable
     public void Drop()
     {
         Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        objectPooler.GetObject(item.name, gameObject, _position, transform.rotation);
+        objectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
     }
 
     public ItemType GetItemType()

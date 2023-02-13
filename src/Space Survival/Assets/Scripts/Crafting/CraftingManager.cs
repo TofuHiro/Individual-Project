@@ -145,7 +145,7 @@ public class CraftingManager : MonoBehaviour
             playerInventory.RemoveItem(_item);
         }
 
-        GameObject _newObject = objectPooler.GetObject(_recipe.productItem.name, _recipe.productGameObject);
+        GameObject _newObject = objectPooler.SpawnObject(_recipe.productItem.name, _recipe.productGameObject);
         Item _newItem = _newObject.GetComponent<Item>();
         objectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         playerInventory.AddItem(_newItem);

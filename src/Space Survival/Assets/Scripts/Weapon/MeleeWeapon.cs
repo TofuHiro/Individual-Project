@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-    [SerializeField] Transform hitStartPoint;
-
-    IDamagable colliderHit;
+    protected RaycastHit hit;
+    IDamagable damagable;
     Rigidbody hitRigidbody;
-    RaycastHit hit;
 
     new MeleeWeaponScriptable weaponScriptable;
     float knockbackForce;
@@ -23,11 +21,11 @@ public class MeleeWeapon : Weapon
     protected override void Attack()
     {
         base.Attack();
-        Physics.Raycast(hitStartPoint.position, hitStartPoint.forward, out hit, range);
+        Physics.Raycast(transform.position, transform.forward, out hit, range);
         if (hit.transform != null) {
-            colliderHit = hit.transform.GetComponent<IDamagable>();
-            if (colliderHit != null) {
-                colliderHit.TakeDamage(damage);
+            damagable = hit.transform.GetComponent<IDamagable>();
+            if (damagable != null) {
+                damagable.TakeDamage(damage);
             }
 
             hitRigidbody = hit.transform.GetComponent<Rigidbody>();

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd4f071bc7c5424389f8d0c7de116b8, type: 3}
   m_Name: Test Ray Weapon
   m_EditorClassIdentifier: 
+  type: 2
   name: Test Raygun
   icon: {fileID: 2800000, guid: fba4512e3548e0548b2cf4f11913e257, type: 3}
-  type: 2
   description: Testing ray gun that shoots strong beams
-  weaponType: 1
+  weaponType: 0
   maxDurability: 100
   damage: 20
   maxRange: 200

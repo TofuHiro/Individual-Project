@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RayWeapon : Weapon
 {
-    [SerializeField] Transform rayStartPoint;
-
     public int CurrentClip { get { return currentClip; }
         private set {
             currentClip = value;
@@ -67,7 +65,7 @@ public class RayWeapon : Weapon
 
         base.Attack();
 
-        Physics.Raycast(rayStartPoint.position, rayStartPoint.forward, out hit, range);
+        Physics.Raycast(transform.position, transform.forward, out hit, range);
         if (hit.transform != null) {
             colliderHit = hit.transform.GetComponent<IDamagable>();
             if (colliderHit != null) {

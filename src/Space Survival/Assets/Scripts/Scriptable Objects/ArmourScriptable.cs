@@ -5,5 +5,4 @@ public class ArmourScriptable : ItemScriptable
 {
     public float protectionPercentage;
     public int maxDurability;
-
 }

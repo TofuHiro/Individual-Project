@@ -21,7 +21,7 @@ public class ObjectPooler : MonoBehaviour
         objectPools = new Dictionary<string, Queue<GameObject>>();
     }
 
-    public GameObject GetObject(string _tag, GameObject _object)
+    public GameObject SpawnObject(string _tag, GameObject _object)
     {
         if (!objectPools.ContainsKey(_tag)) {
             objectPools.Add(_tag, new Queue<GameObject>());
@@ -38,7 +38,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject GetObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation)
+    public GameObject SpawnObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation)
     {
         if (!objectPools.ContainsKey(_tag)) {
             objectPools.Add(_tag, new Queue<GameObject>());
