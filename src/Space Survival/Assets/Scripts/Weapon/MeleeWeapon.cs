@@ -21,7 +21,13 @@ public class MeleeWeapon : Weapon
     protected override void Attack()
     {
         base.Attack();
-        Physics.Raycast(transform.position, transform.forward, out hit, range);
+        Transform _transform;
+        if (currentHolder != null)
+            _transform = Camera.main.transform;
+        else
+            _transform = transform;
+
+        Physics.Raycast(_transform.position, _transform.forward, out hit, range);
         if (hit.transform != null) {
             damagable = hit.transform.GetComponent<IDamagable>();
             if (damagable != null) {

@@ -64,8 +64,13 @@ public class RayWeapon : Weapon
             return;
 
         base.Attack();
+        Transform _transform;
+        if (currentHolder != null)
+            _transform = Camera.main.transform;
+        else
+            _transform = transform;
 
-        Physics.Raycast(transform.position, transform.forward, out hit, range);
+        Physics.Raycast(_transform.position, _transform.forward, out hit, range);
         if (hit.transform != null) {
             colliderHit = hit.transform.GetComponent<IDamagable>();
             if (colliderHit != null) {
