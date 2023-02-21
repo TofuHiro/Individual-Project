@@ -1,8 +1,5 @@
-using UnityEngine.EventSystems;
-
 public class ArmourSlot : InventorySlot
-{
-
+{ 
     protected override void Start()
     {
         base.Start();
@@ -12,14 +9,12 @@ public class ArmourSlot : InventorySlot
     public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);
-        //Assign armour stats
-
+        CurrentItem.ItemScriptableObject.Equip();
     }
 
     public override void ClearItem()
     {
+        CurrentItem.ItemScriptableObject.Unequip();
         base.ClearItem();
-        //remove armour stats
-
     }
 }

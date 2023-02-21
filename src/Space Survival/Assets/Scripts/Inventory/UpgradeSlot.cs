@@ -1,5 +1,3 @@
-using UnityEngine.EventSystems;
-
 public class UpgradeSlot : InventorySlot
 {
     protected override void Start()
@@ -11,15 +9,12 @@ public class UpgradeSlot : InventorySlot
     public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);
-        //Apply effects
-
+        CurrentItem.ItemScriptableObject.Equip();
     }
 
     public override void ClearItem()
     {
+        CurrentItem.ItemScriptableObject.Unequip();
         base.ClearItem();
-        //remove efects
-
     }
-
 }

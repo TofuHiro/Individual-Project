@@ -7,4 +7,19 @@ public class ItemScriptable : ScriptableObject
     new public string name;
     public Texture icon;
     public string description;
+
+    public virtual void Use()
+    {
+        //
+    }
+
+    public virtual void Equip()
+    {
+        //
+    }
+
+    public virtual void Unequip()
+    {
+        //
+    }
 }

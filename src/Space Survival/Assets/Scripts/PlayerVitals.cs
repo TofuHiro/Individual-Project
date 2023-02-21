@@ -5,8 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(VitalsUI))]
 public class PlayerVitals : MonoBehaviour, IDamagable
 {
+    #region Singleton
+    public static PlayerVitals Instance;
+    void Awake()
+    {
+        if (Instance != null && Instance != this) {
+            Destroy(Instance);
+        }
+        else {
+            Instance = this;
+        }
+    }
+    #endregion
+
     [Header("Shield")]
-    [SerializeField] float maxShield = 100f;
+    [SerializeField] float maxShield = 0f;
+    [SerializeField] float shieldRecoverRate = 10f;
+    [SerializeField] float shieldRecoverStartDelay = 3f;
+    float nextTimeToStartShieldRecover;
 
     [Header("Health")]
     [SerializeField] float maxHealth = 100f;
@@ -43,10 +59,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable
             shield = value;
             shield = Mathf.Clamp(shield, 0f, maxShield);
             UI.SetShield(shield);
-
-            if (shield <= 0f) {
-                Health -= value;
-            }
         }
     }
     float shield;
@@ -108,23 +120,23 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         Shield = 0f;
 
         //Health
-        UI.SetMaxHealth(maxHealth);
+        SetMaxHealth(maxHealth);
         Health = maxHealth;
 
         //Water
-        UI.SetMaxWater(maxWater);
+        SetMaxWater(maxWater);
         Water = maxWater;
         nextWaterTick = waterDecayRate;
         nextParchTick = parchedDamageRate;
 
         //Food
-        UI.SetMaxFood(maxFood);
+        SetMaxFood(maxFood);
         Food = maxFood;
         nextFoodTick = foodDecayRate;
         nextStarveTick = starveDamageRate;
 
         //Oxygen
-        UI.SetMaxOxygen(baseOxygenTime);
+        SetMaxOxygen(baseOxygenTime);
         currentMaxOxygenTime = baseOxygenTime;
         Oxygen = baseOxygenTime;
         nextSuffocateTick = suffocateDamageRate;
@@ -133,6 +145,11 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     void Update()
     {
         timer += Time.deltaTime;
+
+        //Recover shields
+        if (timer >= nextTimeToStartShieldRecover) {
+            Shield += Time.deltaTime * shieldRecoverRate;
+        }
 
         //Decrease water
         if (timer >= nextWaterTick) {
@@ -172,7 +189,12 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     public void TakeDamage(float _value)
     {
-        Shield -= _value;
+        if (Shield > 0f)
+            Shield -= _value;
+        else
+            Health -= _value;
+        
+        nextTimeToStartShieldRecover = timer + shieldRecoverStartDelay;
     }
 
     public void Die()
@@ -184,25 +206,51 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     {
         Shield += _value;
     }
+    public void AddMaxShield(float _value)
+    {
+
+        maxShield += _value;
+        UI.SetMaxShield(maxShield);
+    }
 
     public void AddHealth(float _value)
     {
         Health += _value;
+    }
+    public void SetMaxHealth(float _value)
+    {
+        maxHealth = _value;
+        UI.SetMaxHealth(_value);
     }
 
     public void AddWater(float _value)
     {
         Water += _value;
     }
+    public void SetMaxWater(float _value)
+    {
+        maxWater = _value;
+        UI.SetMaxWater(_value);
+    }
 
     public void AddFood(float _value)
     {
         Food += _value;
     }
+    public void SetMaxFood(float _value)
+    {
+        maxFood = _value;
+        UI.SetMaxFood(_value);
+    }
 
     public void AddOxygen(float _value)
     {
         Oxygen += _value;
+    }
+    public void SetMaxOxygen(float _value)
+    {
+        currentMaxOxygenTime = _value;
+        UI.SetMaxOxygen(_value);
     }
 
     void OnTriggerEnter(Collider other)

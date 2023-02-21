@@ -7,6 +7,7 @@ using TMPro;
 public class VitalsUI : MonoBehaviour
 {
     [Header("Shield")]
+    [SerializeField] Transform shieldSliderTransform;
     [SerializeField] Slider shieldSlider;
 
     [Header("Health")]
@@ -25,10 +26,12 @@ public class VitalsUI : MonoBehaviour
     [SerializeField] Slider oxygenSlider;
     [SerializeField] TMP_Text oxygenText;
 
-
     public void SetMaxShield(float _value)
     {
+        //Assuming 200 shield is max possible shield
+        shieldSliderTransform.localScale = new Vector3(_value/200f, 1f, 1f);
         shieldSlider.maxValue = _value;
+        shieldSlider.gameObject.SetActive(_value != 0f);
     }
     public void SetShield(float _value)
     {

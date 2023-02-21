@@ -50,15 +50,11 @@ public class PlayerInventory : MonoBehaviour
     void OnEnable()
     {
         PlayerController.OnUIRightClick += QuickEquipItem;
-        PlayerController.OnUIClickStarted += SelectHoveredSlot;
-        PlayerController.OnUIClickCancelled += SwitchSlots;
     }
 
     void OnDisable()
     {
         PlayerController.OnUIRightClick -= QuickEquipItem;
-        PlayerController.OnUIClickStarted -= SelectHoveredSlot;
-        PlayerController.OnUIClickCancelled -= SwitchSlots;
     }
 
     public List<ItemScriptable> GetItems()
@@ -80,12 +76,19 @@ public class PlayerInventory : MonoBehaviour
             
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            PlayerController.OnUIClickStarted += SelectHoveredSlot;
+            PlayerController.OnUIClickCancelled += SwitchSlots;
+            PlayerController.OnInteraction += UseSlot;
         }
         else {
             CloseInventory();
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            PlayerController.OnUIClickStarted -= SelectHoveredSlot;
+            PlayerController.OnUIClickCancelled -= SwitchSlots;
+            PlayerController.OnInteraction -= UseSlot;
+
         }
         ResetInventory();
     }
@@ -235,6 +238,17 @@ public class PlayerInventory : MonoBehaviour
     {
         SelectedSlot.DropItem();
         OnItemChange?.Invoke();
+    }
+
+    void UseSlot()
+    {
+        if (hoveredSlot != null) {
+            if (hoveredSlot.CurrentItem != null) {
+                hoveredSlot.CurrentItem.ItemScriptableObject.Use();
+                hoveredSlot.ClearItem();
+                ResetInventory();
+            }
+        }
     }
 
     void ResetInventory()
