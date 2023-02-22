@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class RayWeapon : Weapon
 {
+    //Everything
+    LayerMask mask = ~0;
+
     public int CurrentClip { get { return currentClip; }
         private set {
             currentClip = value;
@@ -74,7 +77,7 @@ public class RayWeapon : Weapon
             _transform = transform;
 
         //Shoot ray
-        Physics.Raycast(_transform.position, _transform.forward, out hit, range);
+        Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask, QueryTriggerInteraction.Ignore);
         if (hit.transform != null) {
             //Apply damage
             colliderHit = hit.transform.GetComponent<IDamagable>();

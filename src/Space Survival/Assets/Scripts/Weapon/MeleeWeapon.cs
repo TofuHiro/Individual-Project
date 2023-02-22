@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
+    //Everything
+    LayerMask mask = ~0;
     protected RaycastHit hit;
     IDamagable damagable;
     Rigidbody hitRigidbody;
@@ -28,7 +30,7 @@ public class MeleeWeapon : Weapon
             _transform = transform;
 
         //Shoot ray
-        Physics.Raycast(_transform.position, _transform.forward, out hit, range);
+        Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask, QueryTriggerInteraction.Ignore);
         if (hit.transform != null) {
             //Apply damage
             damagable = hit.transform.GetComponent<IDamagable>();

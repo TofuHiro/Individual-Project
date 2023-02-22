@@ -70,7 +70,7 @@ public class VitalsUI : MonoBehaviour
     /// <param name="_value">Value to set</param>
     public void SetHealth(float _value)
     {
-        healthText.text = _value.ToString();
+        healthText.text = ((int)_value).ToString();
         healthSlider.value = _value;
     }
 
@@ -89,7 +89,7 @@ public class VitalsUI : MonoBehaviour
     /// <param name="_value">Value to set</param>
     public void SetWater(float _value)
     {
-        waterText.text = _value.ToString();
+        waterText.text = ((int)_value).ToString();
         waterSlider.value = _value;
     }
 
@@ -108,7 +108,7 @@ public class VitalsUI : MonoBehaviour
     /// <param name="_value">value to set</param>
     public void SetFood(float _value)
     {
-        foodText.text = _value.ToString();
+        foodText.text = ((int)_value).ToString();
         foodSlider.value = _value;
     }
 

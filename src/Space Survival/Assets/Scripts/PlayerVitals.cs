@@ -207,10 +207,15 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     /// <param name="_value">The amount of damage to apply</param>
     public void TakeDamage(float _value)
     {
-        if (Shield > 0f)
+        float _damage = _value;
+        if (_damage > Shield) {
+            _damage -= Shield;
+            Shield = 0f;
+            Health -= _damage;
+        }
+        else {
             Shield -= _value;
-        else
-            Health -= _value;
+        }
         
         nextTimeToStartShieldRecover = timer + shieldRecoverStartDelay;
     }
