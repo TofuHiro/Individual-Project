@@ -64,7 +64,7 @@ public class HarvestableResource : MonoBehaviour, IDamagable, IHarvestable
         //Spawns all items within chance
         foreach (ResourceDrop _drop in drops) {
             if (_chance <= _drop.spawnChance) {
-                objectPooler.SpawnObject(_drop.resource.name, _drop.resource, transform.position, transform.rotation);
+                objectPooler.SpawnObject(_drop.resource.name, _drop.resource, transform.position, transform.rotation, transform.localScale);
             }
         }
 

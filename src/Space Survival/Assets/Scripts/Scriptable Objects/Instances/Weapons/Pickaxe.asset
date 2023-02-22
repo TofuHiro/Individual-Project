@@ -18,7 +18,7 @@ MonoBehaviour:
   description: A basic mining tool
   weaponType: 2
   maxDurability: 100
-  damage: 20
-  maxRange: 2
+  damage: 25
+  maxRange: 2.5
   attackRate: 1
   knockbackForce: 50

@@ -19,6 +19,6 @@ MonoBehaviour:
   weaponType: 2
   maxDurability: 100
   damage: 20
-  maxRange: 2
+  maxRange: 3
   attackRate: 0.5
   knockbackForce: 40
