@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InterfaceManager : MonoBehaviour
@@ -38,31 +36,70 @@ public class InterfaceManager : MonoBehaviour
         PlayerController.OnInventoryToggle -= ToggleInventory;
     }
 
-    void ToggleInterfaceInputs(bool _state)
-    {
-        player.ToggleInterfaceInputs(_state);
-    }
-
+    /// <summary>
+    /// Toggle inventory to its not state
+    /// </summary>
     void ToggleInventory()
     {
         bool _state = !PlayerInventory.IsEnabled;
-        inventory.SetInventory(_state);
-        ToggleInterfaceInputs(_state);
-        
-        if (_state == false) 
-            CloseCrafting();
+
+        if (_state) {
+            OpenInventory();
+        }
+        else {
+            CloseInventory();
+        }
     }
 
+    /// <summary>
+    /// Enables inventory interface, showing the cursor
+    /// </summary>
+    void OpenInventory()
+    {
+        inventory.SetInventory(true);
+        ToggleInterfaceInputs(true);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    /// <summary>
+    /// Disables inventory interface, hiding cursor
+    /// </summary>
+    void CloseInventory()
+    {
+        inventory.SetInventory(false);
+        ToggleInterfaceInputs(false);
+        CloseCrafting();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    /// <summary>
+    /// Opens a specified set of recipes for a crafting station
+    /// </summary>
+    /// <param name="_type">The set of recipes to display</param>
     public void OpenCrafting(CraftingStationType _type)
     {
         crafting.OpenCraftingInterface(_type);
-        inventory.SetInventory(true);
-        ToggleInterfaceInputs(true);
+        OpenInventory();
     }
 
+    /// <summary>
+    /// Hides crafting interface
+    /// </summary>
     void CloseCrafting()
     {
         crafting.CloseInterface();
-        ToggleInterfaceInputs(false);
+    }
+
+    /// <summary>
+    /// Toggles between the player UI inputs
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
+    void ToggleInterfaceInputs(bool _state)
+    {
+        player.ToggleInterfaceInputs(_state);
     }
 }

@@ -32,11 +32,19 @@ public class PlayerCamera : MonoBehaviour
         PlayerInventory.OnInventoryClose -= EnableRotation;
     }
 
+    /// <summary>
+    /// Set a direction for the player to look towards
+    /// </summary>
+    /// <param name="_rotDir">The 2D axis to rotate towards</param>
     public void SetRotation(Vector2 _rotDir)
     {
         rotationDir = _rotDir;
     }
 
+    /// <summary>
+    /// Toggles the player's ability to rotate
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
     public void ToggleRotation(bool _state)
     {
         CanRotate = _state;
@@ -59,6 +67,9 @@ public class PlayerCamera : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Rotates the player camera 
+    /// </summary>
     void Rotation()
     {
         if (rotationDir.magnitude > 0) {

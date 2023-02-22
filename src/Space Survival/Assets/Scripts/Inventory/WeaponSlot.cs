@@ -12,7 +12,7 @@ public class WeaponSlot : InventorySlot
     public override void AssignItem(Item _newItem)
     {
         base.AssignItem(_newItem);
-        //Assign to corresponding hotbar
+        //Assign to corresponding hotbar from inventory hotbar
         player.AssignWeaponSlot(this);
     }
 

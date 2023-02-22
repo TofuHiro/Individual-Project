@@ -23,17 +23,26 @@ public class DragIconUI : MonoBehaviour
 
     void Update()
     {
+        //Moves icon to the position of the mouse in the inventory
         if (isFollowingCursor) {
             transform.position = Input.mousePosition;
         }
     }
 
+    /// <summary>
+    /// Set the icon to display an item that follows the mouse
+    /// </summary>
+    /// <param name="_newIcon">The icon to display</param>
     public static void SetIcon(Texture _newIcon)
     {
         icon.texture = _newIcon;
         icon.enabled = _newIcon != null;
     }
 
+    /// <summary>
+    /// Set the icon to follow the mouse cursor
+    /// </summary>
+    /// <param name="_state">If true, the icon will follow the mouse</param>
     public static void FollowCursor(bool _state)
     {
         isFollowingCursor = _state;

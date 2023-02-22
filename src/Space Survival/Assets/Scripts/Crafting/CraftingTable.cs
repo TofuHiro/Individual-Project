@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CraftingTable : MonoBehaviour, IInteractable
 {
+    [Tooltip("The set of recipes this crafting station will show")]
     [SerializeField] CraftingStationType stationType;
 
     InterfaceManager interfaceManager;

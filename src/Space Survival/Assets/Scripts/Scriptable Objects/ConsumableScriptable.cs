@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Consumable", menuName = "Items/Consumable")]
 public class ConsumableScriptable : ItemScriptable
 {
+    //Class storing the effect for a given vital
     [System.Serializable]
     public class ConsumableValuePair
     {
@@ -10,7 +11,8 @@ public class ConsumableScriptable : ItemScriptable
         public float value;
     }
 
-    [SerializeField] ConsumableValuePair[] buffs;
+    [Tooltip("Create effects this consumable gives")]
+    public ConsumableValuePair[] buffs;
 
     public override void Use()
     {

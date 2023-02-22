@@ -30,14 +30,17 @@ public class PlayerWeapons : MonoBehaviour
     }
     int activeHotbar;
 
+    [Tooltip("Parent holding weapon inventory slots in the inventory")]
     [SerializeField] Transform weaponSlotsTransform;
+    [Tooltip("The transform of the player's hand")]
     [SerializeField] Transform handTransform;
 
-    WeaponSlot[] weaponSlots;
-    Item[] hotbar;
     HotbarUI hotbarUI;
     WeaponUI weaponUI;
     Weapon currentWeapon;
+
+    WeaponSlot[] weaponSlots;
+    Item[] hotbar;
 
     void Start()
     {
@@ -73,26 +76,37 @@ public class PlayerWeapons : MonoBehaviour
         PlayerController.OnReload -= Reload;
     }
 
+    /// <summary>
+    /// Assigns the weapon in the inventory weapon slot to the hotbar slots
+    /// </summary>
+    /// <param name="_newWeaponSlot">The weapon slot to assign the hotbar</param>
     public void AssignWeaponSlot(WeaponSlot _newWeaponSlot)
     {
         for (int i = 0; i < weaponSlots.Length; i++) {
-            //Find corresponding slot to hotbar
+            //Find corresponding slot 
             if (weaponSlots[i].name == _newWeaponSlot.name) {
                 if (_newWeaponSlot != null)
+                    //Assign weapon in slot to hotbar
                     hotbar[i] = _newWeaponSlot.CurrentItem;
                 else
                     hotbar[i] = null;
+
                 hotbarUI.UpdateUI(hotbar);
                 return;
             }
         }
     }
 
+    /// <summary>
+    /// Clear out a hotbar given a weapon slot
+    /// </summary>
+    /// <param name="_weaponSlot">The corresponding weapon slot to remove from the hotbar</param>
     public void ClearWeaponSlot(WeaponSlot _weaponSlot)
     {
         for (int i = 0; i < weaponSlots.Length; i++) {
-            //Find corresponding slot to hotbar
+            //Find corresponding slot
             if (weaponSlots[i].name == _weaponSlot.name) {
+                //Clear hotbar
                 hotbar[i] = null;
                 hotbarUI.UpdateUI(hotbar);
                 return;
@@ -100,6 +114,9 @@ public class PlayerWeapons : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Drop the currently held weapon
+    /// </summary>
     public void DropWeapon()
     {
         if (currentWeapon == null)
@@ -111,18 +128,30 @@ public class PlayerWeapons : MonoBehaviour
         currentWeapon = null;
     }
 
+    /// <summary>
+    /// Scrolls up or down the hotbar depending on a value
+    /// </summary>
+    /// <param name="_dir">1D Vector direction to scroll up or down</param>
     void ScrollHotbar(int _dir)
     {
         ActiveHotbar += _dir;
         SwitchHotbar(ActiveHotbar);
     }
 
+    /// <summary>
+    /// Switch the active hotbar to a specified number on the hotbar
+    /// </summary>
+    /// <param name="_num">The hotbar slot to switch to</param>
     void SwitchHotbar(int _num)
     {
         ActiveHotbar = _num;
         ChangeWeapon(hotbar[ActiveHotbar]);
     }
 
+    /// <summary>
+    /// Equip a given weapon, displaying it on the player 
+    /// </summary>
+    /// <param name="_newWeapon">The weapon item scriptable object to equip</param>
     void ChangeWeapon(Item _newWeapon)
     {
         //If currently holding weapon before switching
@@ -143,12 +172,13 @@ public class PlayerWeapons : MonoBehaviour
         else {
             currentWeapon = null;
         }
-
-        //Hold weapon
         
         hotbarUI.UpdateSelectorPosition(ActiveHotbar);
     }
 
+    /// <summary>
+    /// Checks and switches the player's current weapon to the current hot bar. Invoked upon item change in case player has unequipped/dropped the weapon in the hotbar
+    /// </summary>
     void CheckActiveHotbar()
     {
         ChangeWeapon(hotbar[ActiveHotbar]);
@@ -180,11 +210,20 @@ public class PlayerWeapons : MonoBehaviour
             currentWeapon.TriggerReload();
     }
 
+    /// <summary>
+    /// Displays the current weapon's ammo information
+    /// </summary>
+    /// <param name="_clip">Current clip amount</param>
+    /// <param name="_ammo">Current reserve ammo amount</param>
     public void UpdateAmmoUI(int _clip, int _ammo)
     {
         weaponUI.UpdateUI(_clip, _ammo);
     }
 
+    /// <summary>
+    /// Hides or shows the weapon ammo information UI
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
     public void ToggleAmmoUI(bool _state)
     {
         weaponUI.ToggleUI(_state);

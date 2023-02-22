@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
@@ -7,10 +6,10 @@ public class InventorySlot : MonoBehaviour
     public Item CurrentItem { get; private set; }
     public bool IsOccupied { get; private set; } = false;
 
-    protected ItemType itemType;
-
     PlayerInventory inventory;
     SlotUI UI;
+
+    protected ItemType itemType;
 
     protected virtual void Start()
     {
@@ -20,11 +19,19 @@ public class InventorySlot : MonoBehaviour
         itemType = ItemType.Item;
     }
 
+    /// <summary>
+    /// Return the type of item the slot can hold
+    /// </summary>
+    /// <returns></returns>
     public ItemType GetSlotType()
     {
         return itemType;
     }
 
+    /// <summary>
+    /// Assigns an item to this slot and displays it
+    /// </summary>
+    /// <param name="_newItem">The item to assign</param>
     public virtual void AssignItem(Item _newItem)
     {
         CurrentItem = _newItem;
@@ -32,6 +39,9 @@ public class InventorySlot : MonoBehaviour
         UI.SetIcon(_newItem.ItemScriptableObject.icon);
     }
 
+    /// <summary>
+    /// Clears this slot
+    /// </summary>
     public virtual void ClearItem()
     {
         CurrentItem = null;
@@ -39,6 +49,9 @@ public class InventorySlot : MonoBehaviour
         UI.SetIcon(null);
     }
 
+    /// <summary>
+    /// Drops the current item into the world
+    /// </summary>
     public virtual void DropItem()
     {
         CurrentItem.Drop();

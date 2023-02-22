@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
@@ -21,19 +19,24 @@ public class MeleeWeapon : Weapon
     protected override void Attack()
     {
         base.Attack();
+
+        //Determine where to attack from
         Transform _transform;
         if (currentHolder != null)
             _transform = Camera.main.transform;
         else
             _transform = transform;
 
+        //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range);
         if (hit.transform != null) {
+            //Apply damage
             damagable = hit.transform.GetComponent<IDamagable>();
             if (damagable != null) {
                 damagable.TakeDamage(damage);
             }
 
+            //Apply force
             hitRigidbody = hit.transform.GetComponent<Rigidbody>();
             if (hitRigidbody != null) {
                 hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
@@ -45,13 +48,13 @@ public class MeleeWeapon : Weapon
     {
         base.SecondaryAttack();
         //
-        Debug.Log("Secondary");
+        
     }
 
     protected override void Reload()
     {
         base.Reload();
         //
-        Debug.Log("Reload");
+        
     }
 }

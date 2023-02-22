@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HarvestingTool : MeleeWeapon
 {
-    [SerializeField] HarvestTiers tier;
+    [Tooltip("The level tier of resource this tool can harvest")]
+    [SerializeField] int tier;
+    [Tooltip("The type of resource this tool can harvest")]
     [SerializeField] HarvestTypes harvestType;
 
     IHarvestable harvestable;
@@ -12,6 +12,7 @@ public class HarvestingTool : MeleeWeapon
     protected override void Attack()
     {
         base.Attack();
+        //Apply damage to resource
         if (hit.transform != null) {
             harvestable = hit.transform.GetComponent<IHarvestable>();
             if (harvestable != null) {

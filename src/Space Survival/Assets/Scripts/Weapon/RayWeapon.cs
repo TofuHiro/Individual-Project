@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RayWeapon : Weapon
@@ -32,6 +31,7 @@ public class RayWeapon : Weapon
 
     protected override void Awake()
     {
+        //Init
         base.Awake();
         weaponScriptable = (RayWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = weaponScriptable.knockbackForce;
@@ -44,6 +44,7 @@ public class RayWeapon : Weapon
     public override void Equip(Transform _parent)
     {
         base.Equip(_parent);
+        //Display current weapon ammo
         ToggleAmmoUI(true);
         UpdateAmmoUI();
     }
@@ -64,19 +65,23 @@ public class RayWeapon : Weapon
             return;
 
         base.Attack();
+
+        //Determine where to shoot from
         Transform _transform;
         if (currentHolder != null)
             _transform = Camera.main.transform;
         else
             _transform = transform;
 
+        //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range);
         if (hit.transform != null) {
+            //Apply damage
             colliderHit = hit.transform.GetComponent<IDamagable>();
             if (colliderHit != null) {
                 colliderHit.TakeDamage(damage);
             }
-
+            //Apply force
             hitRigidbody = hit.transform.GetComponent<Rigidbody>();
             if (hitRigidbody != null) {
                 hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
@@ -90,7 +95,6 @@ public class RayWeapon : Weapon
     {
         base.SecondaryAttack();
         //
-        Debug.Log("Secondary");
     }
 
     protected override void Reload()
@@ -127,6 +131,9 @@ public class RayWeapon : Weapon
         isReloading = false;
     }
 
+    /// <summary>
+    /// Updates the current ammo information
+    /// </summary>
     void UpdateAmmoUI()
     {
         if (currentHolder == null)
@@ -134,7 +141,11 @@ public class RayWeapon : Weapon
 
         currentHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
     }
-
+    
+    /// <summary>
+    /// Hides or shows the weapon ammo information
+    /// </summary>
+    /// <param name="_state">State to toggle to</param>
     void ToggleAmmoUI(bool _state)
     {
         if (currentHolder == null)

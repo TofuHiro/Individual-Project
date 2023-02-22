@@ -110,16 +110,28 @@ public class PlayerController : MonoBehaviour
         #endregion
     }
 
+    /// <summary>
+    /// Returns the player's current position
+    /// </summary>
+    /// <returns>The Vector3 position of the player</returns>
     public Vector3 GetPlayerPosition()
     {
         return transform.position;
     }
 
+    /// <summary>
+    /// Returns the transform of the player's orientation
+    /// </summary>
+    /// <returns>The orientation transform of the player</returns>
     public Transform GetOrientation()
     {
         return playerMotor.GetOrientation();
     }
 
+    /// <summary>
+    /// Toggles the player's inputs for the UI
+    /// </summary>
+    /// <param name="_state">The state to toggle the inputs to</param>
     public void ToggleInterfaceInputs(bool _state)
     {
         if (_state == true) 

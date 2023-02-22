@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileWeapon : Weapon
 {
+    [Tooltip("Transform position where projectile spawn from")]
     [SerializeField] Transform projectileStartPoint;
 
     public int CurrentClip { get { return currentClip; }
@@ -36,6 +36,7 @@ public class ProjectileWeapon : Weapon
     protected override void Awake()
     {
         base.Awake();
+        //Init
         weaponScriptable = (ProjectileWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         projectileName = weaponScriptable.projectileName;
         projectilePrefab = weaponScriptable.projectile;
@@ -60,6 +61,7 @@ public class ProjectileWeapon : Weapon
     public override void Equip(Transform _parent)
     {
         base.Equip(_parent);
+        //Display current weapon ammo
         ToggleAmmoUI(true);
         UpdateAmmoUI();
     }
@@ -81,8 +83,9 @@ public class ProjectileWeapon : Weapon
 
         base.Attack();
 
-        GameObject _projectile = objectPooler.SpawnObject(projectileName, projectilePrefab);
-        _projectile.transform.SetPositionAndRotation(projectileStartPoint.position, projectileStartPoint.rotation);
+        //Spawn and shoot projectile
+        GameObject _projectile = objectPooler.SpawnObject(projectileName, projectilePrefab, projectileStartPoint.position, projectileStartPoint.rotation);
+        //Init projectile
         _projectile.GetComponent<Projectile>().Init(projectileName, damage, projectileSpeed, explosionRadius, explosionForce, projectileLifeTime, explodeOnContact, projectileUseGravity);
         
         CurrentClip--;
@@ -92,7 +95,7 @@ public class ProjectileWeapon : Weapon
     {
         base.SecondaryAttack();
         //
-        Debug.Log("Secondary");
+        
     }
 
     protected override void Reload()
@@ -129,6 +132,9 @@ public class ProjectileWeapon : Weapon
         isReloading = false;
     }
 
+    /// <summary>
+    /// Updates the current ammo information
+    /// </summary>
     void UpdateAmmoUI()
     {
         if (currentHolder == null)
@@ -137,6 +143,10 @@ public class ProjectileWeapon : Weapon
         currentHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
     }
 
+    /// <summary>
+    /// Hides or shows the weapon ammo information
+    /// </summary>
+    /// <param name="_state">State to toggle to</param>
     void ToggleAmmoUI(bool _state)
     {
         if (currentHolder == null)
