@@ -22,6 +22,14 @@ public class Enemy : MonoBehaviour, IDamagable
     [Tooltip("The time required before attempting to perform an attack")]
     [SerializeField] float attackRate = 2f;
 
+    [Header("Idle")]
+    [SerializeField] float minWalkTime = 1f;
+    [SerializeField] float maxWalkTime = 5f;
+    [SerializeField] float moveDelay = 2f;
+    [SerializeField] float minTurnAngle = 60f;
+    [SerializeField] float maxTurnAngle = 180f;
+    [SerializeField] float rotateTime = 1f;
+
     public float Health { get { return health; }
         set {
             health = value;
@@ -41,7 +49,7 @@ public class Enemy : MonoBehaviour, IDamagable
     AICamera orientation;
     Rigidbody rb;
 
-    bool isFloating, isAttacking;
+    bool isFloating, isAttacking, isIdling;
     float timer, nextTimeToAttack;
 
     void Start()
@@ -103,15 +111,6 @@ public class Enemy : MonoBehaviour, IDamagable
     }
 
     /// <summary>
-    /// Rotates the enemy to a given rotation
-    /// </summary>
-    /// <param name="_dir">The rotation to rotate towards</param>
-    void Rotate(Quaternion _dir)
-    {
-        orientation.Rotate(_dir);
-    }
-
-    /// <summary>
     /// Moves the enemy to a given position
     /// </summary>
     /// <param name="_dir">The Vector3 position to move the enemy to</param>
@@ -135,6 +134,9 @@ public class Enemy : MonoBehaviour, IDamagable
         IsAggro = _distToPlayer <= aggroRange;
 
         if (IsAggro) {
+            isIdling = false;
+            StopCoroutine(Idle());
+
             //Attack if close enough and looking at player
             if (_distToPlayer <= attackRange) {
                 //Target player and attempt to attack
@@ -151,7 +153,9 @@ public class Enemy : MonoBehaviour, IDamagable
             }
         }
         else {
-            Idle();
+            if (!isIdling) {
+               StartCoroutine(Idle());
+            }
         }
     }
 
@@ -173,13 +177,32 @@ public class Enemy : MonoBehaviour, IDamagable
     /// </summary>
     void LookAtPlayer()
     {
-        Rotate(Quaternion.LookRotation(GetDirFromPlayer()));
+        orientation.SetRotation(Quaternion.LookRotation(GetDirFromPlayer()));
     }
 
-    void Idle()
+    IEnumerator Idle()
     {
+        isIdling = true;
+
+        yield return new WaitForSeconds(moveDelay);
+
+        //Move
+        Move(motor.GetOrientation().forward);
+        yield return new WaitForSeconds(Random.Range(minWalkTime, maxWalkTime));
+
+        //Stop
         Move(Vector3.zero);
-        //
+
+        //Rotate
+        if (isFloating) {
+            orientation.SetRotation(Quaternion.Euler(motor.GetOrientation().rotation.eulerAngles + new Vector3(GetRandomLookAngle(), GetRandomLookAngle(), 0f)));
+        }
+        else {
+            orientation.SetRotation(Quaternion.Euler(motor.GetOrientation().rotation.eulerAngles + new Vector3(0f, GetRandomLookAngle(), 0f)));
+        }
+        yield return new WaitForSeconds(rotateTime);
+
+        isIdling = false;
     }
 
     /// <summary>
@@ -197,4 +220,19 @@ public class Enemy : MonoBehaviour, IDamagable
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Returns a negative or positive range between the min and max turn angle.
+    /// </summary>
+    /// <returns>An angle between the minimum and maximum turn angle</returns>
+    float GetRandomLookAngle()
+    {
+        //50/50 for negative or positive
+        bool _negative = Random.Range(0f, 1f) >= .5f;
+        if (_negative) {
+            return -Random.Range(minTurnAngle, maxTurnAngle);
+        }
+        else {
+            return Random.Range(minTurnAngle, maxTurnAngle);
+        }
+    }
 }

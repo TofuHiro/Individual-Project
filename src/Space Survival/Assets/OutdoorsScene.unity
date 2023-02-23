@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.5537, g: 2263.3438, b: 3286.375, a: 1}
+  m_IndirectSpecularColor: {r: 2163.958, g: 2272.1602, b: 3309.5195, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1018034133}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999981
+  m_Size: 0.999108
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3732,13 +3732,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91d833f7bdf6507478f50021a616a633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hands: {fileID: 197671450}
   maxHealth: 100
+  currentWeapon: {fileID: 1742561449}
   attackRange: 5
   aggroRange: 15
   attackDelay: 0.5
   attackRate: 2
-  hands: {fileID: 197671450}
-  currentWeapon: {fileID: 1742561449}
+  minWalkTime: 1
+  maxWalkTime: 5
+  moveDelay: 1
+  minTurnAngle: 60
+  maxTurnAngle: 180
+  rotateTime: 1
 --- !u!114 &386607824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3752,7 +3758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {fileID: 1054078325}
-  walkingSpeed: 25
+  walkingSpeed: 30
   walkingAirSpeedMult: 0.1
   maxWalkingSpeed: 6
   walkingSpeedUpMult: 4
@@ -3806,7 +3812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 386607822}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.25, y: 1, z: 10.17}
+  m_LocalPosition: {x: -2.25, y: 1, z: 27.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11185,7 +11191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000007676143}
+  m_AnchoredPosition: {x: 0, y: 0.00022845661}
   m_SizeDelta: {x: 0, y: 700}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1432466590
