@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
 
+    bool canMove = true, canRotate = true;
+
     void Awake()
     {
         //Singleton init
@@ -80,7 +82,14 @@ public class PlayerController : MonoBehaviour
         playerInputs.UI.Click.started += ClickUI;
         playerInputs.UI.Click.canceled += ClickUI;
         #endregion
+
+        CraftingManager.OnCraftingOpen += DisableMovement;
+        CraftingManager.OnCraftingClose += EnableMovement;
+
+        PlayerInventory.OnInventoryOpen += DisableRotation;
+        PlayerInventory.OnInventoryClose += EnableRotation;
     }
+    
     void OnDisable()
     {
         playerInputs.Player.Disable();
@@ -108,6 +117,32 @@ public class PlayerController : MonoBehaviour
         playerInputs.UI.Click.started -= ClickUI;
         playerInputs.UI.Click.canceled -= ClickUI;
         #endregion
+
+        CraftingManager.OnCraftingOpen -= DisableMovement;
+        CraftingManager.OnCraftingClose -= EnableMovement;
+
+        PlayerInventory.OnInventoryOpen -= DisableRotation;
+        PlayerInventory.OnInventoryClose -= EnableRotation;
+    }
+
+    void EnableMovement()
+    {
+        canMove = true;
+    }
+
+    void DisableMovement()
+    {
+        canMove = false;
+    }
+
+    void EnableRotation()
+    {
+        canRotate = true;
+    }
+
+    void DisableRotation()
+    {
+        canRotate = false;
     }
 
     /// <summary>
@@ -153,10 +188,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Movement()
     {
-        Vector2 _inputVector = playerInputs.Player.Move.ReadValue<Vector2>();
-        //Calculate direction based of current orientation
-        Vector3 _moveDirection = (playerMotor.GetOrientation().forward * _inputVector.y) + (playerMotor.GetOrientation().right * _inputVector.x);
-        playerMotor.SetDirection(_moveDirection);
+        if (!canMove) {
+            playerMotor.SetDirection(Vector3.zero);
+        }
+        else {
+            Vector2 _inputVector = playerInputs.Player.Move.ReadValue<Vector2>();
+            //Calculate direction based of current orientation
+            Vector3 _moveDirection = (playerMotor.GetOrientation().forward * _inputVector.y) + (playerMotor.GetOrientation().right * _inputVector.x);
+            playerMotor.SetDirection(_moveDirection);
+        }
     }
 
     /// <summary>
@@ -164,8 +204,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void VerticalMovement()
     {
-        float _inputVector = playerInputs.Player.VerticalMove.ReadValue<float>();
-        playerMotor.SetVerticalDirection(_inputVector);
+        if (!canMove) {
+            playerMotor.SetVerticalDirection(0f);
+        }
+        else {
+            float _inputVector = playerInputs.Player.VerticalMove.ReadValue<float>();
+            playerMotor.SetVerticalDirection(_inputVector);
+        }
     }
 
     /// <summary>
@@ -173,8 +218,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Rotation()
     {
-        Vector2 _inputVector = playerInputs.Player.Look.ReadValue<Vector2>();
-        playerCamera.SetRotation(_inputVector);
+        if (!canRotate) {
+            playerCamera.SetRotation(Quaternion.Euler(Vector3.zero));
+        }
+        else {
+            Vector2 _inputVector = playerInputs.Player.Look.ReadValue<Vector2>();
+            playerCamera.SetRotation(Quaternion.Euler(_inputVector));
+        }
     }
 
     void SpeedUp(InputAction.CallbackContext context)

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class RayWeapon : Weapon
 {
+    [Tooltip("Transform position where ray starts from")]
+    [SerializeField] Transform rayStartPoint;
+
     //Everything
     LayerMask mask = ~0;
 
@@ -74,7 +77,7 @@ public class RayWeapon : Weapon
         if (currentHolder != null)
             _transform = Camera.main.transform;
         else
-            _transform = transform;
+            _transform = rayStartPoint;
 
         //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask, QueryTriggerInteraction.Ignore);

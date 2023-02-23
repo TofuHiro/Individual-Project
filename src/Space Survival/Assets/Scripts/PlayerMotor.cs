@@ -49,7 +49,6 @@ public class PlayerMotor : MonoBehaviour
     float nextTimeToJump = 0f;
     bool isGrounded;
     bool isSpeedingUp;
-    bool canMove;
 
     public bool IsFloating { get { return isFloating; }
         private set {
@@ -58,28 +57,6 @@ public class PlayerMotor : MonoBehaviour
         }
     }
     private bool isFloating = false;
-
-    void OnEnable()
-    {
-        CraftingManager.OnCraftingOpen += DisableMovement;
-        CraftingManager.OnCraftingClose += EnableMovement;
-    }
-
-    void OnDisable()
-    {
-        CraftingManager.OnCraftingOpen -= DisableMovement;
-        CraftingManager.OnCraftingClose -= EnableMovement;
-    }
-
-    void DisableMovement()
-    {
-        canMove = false;
-    }
-
-    void EnableMovement()
-    {
-        canMove = true;
-    }
 
     /// <summary>
     /// Returns the current orientation of the player
@@ -190,9 +167,6 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void Movement()
     {
-        if (!canMove)
-            return;
-
         //If walking
         if (isGrounded) {
             Vector3 _vel = moveDir.normalized * walkingSpeed * rb.mass;
@@ -248,9 +222,6 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void Jump()
     {
-        if (!canMove)
-            return;
-
         if (isGrounded && (verticalDir > 0) && (Time.time > nextTimeToJump)) {
             rb.AddForce(Vector3.up * jumpForce * rb.mass, ForceMode.Impulse);
             nextTimeToJump = Time.time + jumpRate;
@@ -263,9 +234,6 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void FloatingMovement()
     {
-        if (!canMove)
-            return;
-
         //If any key pressed
         if (moveDir.magnitude > 0f) {
             Vector3 _horiDir = moveDir.normalized * floatingSpeed * rb.mass;
