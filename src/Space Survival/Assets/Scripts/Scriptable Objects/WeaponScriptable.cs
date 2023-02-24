@@ -2,8 +2,6 @@ using UnityEngine;
 
 public abstract class WeaponScriptable : ItemScriptable
 {
-    [Tooltip("The type of weapon this is")]
-    public WeaponType weaponType;
     [Tooltip("The maximum durability of this weapon")]
     public int maxDurability;
     [Tooltip("The damage this weapon deals")]

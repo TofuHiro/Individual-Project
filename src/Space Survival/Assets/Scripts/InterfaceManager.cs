@@ -18,12 +18,14 @@ public class InterfaceManager : MonoBehaviour
     PlayerController player;
     PlayerInventory inventory;
     CraftingManager crafting;
+    BuildingManager building;
 
     void Start()
     {
         player = PlayerController.Instance;
         inventory = PlayerInventory.Instance;
         crafting = CraftingManager.Instance;
+        building = BuildingManager.Instance;
     }
 
     void OnEnable()
@@ -34,6 +36,8 @@ public class InterfaceManager : MonoBehaviour
     void OnDisable()
     {
         PlayerController.OnInventoryToggle -= ToggleInventory;
+        PlayerController.OnInventoryToggle -= CloseCrafting;
+        PlayerController.OnInventoryToggle -= CloseBuilding;
     }
 
     /// <summary>
@@ -43,12 +47,10 @@ public class InterfaceManager : MonoBehaviour
     {
         bool _state = !PlayerInventory.IsEnabled;
 
-        if (_state) {
+        if (_state) 
             OpenInventory();
-        }
-        else {
+        else 
             CloseInventory();
-        }
     }
 
     /// <summary>
@@ -58,9 +60,6 @@ public class InterfaceManager : MonoBehaviour
     {
         inventory.SetInventory(true);
         ToggleInterfaceInputs(true);
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     /// <summary>
@@ -70,10 +69,6 @@ public class InterfaceManager : MonoBehaviour
     {
         inventory.SetInventory(false);
         ToggleInterfaceInputs(false);
-        CloseCrafting();
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     /// <summary>
@@ -84,6 +79,8 @@ public class InterfaceManager : MonoBehaviour
     {
         crafting.OpenCraftingInterface(_type);
         OpenInventory();
+        ToggleInterfaceInputs(true);
+        PlayerController.OnInventoryToggle += CloseCrafting;
     }
 
     /// <summary>
@@ -92,6 +89,32 @@ public class InterfaceManager : MonoBehaviour
     void CloseCrafting()
     {
         crafting.CloseInterface();
+        ToggleInterfaceInputs(false);
+        PlayerController.OnInventoryToggle -= CloseCrafting;
+    }
+
+    public void ToggleBuildingInterface()
+    {
+        bool _state = !BuildingManager.IsEnabled;
+
+        if (_state) 
+            OpenBuilding();
+        else 
+            CloseBuilding();
+    }
+
+    void OpenBuilding()
+    {
+        building.OpenInterface();
+        ToggleInterfaceInputs(true);
+        PlayerController.OnInventoryToggle += CloseBuilding;
+    }
+
+    void CloseBuilding()
+    {
+        building.CloseInterface();
+        ToggleInterfaceInputs(false);
+        PlayerController.OnInventoryToggle -= CloseBuilding;
     }
 
     /// <summary>
@@ -101,5 +124,14 @@ public class InterfaceManager : MonoBehaviour
     void ToggleInterfaceInputs(bool _state)
     {
         player.ToggleInterfaceInputs(_state);
+
+        if (_state) {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

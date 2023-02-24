@@ -15,13 +15,13 @@ public class ItemDisplayUI : MonoBehaviour
     /// Displays the item icon, name and its description in the inventory display
     /// </summary>
     /// <param name="_newItem">The item to display</param>
-    public void SetItem(Item _newItem)
+    public void SetItem(ItemScriptable _newItem)
     {
         if (_newItem != null) {
             displayIcon.enabled = true;
-            displayIcon.texture = _newItem.ItemScriptableObject.icon;
-            displayNameText.text = _newItem.ItemScriptableObject.name;
-            displayText.text = _newItem.ItemScriptableObject.description;
+            displayIcon.texture = _newItem.icon;
+            displayNameText.text = _newItem.name;
+            displayText.text = _newItem.description;
         }
         else {
             displayIcon.enabled = false;

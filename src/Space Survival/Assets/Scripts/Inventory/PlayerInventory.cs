@@ -336,7 +336,10 @@ public class PlayerInventory : MonoBehaviour
     /// <param name="_newItem">Item to display</param>
     public void DisplayItemInfo(Item _newItem)
     {
-        itemDisplay.SetItem(_newItem);
+        if (_newItem != null) 
+            itemDisplay.SetItem(_newItem.ItemScriptableObject);
+        else
+            itemDisplay.SetItem(null);
     }
 
     /// <summary>
