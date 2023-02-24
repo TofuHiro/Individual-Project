@@ -5,10 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(AICamera))]
 public class Enemy : MonoBehaviour, IDamagable
 {
+    [Tooltip("The name for this enemy")]
+    [SerializeField] new string name;
     [Tooltip("The hand transform of this enemy. This stores the position of the weapon")]
     [SerializeField] Transform hands;
     [Tooltip("The starting maximum health of this enemy")]
     [SerializeField] float maxHealth = 100f;
+    [Tooltip("The prefab instantiated upon death")]
+    [SerializeField] GameObject corpsePrefab;
 
     [Header("Attack")]
     [Tooltip("The starting weapon for this enemy")]
@@ -23,11 +27,17 @@ public class Enemy : MonoBehaviour, IDamagable
     [SerializeField] float attackRate = 2f;
 
     [Header("Idle")]
-    [SerializeField] float minWalkTime = 1f;
-    [SerializeField] float maxWalkTime = 5f;
+    [Tooltip("The minimum time possible to walk when picking a random time to idle walk")]
+    [SerializeField] float minWalkTime = 3f;
+    [Tooltip("The maximum time possible to walk when picking a random time to idle walk")]
+    [SerializeField] float maxWalkTime = 6f;
+    [Tooltip("The time to wait before walking upon each idle walk")]
     [SerializeField] float moveDelay = 2f;
+    [Tooltip("The minimum angle to turn when idling")]
     [SerializeField] float minTurnAngle = 60f;
-    [SerializeField] float maxTurnAngle = 180f;
+    [Tooltip("The maximum angle to turn when idling")]
+    [SerializeField] float maxTurnAngle = 360f;
+    [Tooltip("The time to wait while rotating to complete")]
     [SerializeField] float rotateTime = 1f;
 
     public float Health { get { return health; }
@@ -48,6 +58,8 @@ public class Enemy : MonoBehaviour, IDamagable
     PlayerMotor motor;
     AICamera orientation;
     Rigidbody rb;
+    ObjectPooler objectPooler;
+    Coroutine lastIdleRoutine;
 
     bool isFloating, isAttacking, isIdling;
     float timer, nextTimeToAttack;
@@ -58,6 +70,7 @@ public class Enemy : MonoBehaviour, IDamagable
         motor = GetComponent<PlayerMotor>();
         orientation = GetComponent<AICamera>();
         rb = GetComponent<Rigidbody>();
+        objectPooler = ObjectPooler.Instance;
 
         health = maxHealth;
         nextTimeToAttack = attackRate;
@@ -134,14 +147,17 @@ public class Enemy : MonoBehaviour, IDamagable
         IsAggro = _distToPlayer <= aggroRange;
 
         if (IsAggro) {
+            //Stop idle moving
+            StopCoroutine(lastIdleRoutine);
+            StopMovement();
+            StopRotation();
             isIdling = false;
-            StopCoroutine(Idle());
 
             //Attack if close enough and looking at player
             if (_distToPlayer <= attackRange) {
                 //Target player and attempt to attack
                 LookAtPlayer();
-                Move(Vector3.zero);
+                StopMovement();
                 if (timer >= nextTimeToAttack) {
                     StartCoroutine(Attack());
                 }
@@ -149,16 +165,23 @@ public class Enemy : MonoBehaviour, IDamagable
             //Rotate and move to player
             else {
                 LookAtPlayer();
-                Move(motor.GetOrientation().transform.forward);
+                Move(orientation.GetOrientation().transform.forward);
             }
         }
         else {
+            //Start idling
             if (!isIdling) {
-               StartCoroutine(Idle());
+                isIdling = true;
+                StopMovement();
+                lastIdleRoutine = StartCoroutine(Idle());
             }
         }
     }
 
+    /// <summary>
+    /// Attacks with the currently equipped weapon
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Attack()
     {
         isAttacking = true;
@@ -180,26 +203,29 @@ public class Enemy : MonoBehaviour, IDamagable
         orientation.SetRotation(Quaternion.LookRotation(GetDirFromPlayer()));
     }
 
+    /// <summary>
+    /// Moves and rotates randomly at invervals
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Idle()
     {
-        isIdling = true;
-
         yield return new WaitForSeconds(moveDelay);
 
         //Move
-        Move(motor.GetOrientation().forward);
+        Move(orientation.GetOrientation().forward);
         yield return new WaitForSeconds(Random.Range(minWalkTime, maxWalkTime));
 
         //Stop
-        Move(Vector3.zero);
+        StopMovement();
 
         //Rotate
         if (isFloating) {
-            orientation.SetRotation(Quaternion.Euler(motor.GetOrientation().rotation.eulerAngles + new Vector3(GetRandomLookAngle(), GetRandomLookAngle(), 0f)));
+            orientation.SetRotation(Quaternion.Euler(orientation.GetOrientation().rotation.eulerAngles + new Vector3(GetRandomLookAngle(), GetRandomLookAngle(), 0f)));
         }
         else {
-            orientation.SetRotation(Quaternion.Euler(motor.GetOrientation().rotation.eulerAngles + new Vector3(0f, GetRandomLookAngle(), 0f)));
+            orientation.SetRotation(Quaternion.Euler(orientation.GetOrientation().rotation.eulerAngles + new Vector3(0f, GetRandomLookAngle(), 0f)));
         }
+        //To finish rotating
         yield return new WaitForSeconds(rotateTime);
 
         isIdling = false;
@@ -214,10 +240,22 @@ public class Enemy : MonoBehaviour, IDamagable
         Health -= _value;
     }
 
+    /// <summary>
+    /// Spawns the enemy's corpse and drops their weapon
+    /// </summary>
     public void Die()
     {
-        //
-        gameObject.SetActive(false);
+        StopAllCoroutines();
+        StopMovement();
+        StopRotation();
+
+        isAttacking = false;
+        currentWeapon.SetPrimaryAttack(false);
+        currentWeapon.Holster();
+
+        IsActive = false;
+        objectPooler.PoolObject(name, gameObject);
+        objectPooler.SpawnObject(name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
     }
 
     /// <summary>
@@ -234,5 +272,15 @@ public class Enemy : MonoBehaviour, IDamagable
         else {
             return Random.Range(minTurnAngle, maxTurnAngle);
         }
+    }
+
+    void StopRotation()
+    {
+        orientation.SetRotation(orientation.GetOrientation().rotation);
+    }
+
+    void StopMovement()
+    {
+        Move(Vector3.zero);
     }
 }

@@ -13,7 +13,11 @@ public class AICamera : MonoBehaviour
 
     Quaternion rot;
 
-    
+    public Transform GetOrientation()
+    {
+        return orientation;
+    }
+
     public void SetRotation(Quaternion _rot)
     {
         rot = _rot;

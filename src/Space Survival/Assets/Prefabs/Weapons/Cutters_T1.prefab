@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: b180ea4e7014223428bed4386df5c668, type: 2}
+  pickable: 1
 --- !u!114 &4155121693483265043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,5 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a1e2542ad69c54b8d8935bae2a6a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rayStartPoint: {fileID: 0}
   tier: 0
   harvestType: 1

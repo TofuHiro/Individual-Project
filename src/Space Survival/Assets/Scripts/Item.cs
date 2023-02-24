@@ -5,7 +5,12 @@ public class Item : MonoBehaviour, IPickable
 {
     public ItemScriptable ItemScriptableObject { get { return item; } set { item = value; } }
 
+    [Tooltip("The Item scriptable object with this item's information")]
     [SerializeField] ItemScriptable item;
+    [Tooltip("Whether this item can be picked up by the player or not")]
+    [SerializeField] bool pickable = true;
+
+    public bool Pickable { get { return pickable; } set { pickable = value; } }
 
     //References
     PlayerInventory inventory;
@@ -32,6 +37,9 @@ public class Item : MonoBehaviour, IPickable
     /// </summary>
     public void Interact()
     {
+        if (!Pickable) 
+            return;
+
         //Pick up
         bool _success = inventory.AddItem(this);
         if (_success) {

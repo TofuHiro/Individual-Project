@@ -128,3 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 77a2bec7f13733342981a7f819901b68, type: 2}
+  pickable: 1

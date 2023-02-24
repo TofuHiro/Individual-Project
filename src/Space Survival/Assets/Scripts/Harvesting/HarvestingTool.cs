@@ -13,8 +13,8 @@ public class HarvestingTool : MeleeWeapon
     {
         base.Attack();
         //Apply damage to resource
-        if (hit.transform != null) {
-            harvestable = hit.transform.GetComponent<IHarvestable>();
+        if (hit.collider.transform != null) {
+            harvestable = hit.collider.transform.GetComponent<IHarvestable>();
             if (harvestable != null) {
                 harvestable.TakeDamage(damage, harvestType, tier);
             }

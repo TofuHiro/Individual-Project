@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 33afb08deabfdc74b9cff3af26f2ed5e, type: 2}
+  pickable: 1
 --- !u!114 &1172083983662609907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,4 +174,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a6cb466dc87a54ebd4466ecd6ac672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitStartPoint: {fileID: 1172083982644424573}
+  rayStartPoint: {fileID: 0}

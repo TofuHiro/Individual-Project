@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 9ec5cf54d95a3314886f408242858d81, type: 2}
+  pickable: 1
 --- !u!114 &1464318101495343741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +174,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05901f2b8ec1534facaa16f9049fae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 0
+  rayStartPoint: {fileID: 0}
