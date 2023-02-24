@@ -14,7 +14,6 @@ public abstract class Weapon : MonoBehaviour
     protected float attackRate, nextTimeToAttack, attackTimer;
     protected float maxDurablity, durablity;
     bool isAttacking, isSecondaryAttacking;
-    WeaponType weaponType;
 
     protected virtual void Awake()
     {
@@ -29,8 +28,6 @@ public abstract class Weapon : MonoBehaviour
 
         maxDurablity = weaponScriptable.maxDurability;
         durablity = maxDurablity;
-
-        weaponType = weaponScriptable.weaponType;
 
         //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();

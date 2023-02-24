@@ -51,8 +51,8 @@ public class CraftingRecipeBlock : MonoBehaviour
         //Initialize icons
         productIcon.texture = recipe.productItem.icon;
         foreach (ItemScriptable _item in recipe.ingredientItems) {
-            RawImage _recipeBlock = Instantiate(ingredientIconPrefab, ingredientsParent).GetComponentInChildren<RawImage>();
-            _recipeBlock.texture = _item.icon;
+            SlotUI _recipeBlock = Instantiate(ingredientIconPrefab, ingredientsParent).GetComponent<SlotUI>();
+            _recipeBlock.SetIcon(_item.icon);
         }
     }
 
