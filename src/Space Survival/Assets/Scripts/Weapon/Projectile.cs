@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    ObjectPooler objectPooler;
     Rigidbody rb;
 
     string projectileTag;
@@ -40,7 +39,6 @@ public class Projectile : MonoBehaviour
         explosionForce = _explosionForce;
         explodeOnContact = _onContact;
 
-        objectPooler = ObjectPooler.Instance;
         rb = GetComponent<Rigidbody>();
 
         rb.AddForce(transform.forward * _speed, ForceMode.VelocityChange);
@@ -81,6 +79,6 @@ public class Projectile : MonoBehaviour
         }
 
         //Pool projectile
-        objectPooler.PoolObject(projectileTag, gameObject);
+        ObjectPooler.PoolObject(projectileTag, gameObject);
     }
 }

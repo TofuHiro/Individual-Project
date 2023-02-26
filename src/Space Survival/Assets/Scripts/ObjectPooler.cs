@@ -1,26 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour
+public static class ObjectPooler
 {
-    //Singleton reference
-    public static ObjectPooler Instance;
-
-    Dictionary<string, Queue<GameObject>> objectPools;
-
-    void Awake()
-    {
-        //Singleton init
-        if (Instance != null && Instance != this) {
-            Destroy(this);
-        }
-        else {
-            Instance = this;
-        }
-
-        objectPools = new Dictionary<string, Queue<GameObject>>();
-    }
+    static Dictionary<string, Queue<GameObject>> objectPools = new Dictionary<string, Queue<GameObject>>();
 
     /// <summary>
     /// Returns the requested game object from a new or existing pool
@@ -28,7 +11,7 @@ public class ObjectPooler : MonoBehaviour
     /// <param name="_tag">The tag used to store the game object</param>
     /// <param name="_object">The game object to instantiate in case a pool of that item is not existing</param>
     /// <returns>The game object from a pool with a tag or new instantiated object</returns>
-    public GameObject SpawnObject(string _tag, GameObject _object)
+    public static GameObject SpawnObject(string _tag, GameObject _object)
     {
         //Create new pool if a pool for that item did not exist
         if (!objectPools.ContainsKey(_tag)) {
@@ -44,7 +27,7 @@ public class ObjectPooler : MonoBehaviour
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Instantiate(_object);
+            GameObject _newObject = Object.Instantiate(_object);
             return _newObject;
         }
     }
@@ -57,7 +40,7 @@ public class ObjectPooler : MonoBehaviour
     /// <param name="_position">The position to spawn the object at</param>
     /// <param name="_rotation">The rotation to spawn the object with</param>
     /// <returns></returns>
-    public GameObject SpawnObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation)
+    public static GameObject SpawnObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation)
     {
         //Create new pool if a pool for that item did not exist
         if (!objectPools.ContainsKey(_tag)) {
@@ -73,7 +56,7 @@ public class ObjectPooler : MonoBehaviour
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Instantiate(_object);
+            GameObject _newObject = Object.Instantiate(_object);
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
             return _newObject;
         }
@@ -87,7 +70,7 @@ public class ObjectPooler : MonoBehaviour
     /// <param name="_position">The position to spawn the object at</param>
     /// <param name="_rotation">The rotation to spawn the object with</param>
     /// <param name="_scale">The local scale to spawn the object with</param>
-    public GameObject SpawnObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation, Vector3 _scale)
+    public static GameObject SpawnObject(string _tag, GameObject _object, Vector3 _position, Quaternion _rotation, Vector3 _scale)
     {
         //Create new pool if a pool for that item did not exist
         if (!objectPools.ContainsKey(_tag)) {
@@ -104,7 +87,7 @@ public class ObjectPooler : MonoBehaviour
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Instantiate(_object);
+            GameObject _newObject = Object.Instantiate(_object);
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
             _newObject.transform.localScale = _scale;
             return _newObject;
@@ -116,7 +99,7 @@ public class ObjectPooler : MonoBehaviour
     /// </summary>
     /// <param name="_tag">The tag to determine the pool to store in</param>
     /// <param name="_object">The object to pool</param>
-    public void PoolObject(string _tag, GameObject _object)
+    public static void PoolObject(string _tag, GameObject _object)
     {
         //Create new pool if a pool for that item did not exist
         if (!objectPools.ContainsKey(_tag)) {

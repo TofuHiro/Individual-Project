@@ -54,20 +54,26 @@ public class InterfaceManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Enables inventory interface, showing the cursor
+    /// Shows inventory interface
     /// </summary>
     void OpenInventory()
     {
         inventory.SetInventory(true);
+
+        player.ToggleRotation(false);
+        player.ToggleAttack(false);
         ToggleInterfaceInputs(true);
     }
 
     /// <summary>
-    /// Disables inventory interface, hiding cursor
+    /// Hides inventory interface
     /// </summary>
     void CloseInventory()
     {
         inventory.SetInventory(false);
+
+        player.ToggleRotation(true);
+        player.ToggleAttack(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -77,8 +83,12 @@ public class InterfaceManager : MonoBehaviour
     /// <param name="_type">The set of recipes to display</param>
     public void OpenCrafting(CraftingStationType _type)
     {
-        crafting.OpenCraftingInterface(_type);
         OpenInventory();
+        crafting.OpenCraftingInterface(_type);
+
+        player.ToggleMovement(false);
+        player.ToggleRotation(false);
+        player.ToggleAttack(false);
         ToggleInterfaceInputs(true);
         PlayerController.OnInventoryToggle += CloseCrafting;
     }
@@ -89,31 +99,37 @@ public class InterfaceManager : MonoBehaviour
     void CloseCrafting()
     {
         crafting.CloseInterface();
+        
+        player.ToggleMovement(true);
+        player.ToggleRotation(true);
+        player.ToggleAttack(true);
         ToggleInterfaceInputs(false);
         PlayerController.OnInventoryToggle -= CloseCrafting;
     }
 
-    public void ToggleBuildingInterface()
-    {
-        bool _state = !BuildingManager.IsEnabled;
-
-        if (_state) 
-            OpenBuilding();
-        else 
-            CloseBuilding();
-    }
-
-    void OpenBuilding()
+    /// <summary>
+    /// Shows the building interface
+    /// </summary>
+    public void OpenBuilding()
     {
         building.OpenInterface();
+        
+        player.ToggleRotation(false);
+        player.ToggleAttack(false);
         ToggleInterfaceInputs(true);
         PlayerController.OnInventoryToggle += CloseBuilding;
     }
 
-    void CloseBuilding()
+    /// <summary>
+    /// Hides the building interface
+    /// </summary>
+    public void CloseBuilding()
     {
         building.CloseInterface();
+
         ToggleInterfaceInputs(false);
+        player.ToggleRotation(true);
+        player.ToggleAttack(true);
         PlayerController.OnInventoryToggle -= CloseBuilding;
     }
 

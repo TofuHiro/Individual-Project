@@ -30,12 +30,9 @@ public class HarvestableResource : MonoBehaviour, IDamagable, IHarvestable
     [Tooltip("Array of item to drop with specified spawn rates")]
     [SerializeField] ResourceDrop[] drops;
 
-    ObjectPooler objectPooler;
-
     void Start()
     {
         health = maxHealth;
-        objectPooler = ObjectPooler.Instance;
     }
 
     public void TakeDamage(float _value) { return; }
@@ -64,7 +61,7 @@ public class HarvestableResource : MonoBehaviour, IDamagable, IHarvestable
         //Spawns all items within chance
         foreach (ResourceDrop _drop in drops) {
             if (_chance <= _drop.spawnChance) {
-                objectPooler.SpawnObject(_drop.resource.name, _drop.resource, transform.position, transform.rotation, transform.localScale);
+                ObjectPooler.SpawnObject(_drop.resource.name, _drop.resource, transform.position, transform.rotation, transform.localScale);
             }
         }
 

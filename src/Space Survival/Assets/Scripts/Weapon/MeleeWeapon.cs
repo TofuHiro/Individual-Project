@@ -5,8 +5,7 @@ public class MeleeWeapon : Weapon
     [Tooltip("Transform position where ray starts from")]
     [SerializeField] Transform rayStartPoint;
 
-    //Everything
-    LayerMask mask = ~0;
+    LayerMask mask;
     protected RaycastHit hit;
     IDamagable damagable;
     Rigidbody hitRigidbody;
@@ -19,6 +18,7 @@ public class MeleeWeapon : Weapon
         base.Awake();
         weaponScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = weaponScriptable.knockbackForce;
+        mask = ~LayerMask.GetMask("Zone");
     }
 
     protected override void Attack()

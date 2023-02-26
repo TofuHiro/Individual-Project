@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
 
-    bool canMove = true, canRotate = true;
+    bool canMove = true, canRotate = true, canAttack = true;
 
     void Awake()
     {
@@ -82,12 +82,6 @@ public class PlayerController : MonoBehaviour
         playerInputs.UI.Click.started += ClickUI;
         playerInputs.UI.Click.canceled += ClickUI;
         #endregion
-
-        CraftingManager.OnCraftingOpen += DisableMovement;
-        CraftingManager.OnCraftingClose += EnableMovement;
-
-        PlayerInventory.OnInventoryOpen += DisableRotation;
-        PlayerInventory.OnInventoryClose += EnableRotation;
     }
     
     void OnDisable()
@@ -117,32 +111,33 @@ public class PlayerController : MonoBehaviour
         playerInputs.UI.Click.started -= ClickUI;
         playerInputs.UI.Click.canceled -= ClickUI;
         #endregion
-
-        CraftingManager.OnCraftingOpen -= DisableMovement;
-        CraftingManager.OnCraftingClose -= EnableMovement;
-
-        PlayerInventory.OnInventoryOpen -= DisableRotation;
-        PlayerInventory.OnInventoryClose -= EnableRotation;
     }
 
-    void EnableMovement()
+    /// <summary>
+    /// Toggle the player's ability to move
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
+    public void ToggleMovement(bool _state)
     {
-        canMove = true;
+        canMove = _state;
     }
 
-    void DisableMovement()
+    /// <summary>
+    /// Toggle the player's ability to rotate
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
+    public void ToggleRotation(bool _state)
     {
-        canMove = false;
+        canRotate = _state;
     }
 
-    void EnableRotation()
+    /// <summary>
+    /// Toggle the player's ability to attack
+    /// </summary>
+    /// <param name="_state">The state to toggle to</param>
+    public void ToggleAttack(bool _state)
     {
-        canRotate = true;
-    }
-
-    void DisableRotation()
-    {
-        canRotate = false;
+        canAttack = _state;
     }
 
     /// <summary>

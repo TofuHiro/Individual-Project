@@ -22,8 +22,8 @@ public class PlayerInventory : MonoBehaviour
     public static bool IsEnabled { get; private set; }
     public InventorySlot SelectedSlot { get; private set;}
 
-    public delegate void InventoryActions();
-    public static event InventoryActions OnInventoryOpen, OnInventoryClose, OnItemChange;
+    public delegate void InventoryAction();
+    public static event InventoryAction OnInventoryOpen, OnInventoryClose, OnItemChange;
 
     [Tooltip("The game object holding the inventory user interface")]
     [SerializeField] GameObject UIGameObject;

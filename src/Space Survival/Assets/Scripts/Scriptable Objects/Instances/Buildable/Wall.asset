@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Wall
   m_EditorClassIdentifier: 
   type: 0
-  name: 
-  icon: {fileID: 0}
-  description: 
+  name: Wall
+  icon: {fileID: 2800000, guid: ed665472b4fee2043a5c1cc802beaa8e, type: 3}
+  description: A wall

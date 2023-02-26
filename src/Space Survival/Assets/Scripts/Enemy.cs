@@ -58,7 +58,6 @@ public class Enemy : MonoBehaviour, IDamagable
     PlayerMotor motor;
     AICamera orientation;
     Rigidbody rb;
-    ObjectPooler objectPooler;
     Coroutine lastIdleRoutine;
 
     bool isFloating, isAttacking, isIdling;
@@ -70,7 +69,6 @@ public class Enemy : MonoBehaviour, IDamagable
         motor = GetComponent<PlayerMotor>();
         orientation = GetComponent<AICamera>();
         rb = GetComponent<Rigidbody>();
-        objectPooler = ObjectPooler.Instance;
 
         health = maxHealth;
         nextTimeToAttack = attackRate;
@@ -254,8 +252,8 @@ public class Enemy : MonoBehaviour, IDamagable
         currentWeapon.Holster();
 
         IsActive = false;
-        objectPooler.PoolObject(name, gameObject);
-        objectPooler.SpawnObject(name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
+        ObjectPooler.PoolObject(name, gameObject);
+        ObjectPooler.SpawnObject(name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
     }
 
     /// <summary>

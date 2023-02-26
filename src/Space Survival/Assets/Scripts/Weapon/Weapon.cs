@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Item))]
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] protected bool semiAutomatic;
+
     Animator animator;
     Rigidbody rb;
 
@@ -49,7 +51,11 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetPrimaryAttack(bool _state)
     {
-        isAttacking = _state;
+        if (_state == true && semiAutomatic)
+            Attack();
+        else
+            isAttacking = _state;
+        
     }
 
     /// <summary>
@@ -58,7 +64,10 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetSecondaryAttack(bool _state)
     {
-        isSecondaryAttacking = _state;
+        if (_state == true && semiAutomatic)
+            SecondaryAttack();
+        else
+            isSecondaryAttacking = _state;
     }
 
     /// <summary>
@@ -102,7 +111,7 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         attackTimer += Time.deltaTime;
 
@@ -119,16 +128,16 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Attack()
     {
-        //
+        
     }
 
     protected virtual void SecondaryAttack()
     {
-        //
+        
     }
 
     protected virtual void Reload()
     {
-        //
+        
     }
 }
