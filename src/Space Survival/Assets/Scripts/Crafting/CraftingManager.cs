@@ -45,7 +45,6 @@ public class CraftingManager : MonoBehaviour
     PlayerInventory playerInventory;
 
     List<CraftingRecipeBlock> recipeBlocks;
-    ItemScriptable[] playerItems;
 
     void Start()
     {
@@ -60,16 +59,6 @@ public class CraftingManager : MonoBehaviour
 
         //After init, disable UI
         CloseInterface();
-    }
-
-    void OnEnable()
-    {
-        PlayerInventory.OnItemChange += CheckPlayerItems;
-    }
-
-    void OnDisable()
-    {
-        PlayerInventory.OnItemChange -= CheckPlayerItems;
     }
 
     /// <summary>
@@ -138,7 +127,6 @@ public class CraftingManager : MonoBehaviour
     {
         IsEnabled = true;
         UIGameObject.SetActive(true);
-        CheckPlayerItems();
         OnCraftingOpen?.Invoke();
     }
     
@@ -156,32 +144,27 @@ public class CraftingManager : MonoBehaviour
         weaponRecipeScrollBox.gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// Gets all player items and checks all recipes for possiblities to craft
-    /// </summary>
-    void CheckPlayerItems()
+    bool CheckRecipe(ItemRecipe _recipe)
     {
-        if (!IsEnabled)
-            return;
-
-        //Get all player items
         List<ItemScriptable> _items = playerInventory.GetItems();
-        playerItems = new ItemScriptable[_items.Count];
+        bool[] _acquired = new bool[_recipe.ingredientItems.Length];
+
         for (int i = 0; i < _items.Count; i++) {
-            playerItems[i] = _items[i];
-        }
-
-        //Resets block from previous checks
-        foreach (CraftingRecipeBlock _recipeBlock in recipeBlocks) {
-            _recipeBlock.ResetBlock();
-        }
-
-        //Check off item for each recipe with all items
-        foreach (ItemScriptable _item in playerItems) {
-            foreach (CraftingRecipeBlock _recipeBlock in recipeBlocks) {
-                _recipeBlock.CheckIngredients(_item);
+            for (int j = 0; j < _recipe.ingredientItems.Length; j++) {
+                if (_items[i] == _recipe.ingredientItems[j] && !_acquired[j]) {
+                    _acquired[j] = true;
+                    break;
+                }
             }
         }
+
+        foreach (bool _itemAcquired in _acquired) {
+            if (!_itemAcquired) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -190,6 +173,11 @@ public class CraftingManager : MonoBehaviour
     /// <param name="_recipe">Recipe to give and remove from</param>
     public void CraftRecipe(ItemRecipe _recipe)
     {
+        if (!CheckRecipe(_recipe)) {
+            return;
+        }
+
+
         //Remove all ingredient item from player inventory
         foreach (ItemScriptable _item in _recipe.ingredientItems) {
             playerInventory.RemoveItem(_item);
@@ -200,8 +188,5 @@ public class CraftingManager : MonoBehaviour
         Item _newItem = _newObject.GetComponent<Item>();
         objectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         playerInventory.AddItem(_newItem);
-
-        //Reset recipe blocks
-        CheckPlayerItems();
     }
 }
