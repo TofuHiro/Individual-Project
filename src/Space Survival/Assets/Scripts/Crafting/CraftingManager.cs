@@ -27,9 +27,6 @@ public class CraftingManager : MonoBehaviour
 
     public bool IsEnabled { get; private set; }
 
-    public delegate void CraftingActions();
-    public static event CraftingActions OnCraftingOpen, OnCraftingClose;
-
     [Tooltip("Game object holding the crafting user interface")]
     [SerializeField] GameObject UIGameObject;
     [Tooltip("Scroll box holding standard recipe blocks")]
@@ -41,7 +38,6 @@ public class CraftingManager : MonoBehaviour
     [Tooltip("Sets of recipes for a given station type. Make sure there is only one of each type")]
     [SerializeField] List<CraftingTypeSet> recipeSets;
 
-    ObjectPooler objectPooler;
     PlayerInventory playerInventory;
 
     List<CraftingRecipeBlock> recipeBlocks;
@@ -50,8 +46,7 @@ public class CraftingManager : MonoBehaviour
     {
         //Cache ref
         playerInventory = PlayerInventory.Instance;
-        objectPooler = ObjectPooler.Instance;
-
+        
         recipeBlocks = new List<CraftingRecipeBlock>();
         
         //Init all set recipe blocks to corresponding scroll boxes
@@ -127,7 +122,6 @@ public class CraftingManager : MonoBehaviour
     {
         IsEnabled = true;
         UIGameObject.SetActive(true);
-        OnCraftingOpen?.Invoke();
     }
     
     /// <summary>
@@ -137,8 +131,7 @@ public class CraftingManager : MonoBehaviour
     {
         IsEnabled = false;
         UIGameObject.SetActive(false);
-        OnCraftingClose?.Invoke();
-
+        
         //Hide all recipe scroll boxes
         standardRecipeScrollBox.gameObject.SetActive(false);
         weaponRecipeScrollBox.gameObject.SetActive(false);
@@ -177,16 +170,15 @@ public class CraftingManager : MonoBehaviour
             return;
         }
 
-
         //Remove all ingredient item from player inventory
         foreach (ItemScriptable _item in _recipe.ingredientItems) {
             playerInventory.RemoveItem(_item);
         }
 
         //Create and give new item to player
-        GameObject _newObject = objectPooler.SpawnObject(_recipe.productItem.name, _recipe.productGameObject);
+        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.name, _recipe.productGameObject);
         Item _newItem = _newObject.GetComponent<Item>();
-        objectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
+        ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         playerInventory.AddItem(_newItem);
     }
 }

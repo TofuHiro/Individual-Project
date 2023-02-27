@@ -22,8 +22,6 @@ public class ProjectileWeapon : Weapon
     }
     int currentAmmo;
 
-    ObjectPooler objectPooler;
-
     new ProjectileWeaponScriptable weaponScriptable;
     string projectileName;
     GameObject projectilePrefab;
@@ -53,11 +51,6 @@ public class ProjectileWeapon : Weapon
         reloadTime = weaponScriptable.reloadTime;
     }
 
-    void Start()
-    {
-        objectPooler = ObjectPooler.Instance;
-    }
-
     public override void Equip(Transform _parent)
     {
         base.Equip(_parent);
@@ -84,7 +77,7 @@ public class ProjectileWeapon : Weapon
         base.Attack();
 
         //Spawn and shoot projectile
-        GameObject _projectile = objectPooler.SpawnObject(projectileName, projectilePrefab, projectileStartPoint.position, projectileStartPoint.rotation);
+        GameObject _projectile = ObjectPooler.SpawnObject(projectileName, projectilePrefab, projectileStartPoint.position, projectileStartPoint.rotation);
         //Init projectile
         _projectile.GetComponent<Projectile>().Init(projectileName, damage, projectileSpeed, explosionRadius, explosionForce, projectileLifeTime, explodeOnContact, projectileUseGravity);
         

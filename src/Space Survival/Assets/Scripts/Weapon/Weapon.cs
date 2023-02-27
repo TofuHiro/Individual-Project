@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Item))]
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] protected bool semiAutomatic;
+
     Animator animator;
     Rigidbody rb;
 
@@ -14,7 +16,6 @@ public abstract class Weapon : MonoBehaviour
     protected float attackRate, nextTimeToAttack, attackTimer;
     protected float maxDurablity, durablity;
     bool isAttacking, isSecondaryAttacking;
-    WeaponType weaponType;
 
     protected virtual void Awake()
     {
@@ -29,8 +30,6 @@ public abstract class Weapon : MonoBehaviour
 
         maxDurablity = weaponScriptable.maxDurability;
         durablity = maxDurablity;
-
-        weaponType = weaponScriptable.weaponType;
 
         //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -52,7 +51,11 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetPrimaryAttack(bool _state)
     {
-        isAttacking = _state;
+        if (_state == true && semiAutomatic)
+            Attack();
+        else
+            isAttacking = _state;
+        
     }
 
     /// <summary>
@@ -61,7 +64,10 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetSecondaryAttack(bool _state)
     {
-        isSecondaryAttacking = _state;
+        if (_state == true && semiAutomatic)
+            SecondaryAttack();
+        else
+            isSecondaryAttacking = _state;
     }
 
     /// <summary>
@@ -105,7 +111,7 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         attackTimer += Time.deltaTime;
 
@@ -122,16 +128,16 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Attack()
     {
-        //
+        
     }
 
     protected virtual void SecondaryAttack()
     {
-        //
+        
     }
 
     protected virtual void Reload()
     {
-        //
+        
     }
 }

@@ -174,4 +174,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a6cb466dc87a54ebd4466ecd6ac672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayStartPoint: {fileID: 0}
+  rayStartPoint: {fileID: 1172083982644424573}

@@ -7,7 +7,7 @@ public class RayWeapon : Weapon
     [SerializeField] Transform rayStartPoint;
 
     //Everything
-    LayerMask mask = ~0;
+    LayerMask mask;
 
     public int CurrentClip { get { return currentClip; }
         private set {
@@ -45,6 +45,7 @@ public class RayWeapon : Weapon
         CurrentClip = weaponScriptable.clipSize;
         clipSize = weaponScriptable.clipSize;
         reloadTime = weaponScriptable.reloadTime;
+        mask = ~LayerMask.GetMask("Zone");
     }
 
     public override void Equip(Transform _parent)

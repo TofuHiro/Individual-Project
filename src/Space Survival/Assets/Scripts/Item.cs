@@ -15,21 +15,18 @@ public class Item : MonoBehaviour, IPickable
     //References
     PlayerInventory inventory;
     PlayerController player;
-    ObjectPooler objectPooler;
 
     //For object pool instantiation, start is not called (disabled upon instantiation)
     void Awake()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
-        objectPooler ??= ObjectPooler.Instance;
     }
 
     void Start()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
-        objectPooler ??= ObjectPooler.Instance;
     }
 
     /// <summary>
@@ -43,7 +40,7 @@ public class Item : MonoBehaviour, IPickable
         //Pick up
         bool _success = inventory.AddItem(this);
         if (_success) {
-            objectPooler.PoolObject(item.name, gameObject);
+            ObjectPooler.PoolObject(item.name, gameObject);
         }
     }
 
@@ -53,7 +50,7 @@ public class Item : MonoBehaviour, IPickable
     public void Drop()
     {
         Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        objectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
+        ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
     }
 
     /// <summary>

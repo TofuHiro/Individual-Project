@@ -22,8 +22,8 @@ public class PlayerInventory : MonoBehaviour
     public static bool IsEnabled { get; private set; }
     public InventorySlot SelectedSlot { get; private set;}
 
-    public delegate void InventoryActions();
-    public static event InventoryActions OnInventoryOpen, OnInventoryClose, OnItemChange;
+    public delegate void InventoryAction();
+    public static event InventoryAction OnInventoryOpen, OnInventoryClose, OnItemChange;
 
     [Tooltip("The game object holding the inventory user interface")]
     [SerializeField] GameObject UIGameObject;
@@ -336,7 +336,10 @@ public class PlayerInventory : MonoBehaviour
     /// <param name="_newItem">Item to display</param>
     public void DisplayItemInfo(Item _newItem)
     {
-        itemDisplay.SetItem(_newItem);
+        if (_newItem != null) 
+            itemDisplay.SetItem(_newItem.ItemScriptableObject);
+        else
+            itemDisplay.SetItem(null);
     }
 
     /// <summary>
