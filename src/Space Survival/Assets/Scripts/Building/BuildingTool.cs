@@ -10,6 +10,7 @@ public class BuildingTool : Weapon
     BuildingManager.BuildableRecipe currentBuildable;
     Buildable currentBlueprint;
 
+    BuildingSnapPoint currentSnapPoint;
     LayerMask layerMask;
     int tempLayer;
     bool canBuild;
@@ -77,17 +78,20 @@ public class BuildingTool : Weapon
                         Vector3 _pos = _snapPoint.GetSnapPosition(_currentBuildableType);
                         currentBlueprint.SetPosition(_pos, true);
                         currentBlueprint.SetRotation(_snapPoint.GetSnapRotation(_currentBuildableType));
+                        currentSnapPoint = _snapPoint;
                         canBuild = true;
                     }
                     //No snap point, snap to grid with surface as normal
                     else {
                         currentBlueprint.SetPosition(_hit.point, true);
+                        currentSnapPoint = null;
                         canBuild = currentBlueprint.CanPlaceWithoutSnaps;
                     }
                 }
                 else {
                     //Snap to grid with surface
                     currentBlueprint.SetPosition(_hit.point, true);
+                    currentSnapPoint = null;
                     canBuild = currentBlueprint.CanPlaceWithoutSnaps;
                 }
             }
@@ -103,11 +107,11 @@ public class BuildingTool : Weapon
     {
         if (!canBuild)
             return;
+        if (currentSnapPoint != null && currentSnapPoint.GetPointOccupied(currentBlueprint.GetBuildableType()) == true)
+            return;
 
         base.Attack();
         if (currentBuildable.GameObject != null) {
-
-
             //Build
             Buildable _newBuildable = ObjectPooler.SpawnObject(
                 currentBuildable.ItemInfo.name,
@@ -117,6 +121,7 @@ public class BuildingTool : Weapon
             _newBuildable.Build();
             _newBuildable.gameObject.layer = tempLayer;
 
+            currentSnapPoint.SetPointOccupied(currentBlueprint.GetBuildableType(), true);
             buildingManager.BuildObject(currentBuildable);
         }
     }
