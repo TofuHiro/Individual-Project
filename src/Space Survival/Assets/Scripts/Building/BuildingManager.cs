@@ -17,10 +17,11 @@ public class BuildingManager : MonoBehaviour
     #endregion
 
     [System.Serializable]
-    public class ItemBuildablePair
+    public class BuildableRecipe
     {
         public GameObject GameObject;
         public ItemScriptable ItemInfo;
+        public List<ItemScriptable> Ingredients;
 
         public Buildable GetBuildable()
         {
@@ -30,33 +31,50 @@ public class BuildingManager : MonoBehaviour
         {
             GameObject = null;
             ItemInfo = null;
+            Ingredients = null;
         }
     }
 
     public static bool IsEnabled { get; private set; }
 
+    [Tooltip("The transition time when a blueprint snaps to another snap point")]
     [SerializeField] float buildingSmoothTime = .05f;
+    [Tooltip("The game object holding the building UI")]
     [SerializeField] GameObject UIGameObject;
+    [Tooltip("The parent transform holding all blueprints")]
     [SerializeField] Transform blueprintSlotsParents;
+    [Tooltip("The prefab for a building slot")]
     [SerializeField] GameObject buildableSlotPrefab;
-    [SerializeField] List<ItemBuildablePair> buildableCatalog;
+    [Tooltip("Set a catalog of all the buildable objects to be buildable and its required ingredients")]
+    [SerializeField] List<BuildableRecipe> buildableCatalog;
+    [Tooltip("Layer mask to ignore collision when detecting a surface for blueprints")]
     [SerializeField] LayerMask ignoreLayers;
+    [SerializeField] Transform ingredientSlotsParent;
 
     InterfaceManager interfaceManager;
+    PlayerInventory playerInventory;
     BuildingTool equippedTool;
-    ItemDisplayUI itemDisplay;
     BuildableSlot hoveredSlot;
+    ItemDisplayUI itemDisplay;
+    SlotUI[] ingredientSlots;
 
     void Start()
     {
         interfaceManager = InterfaceManager.Instance;
+        playerInventory = PlayerInventory.Instance;
         itemDisplay = GetComponent<ItemDisplayUI>();
+        ingredientSlots = ingredientSlotsParent.GetComponentsInChildren<SlotUI>();
 
-        foreach (ItemBuildablePair _item in buildableCatalog) {
+        foreach (BuildableRecipe _item in buildableCatalog) {
             BuildableSlot _newSlot = Instantiate(buildableSlotPrefab, blueprintSlotsParents).GetComponent<BuildableSlot>();
-            _newSlot.Init(_item.GameObject, _item.ItemInfo);
+            _newSlot.Init(_item.GameObject, _item.ItemInfo, _item.Ingredients);
         }
 
+        foreach (SlotUI _slot in ingredientSlots) {
+            _slot.SetIcon(null);
+            _slot.gameObject.SetActive(false);
+        }
+        
         CloseInterface();
     }
 
@@ -94,7 +112,7 @@ public class BuildingManager : MonoBehaviour
     {
         hoveredSlot = _slot;
         if (hoveredSlot != null)
-            DisplayBuildable(hoveredSlot.ItemScriptable);
+            DisplayBuildable(hoveredSlot.BuildableRecipe);
         else
             DisplayBuildable(null);
     }
@@ -105,18 +123,65 @@ public class BuildingManager : MonoBehaviour
         if (hoveredSlot == null)
             return;
 
-        equippedTool.SetBuildable(hoveredSlot);
-        interfaceManager.CloseBuilding();
+        if (CheckIngriedients(hoveredSlot.BuildableRecipe)) {
+            equippedTool.SetBuildable(hoveredSlot);
+            interfaceManager.CloseBuilding();
+        }
     }
 
-    public void CancelBuild()
+    bool CheckIngriedients(BuildableRecipe _buildable)
     {
-        equippedTool.SetBuildable(null);
+        List<ItemScriptable> _items = playerInventory.GetItems();
+        bool[] _acquired = new bool[_buildable.Ingredients.Count];
+
+        for (int i = 0; i < _items.Count; i++) {
+            for (int j = 0; j < _buildable.Ingredients.Count; j++) {
+                if (_items[i] == _buildable.Ingredients[j] && !_acquired[j]) {
+                    _acquired[j] = true;
+                    break;
+                }
+            }
+        }
+
+        foreach (bool _itemAcquired in _acquired) {
+            if (!_itemAcquired) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    void DisplayBuildable(ItemScriptable _buildable)
+    void DisplayBuildable(BuildableRecipe _buildable)
     {
-        itemDisplay.SetItem(_buildable);
+        if (_buildable != null) {
+            itemDisplay.SetItem(_buildable.ItemInfo);
+            for (int i = 0; i < _buildable.Ingredients.Count; i++) {
+                ingredientSlots[i].gameObject.SetActive(true);
+                ingredientSlots[i].SetIcon(_buildable.Ingredients[i].icon);
+            }
+            for (int i = _buildable.Ingredients.Count; i < ingredientSlots.Length; i++) {
+                ingredientSlots[i].SetIcon(null);
+                ingredientSlots[i].gameObject.SetActive(false);
+            }
+        }
+        else {
+            itemDisplay.SetItem(null);
+            foreach (SlotUI _slot in ingredientSlots) {
+                _slot.SetIcon(null);
+                _slot.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void BuildObject(BuildableRecipe _buildable)
+    {
+        foreach (ItemScriptable _item in _buildable.Ingredients) {
+            playerInventory.RemoveItem(_item);
+        }
+
+        if (!CheckIngriedients(_buildable)) 
+            equippedTool.SetBuildable(null);
     }
 
     void ResetInterface()

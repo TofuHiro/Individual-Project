@@ -5,21 +5,28 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class BuildableSlot : MonoBehaviour
 {
-    public GameObject Buildable { get; private set; }
-    public ItemScriptable ItemScriptable { get; private set; }
+    public BuildingManager.BuildableRecipe BuildableRecipe { get; private set; }
 
     BuildingManager buildingManager;
     SlotUI slotUI;
 
-    public void Init(GameObject _buildable, ItemScriptable _itemScriptable)
+    /// <summary>
+    /// Initialize this build slot with a buildable object and its information
+    /// </summary>
+    /// <param name="_buildable">The buildable prefab</param>
+    /// <param name="_itemScriptable">The item scriptable object containing its information</param>
+    public void Init(GameObject _buildable, ItemScriptable _itemScriptable, List<ItemScriptable> _ingredients)
     {
         buildingManager = BuildingManager.Instance;
         slotUI = GetComponent<SlotUI>();
 
-        Buildable = _buildable;
-        ItemScriptable = _itemScriptable;
+        BuildableRecipe = new BuildingManager.BuildableRecipe();
 
-        slotUI.SetIcon(ItemScriptable.icon);
+        BuildableRecipe.GameObject = _buildable;
+        BuildableRecipe.ItemInfo = _itemScriptable;
+        BuildableRecipe.Ingredients = _ingredients;
+
+        slotUI.SetIcon(BuildableRecipe.ItemInfo.icon);
     }
 
     //Event system 

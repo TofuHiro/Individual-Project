@@ -7,7 +7,7 @@ public class BuildingTool : Weapon
     BuildingManager buildingManager;
     InterfaceManager interfaceManager;
 
-    BuildingManager.ItemBuildablePair currentBuildable;
+    BuildingManager.BuildableRecipe currentBuildable;
     Buildable currentBlueprint;
 
     LayerMask layerMask;
@@ -20,7 +20,7 @@ public class BuildingTool : Weapon
         interfaceManager = InterfaceManager.Instance;
         semiAutomatic = true;
 
-        currentBuildable = new BuildingManager.ItemBuildablePair();
+        currentBuildable = new BuildingManager.BuildableRecipe();
         layerMask = buildingManager.GetBuildingMasks();
     }
 
@@ -39,20 +39,19 @@ public class BuildingTool : Weapon
 
     public void SetBuildable(BuildableSlot _buildable)
     {
-        if (currentBuildable.GameObject != null) {
-            ObjectPooler.PoolObject(currentBuildable.ItemInfo.name, currentBuildable.GameObject);
-            currentBuildable = null;
-            currentBlueprint = null;
+        if (_buildable == null) {
+            CancelBuild();
+            return;
         }
 
-        if (_buildable != null) {
-            currentBuildable.ItemInfo = _buildable.ItemScriptable;
-            currentBuildable.GameObject = ObjectPooler.SpawnObject(_buildable.ItemScriptable.name + "_blueprint", _buildable.Buildable);
-            currentBlueprint = currentBuildable.GetBuildable();
-            tempLayer = currentBlueprint.gameObject.layer;
-            currentBlueprint.gameObject.layer = LayerMask.NameToLayer("Blueprint");
-            currentBlueprint.StartBluePrint();
-        }
+        currentBuildable.GameObject = ObjectPooler.SpawnObject(_buildable.BuildableRecipe.ItemInfo.name + "_blueprint", _buildable.BuildableRecipe.GameObject);
+        currentBuildable.ItemInfo = _buildable.BuildableRecipe.ItemInfo;
+        currentBuildable.Ingredients = _buildable.BuildableRecipe.Ingredients;
+
+        currentBlueprint = currentBuildable.GetBuildable();
+        tempLayer = currentBuildable.GameObject.layer;
+        currentBuildable.GameObject.layer = LayerMask.NameToLayer("Blueprint");
+        currentBlueprint.StartBluePrint();
     }
 
     protected override void Update()
@@ -117,6 +116,8 @@ public class BuildingTool : Weapon
                 currentBlueprint.transform.rotation).GetComponent<Buildable>();
             _newBuildable.Build();
             _newBuildable.gameObject.layer = tempLayer;
+
+            buildingManager.BuildObject(currentBuildable);
         }
     }
 
@@ -145,11 +146,12 @@ public class BuildingTool : Weapon
 
     void CancelBuild()
     {
-        currentBlueprint.gameObject.layer = tempLayer;
-        ObjectPooler.PoolObject(currentBuildable.ItemInfo.name + "_blueprint", currentBuildable.GameObject);
-        currentBuildable.Clear();
-        currentBlueprint = null;
+        if (currentBuildable.GameObject != null) {
+            currentBuildable.GameObject.layer = tempLayer;
+            ObjectPooler.PoolObject(currentBuildable.ItemInfo.name + "_blueprint", currentBuildable.GameObject);
+            currentBuildable.Clear();
+            currentBlueprint = null;
+        }
         tempLayer = 0;
-        buildingManager.CancelBuild();
     }
 }
