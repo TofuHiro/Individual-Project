@@ -236,9 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8cfb3e1c9af5f4799be86c05309c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapPointsParent: {fileID: 2928779793753443875}
   type: 1
   canPlaceWithoutSnaps: 0
   useSnapPoints: 1
-  snapPointsParent: {fileID: 2928779793753443875}
   gridSize: {x: 2, y: 4, z: 2}
   gridOffset: {x: 0, y: 2, z: 0}
