@@ -77,9 +77,22 @@ public class ProjectileWeapon : Weapon
         base.Attack();
 
         //Spawn and shoot projectile
-        GameObject _projectile = ObjectPooler.SpawnObject(projectileName, projectilePrefab, projectileStartPoint.position, projectileStartPoint.rotation);
+        GameObject _projectile = ObjectPooler.SpawnObject(
+            projectileName, 
+            projectilePrefab, 
+            projectileStartPoint.position, 
+            projectileStartPoint.rotation);
+
         //Init projectile
-        _projectile.GetComponent<Projectile>().Init(projectileName, damage, projectileSpeed, explosionRadius, explosionForce, projectileLifeTime, explodeOnContact, projectileUseGravity);
+        _projectile.GetComponent<Projectile>().Init(
+            projectileName, 
+            damage, 
+            projectileSpeed, 
+            explosionRadius, 
+            explosionForce,
+            projectileLifeTime, 
+            explodeOnContact, 
+            projectileUseGravity);
         
         CurrentClip--;
     }

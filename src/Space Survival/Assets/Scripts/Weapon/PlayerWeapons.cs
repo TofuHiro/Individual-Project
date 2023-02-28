@@ -21,6 +21,8 @@ public class PlayerWeapons : MonoBehaviour
     public int ActiveHotbar { get { return activeHotbar; }
         set {
             activeHotbar = value;
+
+            //Loop around hotbar
             if (activeHotbar > weaponSlots.Length - 1)
                 activeHotbar = 0;
             if (activeHotbar < 0) {
@@ -82,8 +84,8 @@ public class PlayerWeapons : MonoBehaviour
     /// <param name="_newWeaponSlot">The weapon slot to assign the hotbar</param>
     public void AssignWeaponSlot(WeaponSlot _newWeaponSlot)
     {
+        //Find corresponding slot 
         for (int i = 0; i < weaponSlots.Length; i++) {
-            //Find corresponding slot 
             if (weaponSlots[i].name == _newWeaponSlot.name) {
                 if (_newWeaponSlot != null)
                     //Assign weapon in slot to hotbar
@@ -103,8 +105,8 @@ public class PlayerWeapons : MonoBehaviour
     /// <param name="_weaponSlot">The corresponding weapon slot to remove from the hotbar</param>
     public void ClearWeaponSlot(WeaponSlot _weaponSlot)
     {
+        //Find corresponding slot
         for (int i = 0; i < weaponSlots.Length; i++) {
-            //Find corresponding slot
             if (weaponSlots[i].name == _weaponSlot.name) {
                 //Clear hotbar
                 hotbar[i] = null;
@@ -115,7 +117,7 @@ public class PlayerWeapons : MonoBehaviour
     }
 
     /// <summary>
-    /// Drop the currently held weapon
+    /// Hide and removes the currently held weapon from the player
     /// </summary>
     public void DropWeapon()
     {
@@ -154,23 +156,20 @@ public class PlayerWeapons : MonoBehaviour
     /// <param name="_newWeapon">The weapon item scriptable object to equip</param>
     void ChangeWeapon(Item _newWeapon)
     {
-        //If currently holding weapon before switching
+        //If currently holding weapon before switching, holster it
         if (currentWeapon != null) {
             currentWeapon.Holster();
             currentWeapon.SetHolder(null);
             currentWeapon.gameObject.SetActive(false);
+            currentWeapon = null;
         }
 
-        //Switch to weapon
+        //Equip new weapon
         if (_newWeapon != null) {
             currentWeapon = _newWeapon.GetComponent<Weapon>();
             currentWeapon.SetHolder(this);
             currentWeapon.Equip(handTransform);
             currentWeapon.gameObject.SetActive(true);
-        }
-        //Switch to nothing
-        else {
-            currentWeapon = null;
         }
         
         hotbarUI.UpdateSelectorPosition(ActiveHotbar);

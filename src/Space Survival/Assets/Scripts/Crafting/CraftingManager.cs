@@ -137,6 +137,11 @@ public class CraftingManager : MonoBehaviour
         weaponRecipeScrollBox.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Checks if the player can craft a given recipe based on their inventory and the requirements for the recipe
+    /// </summary>
+    /// <param name="_recipe">The recipe to check if the player can craft</param>
+    /// <returns>Returns true if the player is able to craft the recipe</returns>
     bool CheckRecipe(ItemRecipe _recipe)
     {
         List<ItemScriptable> _items = playerInventory.GetItems();

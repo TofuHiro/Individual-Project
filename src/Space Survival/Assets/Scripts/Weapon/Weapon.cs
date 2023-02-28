@@ -9,7 +9,7 @@ public abstract class Weapon : MonoBehaviour
     Rigidbody rb;
 
     protected PlayerWeapons currentHolder;
-    Collider[] weaponColliders;
+    Collider[] weaponColliders;//
 
     protected WeaponScriptable weaponScriptable;
     protected float damage, range;
@@ -19,7 +19,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Awake()
     {
-        //Init
+        //Init weapon stats
         weaponScriptable = (WeaponScriptable)GetComponent<Item>().ItemScriptableObject;
 
         damage = weaponScriptable.damage;
@@ -51,11 +51,11 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetPrimaryAttack(bool _state)
     {
+        //Trigger attack once if semi auto
         if (_state == true && semiAutomatic)
             Attack();
         else
             isAttacking = _state;
-        
     }
 
     /// <summary>
@@ -64,6 +64,7 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_state">State to toggle to</param>
     public void SetSecondaryAttack(bool _state)
     {
+        //Trigger attack once if semi auto
         if (_state == true && semiAutomatic)
             SecondaryAttack();
         else
@@ -84,11 +85,12 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_parent"></param>
     public virtual void Equip(Transform _parent)
     {
-        rb.isKinematic = true;
+        //Position to parent
         transform.SetParent(_parent);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.Euler(Vector3.zero);
 
+        rb.isKinematic = true;
         //Prevent collision with holder
         foreach (Collider _collider in weaponColliders) {
             _collider.enabled = false;

@@ -51,10 +51,11 @@ public class Projectile : MonoBehaviour
     {
         if (!explodeOnContact)
             return;
+        //If entering other trigger ignore
+        if (other.isTrigger)
+            return;
 
-        if (!other.isTrigger) {
-            Explode();
-        }
+        Explode();
     }
 
     /// <summary>

@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour, IDamagable
     [SerializeField] float aggroRange = 10f;
     [Tooltip("The time required before carrying out an attack")]
     [SerializeField] float attackDelay = .5f;
+    [Tooltip("The required time to pass while attacking to stop")]
+    [SerializeField] float attackBurstTime = .3f;
     [Tooltip("The time required before attempting to perform an attack")]
     [SerializeField] float attackRate = 2f;
 
@@ -182,14 +184,19 @@ public class Enemy : MonoBehaviour, IDamagable
     /// <returns></returns>
     IEnumerator Attack()
     {
+        //Wait before attack
+        yield return new WaitForSeconds(attackDelay);
+
+        //Start attacking
         isAttacking = true;
         currentWeapon.SetPrimaryAttack(true);
 
-        yield return new WaitForSeconds(attackDelay);
+        //Keep attacking
+        yield return new WaitForSeconds(attackBurstTime);
 
+        //Stop attacking
         isAttacking = false;
         currentWeapon.SetPrimaryAttack(false);
-
         nextTimeToAttack = timer + attackRate;
     }
 
@@ -248,16 +255,19 @@ public class Enemy : MonoBehaviour, IDamagable
         StopRotation();
 
         isAttacking = false;
+        IsActive = false;
+
+        //Drop weapon
         currentWeapon.SetPrimaryAttack(false);
         currentWeapon.Holster();
 
-        IsActive = false;
+        //Change to corpse
         ObjectPooler.PoolObject(name, gameObject);
         ObjectPooler.SpawnObject(name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
     }
 
     /// <summary>
-    /// Returns a negative or positive range between the min and max turn angle.
+    /// Returns a negative or positive range between the min and max turn angle. Chance between a positive and negative is 50/50
     /// </summary>
     /// <returns>An angle between the minimum and maximum turn angle</returns>
     float GetRandomLookAngle()

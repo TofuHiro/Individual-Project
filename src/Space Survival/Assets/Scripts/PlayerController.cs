@@ -263,6 +263,9 @@ public class PlayerController : MonoBehaviour
 
     void PrimaryAttack(InputAction.CallbackContext context)
     {
+        if (!canAttack)
+            return;
+
         if (context.started)
             OnStartPrimaryAttack?.Invoke();
         if (context.canceled)
@@ -271,6 +274,9 @@ public class PlayerController : MonoBehaviour
 
     void SecondaryAttack(InputAction.CallbackContext context)
     {
+        if (!canAttack)
+            return;
+
         if (context.started)
             OnStartSecondaryAttack?.Invoke();
         if (context.canceled)

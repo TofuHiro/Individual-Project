@@ -13,11 +13,19 @@ public class AICamera : MonoBehaviour
 
     Quaternion rot;
 
+    /// <summary>
+    /// Returns the orientation transform of this enemy
+    /// </summary>
+    /// <returns></returns>
     public Transform GetOrientation()
     {
         return orientation;
     }
 
+    /// <summary>
+    /// Sets the rotation to rotate to
+    /// </summary>
+    /// <param name="_rot">The rotation to rotate towards</param>
     public void SetRotation(Quaternion _rot)
     {
         rot = _rot;

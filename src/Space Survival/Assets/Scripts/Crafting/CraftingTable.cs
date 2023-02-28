@@ -12,6 +12,9 @@ public class CraftingTable : MonoBehaviour, IInteractable
         interfaceManager = InterfaceManager.Instance;
     }
 
+    /// <summary>
+    /// Opens this station's recipe table
+    /// </summary>
     public void Interact()
     {
         interfaceManager.OpenCrafting(stationType);
