@@ -10,14 +10,14 @@ public class MeleeWeapon : Weapon
     IDamagable damagable;
     Rigidbody hitRigidbody;
 
-    new MeleeWeaponScriptable weaponScriptable;
+    MeleeWeaponScriptable meleeScriptable;
     float knockbackForce;
 
     protected override void Awake()
     {
         base.Awake();
-        weaponScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
-        knockbackForce = weaponScriptable.knockbackForce;
+        meleeScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
+        knockbackForce = meleeScriptable.knockbackForce;
         mask = ~LayerMask.GetMask("Zone");
     }
 

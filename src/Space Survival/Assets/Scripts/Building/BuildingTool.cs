@@ -9,9 +9,7 @@ public class BuildingTool : Weapon
     BuildingManager.BuildableRecipe currentBuildable;
     Buildable currentBlueprint;
 
-    BuildingSnapPoint currentSnapPoint;
     LayerMask layerMask;
-    bool canBuild;
     //To switch to blueprint layer and back
     int tempLayer;
 
@@ -56,8 +54,8 @@ public class BuildingTool : Weapon
         currentBlueprint = currentBuildable.GetBuildable();
 
         //Save layer and switch to blueprint
-        tempLayer = currentBuildable.GameObject.layer;
-        currentBuildable.GameObject.layer = LayerMask.NameToLayer("Blueprint");
+        tempLayer = currentBlueprint.GetObject().layer;
+        currentBlueprint.GetObject().layer = LayerMask.NameToLayer("Blueprint");
         currentBlueprint.StartBlueprint();
     }
 
@@ -71,48 +69,18 @@ public class BuildingTool : Weapon
     }
 
     /// <summary>
-    /// Positions the blueprint based on what the player is looking at and determines the buildable state
+    /// Positions the blueprint
     /// </summary>
     void PositionBlueprint()
     {
         //Check for a surface within range
         RaycastHit _hit;
         Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
-        //Surface detected
         if (_hit.transform != null) {
-            //If surface is a snap point
-            if (_hit.transform.CompareTag("SnapPoint") && currentBlueprint.UseSnapPoints) {
-                //Cache
-                BuildingSnapPoint _snapPoint = _hit.transform.GetComponent<BuildingSnapPoint>();
-                BuildableType _currentBuildableType = currentBlueprint.GetBuildableType();
-
-                //Check if snap point has a set point for the current buildable type
-                if (_snapPoint.CheckForType(_currentBuildableType)) {
-                    Vector3 _pos = _snapPoint.GetSnapPosition(_currentBuildableType);
-                    currentBlueprint.SetPosition(_pos, true);
-                    currentBlueprint.SetRotation(_snapPoint.GetSnapRotation(_currentBuildableType));
-                    currentSnapPoint = _snapPoint;
-                    canBuild = true;
-                }
-                //No snap point, snap to grid with surface as normal
-                else {
-                    currentBlueprint.SetPosition(_hit.point, true);
-                    currentSnapPoint = null;
-                    canBuild = currentBlueprint.CanPlaceWithoutSnaps;
-                }
-            }
-            else {
-                //Snap to grid with surface
-                currentBlueprint.SetPosition(_hit.point, true);
-                currentSnapPoint = null;
-                canBuild = currentBlueprint.CanPlaceWithoutSnaps;
-            }
+            currentBlueprint.SetPosition(_hit.point);
         }
-        //No surface
         else {
-            //Follow mouse, dont snap
-            currentBlueprint.SetPosition(transform.position + (transform.forward * (range - .5f)), false);
-            canBuild = false;
+            currentBlueprint.SetPosition(transform.position + (transform.forward * range));
         }
     }
 
@@ -120,13 +88,16 @@ public class BuildingTool : Weapon
     {
         if (currentBuildable.GameObject == null)
             return;
-        if (!canBuild)
-            return;
-        //If snap point already occupied
-        if (currentSnapPoint != null && currentSnapPoint.GetPointOccupied(currentBlueprint.GetBuildableType()) == true)
+
+        //Finish transition for real pos
+        currentBlueprint.SetPosition(currentBlueprint.GetTargetPos());
+
+        //If overlapping
+        if (!buildingManager.BuildObject(currentBuildable))
             return;
 
         base.Attack();
+
         //Create instance
         Buildable _newBuildable = ObjectPooler.SpawnObject(
             currentBuildable.ItemInfo.name,
@@ -135,10 +106,12 @@ public class BuildingTool : Weapon
             currentBlueprint.transform.rotation).GetComponent<Buildable>();
         _newBuildable.Build();
         //Reset layer
-        _newBuildable.gameObject.layer = tempLayer;
-        
-        buildingManager.BuildObject(currentBuildable);
-        currentSnapPoint.SetPointOccupied(currentBlueprint.GetBuildableType(), true);
+        _newBuildable.GetObject().layer = tempLayer;
+
+        //Check with remaining items if can continue building
+        if (!buildingManager.CheckIngriedients(currentBuildable)) {
+            SetBlueprint(null);
+        }
     }
 
     protected override void SecondaryAttack()
@@ -158,10 +131,12 @@ public class BuildingTool : Weapon
 
     protected override void Reload()
     {
+        if (currentBuildable.GameObject == null)
+            return;
+
         base.Reload();
         //Rotate
-        if (currentBuildable.GameObject != null)
-            currentBlueprint.SetRotation(Quaternion.Euler(currentBlueprint.transform.rotation.eulerAngles + new Vector3(0f, 90f, 0f)));
+        currentBlueprint.SetRotation(Quaternion.Euler(currentBlueprint.transform.rotation.eulerAngles + new Vector3(0f, 90, 0f)));
     }
 
     /// <summary>
@@ -170,7 +145,7 @@ public class BuildingTool : Weapon
     void CancelBuild()
     {
         if (currentBuildable.GameObject != null) {
-            currentBuildable.GameObject.layer = tempLayer;
+            currentBlueprint.GetObject().layer = tempLayer;
             ObjectPooler.PoolObject(currentBuildable.ItemInfo.name + "_blueprint", currentBuildable.GameObject);
             currentBuildable.Clear();
             currentBlueprint = null;

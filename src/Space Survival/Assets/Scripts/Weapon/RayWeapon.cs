@@ -29,7 +29,7 @@ public class RayWeapon : Weapon
     Rigidbody hitRigidbody;
     RaycastHit hit;
 
-    new RayWeaponScriptable weaponScriptable;
+    RayWeaponScriptable rayScriptable;
     float knockbackForce;
     int clipSize;
     float reloadTime;
@@ -39,12 +39,12 @@ public class RayWeapon : Weapon
     {
         //Init
         base.Awake();
-        weaponScriptable = (RayWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
-        knockbackForce = weaponScriptable.knockbackForce;
-        CurrentAmmo = weaponScriptable.maxAmmo;
-        CurrentClip = weaponScriptable.clipSize;
-        clipSize = weaponScriptable.clipSize;
-        reloadTime = weaponScriptable.reloadTime;
+        rayScriptable = (RayWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
+        knockbackForce = rayScriptable.knockbackForce;
+        CurrentAmmo = rayScriptable.maxAmmo;
+        CurrentClip = rayScriptable.clipSize;
+        clipSize = rayScriptable.clipSize;
+        reloadTime = rayScriptable.reloadTime;
         mask = ~LayerMask.GetMask("Zone");
     }
 

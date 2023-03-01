@@ -58,6 +58,8 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] float buildingSmoothTime = .05f;
     [Tooltip("Layer mask to ignore collision when detecting a surface for blueprints")]
     [SerializeField] LayerMask ignoreLayers;
+    [Tooltip("The default size of each unit grid used for building")]
+    [SerializeField] int gridSize = 4;
 
     [Header("Catalog Setup")]
     [Tooltip("Set a catalog of all the buildable objects to be buildable and its required ingredients")]
@@ -69,6 +71,8 @@ public class BuildingManager : MonoBehaviour
     BuildableSlot hoveredSlot;
     ItemDisplayUI itemDisplay;
     SlotUI[] ingredientSlots;
+
+    BuildingGrid buildingGrid;
 
     void Start()
     {
@@ -88,7 +92,9 @@ public class BuildingManager : MonoBehaviour
             _slot.SetIcon(null);
             _slot.gameObject.SetActive(false);
         }
-        
+
+        buildingGrid = new BuildingGrid(gridSize);
+
         //Close after init
         CloseInterface();
     }
@@ -174,7 +180,7 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     /// <param name="_buildable">The recipe to check</param>
     /// <returns>Returns true if the player is able to craft this recipe</returns>
-    bool CheckIngriedients(BuildableRecipe _buildable)
+    public bool CheckIngriedients(BuildableRecipe _buildable)
     {
         List<ItemScriptable> _items = playerInventory.GetItems();
         //Array to keep track of all the required items and if they are acquired
@@ -231,18 +237,21 @@ public class BuildingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Removes the ingredients of the given buildable from the player inventory and check if the buildable can still be built with the remaining items
+    /// Adds the buildable to the grid and removes the ingredient items from the player inventory
     /// </summary>
-    /// <param name="_buildable">The buildable that has been built</param>
-    public void BuildObject(BuildableRecipe _buildable)
+    /// <param name="_buildableRecipe">The recipe that has been built</param>
+    /// <returns>Returns true if the structure is not overlapping another in the grid</returns>
+    public bool BuildObject(BuildableRecipe _buildableRecipe)
     {
-        foreach (ItemScriptable _item in _buildable.Ingredients) {
+        if (!buildingGrid.AddStructure(_buildableRecipe.GetBuildable())) 
+            return false;
+
+        //Remove items
+        foreach (ItemScriptable _item in _buildableRecipe.Ingredients) {
             playerInventory.RemoveItem(_item);
         }
 
-        //Check with remaining items if can continue building
-        if (!CheckIngriedients(_buildable)) 
-            equippedTool.SetBlueprint(null);
+        return true;
     }
 
     /// <summary>
