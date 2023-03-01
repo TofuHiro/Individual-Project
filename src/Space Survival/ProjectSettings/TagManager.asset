@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Oxygen
-  - SnapPoint
   layers:
   - Default
   - TransparentFX

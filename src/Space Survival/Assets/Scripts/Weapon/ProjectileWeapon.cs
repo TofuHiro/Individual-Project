@@ -22,7 +22,7 @@ public class ProjectileWeapon : Weapon
     }
     int currentAmmo;
 
-    new ProjectileWeaponScriptable weaponScriptable;
+    ProjectileWeaponScriptable projectileScriptable;
     string projectileName;
     GameObject projectilePrefab;
     float projectileSpeed, explosionRadius, explosionForce, projectileLifeTime;
@@ -35,20 +35,20 @@ public class ProjectileWeapon : Weapon
     {
         base.Awake();
         //Init
-        weaponScriptable = (ProjectileWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
-        projectileName = weaponScriptable.projectileName;
-        projectilePrefab = weaponScriptable.projectile;
-        projectileSpeed = weaponScriptable.projectileSpeed;
-        explosionRadius = weaponScriptable.explosionRadius;
-        explosionForce = weaponScriptable.explosionForce;
-        projectileLifeTime = weaponScriptable.projectileLifeTime;
-        explodeOnContact = weaponScriptable.explodeOnContact;
-        projectileUseGravity = weaponScriptable.useGravity;
+        projectileScriptable = (ProjectileWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
+        projectileName = projectileScriptable.projectileName;
+        projectilePrefab = projectileScriptable.projectile;
+        projectileSpeed = projectileScriptable.projectileSpeed;
+        explosionRadius = projectileScriptable.explosionRadius;
+        explosionForce = projectileScriptable.explosionForce;
+        projectileLifeTime = projectileScriptable.projectileLifeTime;
+        explodeOnContact = projectileScriptable.explodeOnContact;
+        projectileUseGravity = projectileScriptable.useGravity;
 
-        CurrentAmmo = weaponScriptable.maxAmmo;
-        CurrentClip = weaponScriptable.clipSize;
-        clipSize = weaponScriptable.clipSize;
-        reloadTime = weaponScriptable.reloadTime;
+        CurrentAmmo = projectileScriptable.maxAmmo;
+        CurrentClip = projectileScriptable.clipSize;
+        clipSize = projectileScriptable.clipSize;
+        reloadTime = projectileScriptable.reloadTime;
     }
 
     public override void Equip(Transform _parent)
