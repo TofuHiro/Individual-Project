@@ -5,7 +5,7 @@ public abstract class WeaponScriptable : ItemScriptable
     [Tooltip("The maximum durability of this weapon")]
     public int maxDurability;
     [Tooltip("The damage this weapon deals")]
-    public float damage;
+    public int damage;
     [Tooltip("The maximum range of this weapon")]
     public float maxRange;
     [Tooltip("The rate of attack this weapon attacks")]

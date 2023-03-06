@@ -143,9 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a1e2542ad69c54b8d8935bae2a6a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  semiAutomatic: 0
   rayStartPoint: {fileID: 5304549181156221412}
+  hitRadius: 0
   tier: 0
   harvestType: 0
+  harvestVoxel: 1
 --- !u!1 &8374507539649471307
 GameObject:
   m_ObjectHideFlags: 0

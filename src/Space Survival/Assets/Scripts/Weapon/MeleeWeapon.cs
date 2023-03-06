@@ -4,6 +4,7 @@ public class MeleeWeapon : Weapon
 {
     [Tooltip("Transform position where ray starts from")]
     [SerializeField] Transform rayStartPoint;
+    [SerializeField] protected float hitRadius;
 
     LayerMask mask;
     protected RaycastHit hit;
@@ -35,16 +36,38 @@ public class MeleeWeapon : Weapon
         //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask, QueryTriggerInteraction.Ignore);
         if (hit.transform != null) {
-            //Apply damage
-            damagable = hit.transform.GetComponent<IDamagable>();
-            if (damagable != null) {
-                damagable.TakeDamage(damage);
+
+            //All object in radius
+            if (hitRadius > 0) {
+                Collider[] _colliders = Physics.OverlapSphere(hit.transform.position, hitRadius, ~0, QueryTriggerInteraction.Ignore);
+                foreach (Collider _collider in _colliders) {
+                    //Apply damage
+                    damagable = _collider.GetComponent<IDamagable>();
+                    if (damagable != null) {
+                        damagable.TakeDamage(damage);
+                    }
+
+                    //Apply force
+                    hitRigidbody = _collider.GetComponent<Rigidbody>();
+                    if (hitRigidbody != null) {
+                        hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
+                    }
+                }
             }
 
-            //Apply force
-            hitRigidbody = hit.transform.GetComponent<Rigidbody>();
-            if (hitRigidbody != null) {
-                hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
+            //One object through raycast
+            else {
+                //Apply damage
+                damagable = hit.transform.GetComponent<IDamagable>();
+                if (damagable != null) {
+                    damagable.TakeDamage(damage);
+                }
+
+                //Apply force
+                hitRigidbody = hit.transform.GetComponent<Rigidbody>();
+                if (hitRigidbody != null) {
+                    hitRigidbody.AddForceAtPosition(-hit.normal * knockbackForce, hit.point);
+                }
             }
         }
     }

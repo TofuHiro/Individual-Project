@@ -12,7 +12,8 @@ public abstract class Weapon : MonoBehaviour
     Collider[] weaponColliders;//
 
     protected WeaponScriptable weaponScriptable;
-    protected float damage, range;
+    protected int damage;
+    protected float range;
     protected float attackRate, nextTimeToAttack, attackTimer;
     protected float maxDurablity, durablity;
     bool isAttacking, isSecondaryAttacking;

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ArmourScriptable : ItemScriptable
 {
     [Tooltip("The amount of maximum shield added")]
-    public float shieldAmount;
+    public int shieldAmount;
 
     public override void Equip()
     {

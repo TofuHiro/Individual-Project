@@ -8,7 +8,7 @@ public class ConsumableScriptable : ItemScriptable
     public class ConsumableValuePair
     {
         public ConsumableType type;
-        public float value;
+        public int value;
     }
 
     [Tooltip("Create effects this consumable gives")]
