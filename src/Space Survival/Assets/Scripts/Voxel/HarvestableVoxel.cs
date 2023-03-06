@@ -20,30 +20,30 @@ public class HarvestableVoxel : VoxelClump
             List<Vector3> _voxels = GetVoxelsInRadius(_worldSpacePos, _radius);
             foreach (Vector3 _voxel in _voxels) {
                 RemoveVoxel(_voxel);
-                //SpawnResource(_voxel);
+                SpawnResource(_voxel + transform.position);
             }
         }
         else {
             Vector3 _voxelMapCoord = GetVoxel(_worldSpacePos);
             RemoveVoxel(_voxelMapCoord);
-            SpawnResource(_voxelMapCoord);
+            SpawnResource(_voxelMapCoord + transform.position);
         }
     }
 
     void SpawnResource(Vector3 _pos)
     {
-        Debug.Log("Spawning");
         float _chance = Random.Range(.01f, 100f);
-        GameObject _resourceObject = null;
-        float lowestSpawn = 101f;
+        ObjectChance _newObject = new ObjectChance
+        {
+            spawnChance = 100f
+        };
         foreach (ObjectChance _resource in drops) {
-            if (_chance < _resource.spawnChance && _resource.spawnChance < lowestSpawn) {
-                _resourceObject = _resource.resource;
-                lowestSpawn = _resource.spawnChance;
+            if (_chance <= _resource.spawnChance && _resource.spawnChance <= _newObject.spawnChance) {
+                _newObject = _resource;
             }
         }
-        if (_resourceObject != null) {
-            Instantiate(_resourceObject, transform.position, Quaternion.identity);
+        if (_newObject.resource != null) {
+            ObjectPooler.SpawnObject(_newObject.nameTag, _newObject.resource, _pos, Quaternion.identity, Vector3.one / voxelPerUnit);
         }
     }
 }

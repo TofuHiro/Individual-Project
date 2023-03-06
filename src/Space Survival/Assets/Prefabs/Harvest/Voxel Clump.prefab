@@ -120,4 +120,8 @@ MonoBehaviour:
   noiseThreshold: 0.5
   minTier: 0
   harvestType: 0
-  drops: []
+  drops:
+  - nameTag: Blue Cube
+    resource: {fileID: 3687271075836520512, guid: 0785db6f31323814f8d6f5e4e6a1c31a,
+      type: 3}
+    spawnChance: 30

@@ -8,7 +8,7 @@ using UnityEngine;
 public class VoxelClump : MonoBehaviour
 {
     [SerializeField] protected Vector3Int chunkSize = new Vector3Int(5, 5, 5);
-    [SerializeField] int voxelPerUnit = 1;
+    [SerializeField] protected int voxelPerUnit = 1;
     [SerializeField] float roundingRadius = 5f;
     [SerializeField] int seed;
     [SerializeField] bool useRandomSeed;

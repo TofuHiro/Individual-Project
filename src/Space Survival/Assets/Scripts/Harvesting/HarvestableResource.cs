@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class ObjectChance
 {
+    public string nameTag;
     public GameObject resource;
     [Range(.01f, 100f)]
     public float spawnChance;
@@ -64,7 +65,7 @@ public class HarvestableResource : MonoBehaviour, IHarvestable
                 //For single item spawns
                 if (_spawnNo == 0) {
                     ObjectPooler.SpawnObject(
-                    _drop.resource.name,
+                    _drop.nameTag,
                     _drop.resource,
                     transform.position,
                     transform.rotation,
@@ -73,7 +74,7 @@ public class HarvestableResource : MonoBehaviour, IHarvestable
                 //For multiple item spawns
                 else {
                     ObjectPooler.SpawnObject(
-                    _drop.resource.name,
+                    _drop.nameTag,
                     _drop.resource,
                     //Spreaded spawn 
                     transform.position + new Vector3(
