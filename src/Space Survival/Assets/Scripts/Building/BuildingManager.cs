@@ -117,6 +117,21 @@ public class BuildingManager : MonoBehaviour
         return ignoreLayers;
     }
 
+    BuildableRecipe GetRecipe(Buildable _buildable)
+    {
+        return buildableCatalog[GetBuildableRecipeIndex(_buildable)];
+    }
+    
+    int GetBuildableRecipeIndex(Buildable _buildable)
+    {
+        for (int i = 0; i < buildableCatalog.Count; i++) {
+            if (buildableCatalog[i].GetBuildable().GetType() == _buildable.GetType()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /// <summary>
     /// Set the given building tool to become the active building tool
     /// </summary>
@@ -252,6 +267,21 @@ public class BuildingManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    //UI Button
+    public void StartRemoveMode()
+    {
+        equippedTool.StartRemoveMode();
+        interfaceManager.CloseBuilding();
+    }
+
+    public void RemoveBuildable(Buildable _buildable)
+    {
+        BuildableRecipe _recipe =  GetRecipe(_buildable);
+        ObjectPooler.PoolObject(_recipe.ItemInfo.name, _buildable.GetObject());
+        buildingGrid.RemoveStructure(_buildable);
+        //Give items
     }
 
     /// <summary>
