@@ -41,6 +41,7 @@ public class CraftingManager : MonoBehaviour
     PlayerInventory playerInventory;
 
     List<CraftingRecipeBlock> recipeBlocks;
+    Item[] playerItems;
 
     void Start()
     {
@@ -144,7 +145,7 @@ public class CraftingManager : MonoBehaviour
     /// <returns>Returns true if the player is able to craft the recipe</returns>
     bool CheckRecipe(ItemRecipe _recipe)
     {
-        List<ItemScriptable> _items = playerInventory.GetItems();
+        List<Item> _items = playerInventory.GetItems();
         bool[] _acquired = new bool[_recipe.ingredientItems.Length];
 
         for (int i = 0; i < _items.Count; i++) {
@@ -176,12 +177,12 @@ public class CraftingManager : MonoBehaviour
         }
 
         //Remove all ingredient item from player inventory
-        foreach (ItemScriptable _item in _recipe.ingredientItems) {
+        foreach (Item _item in _recipe.ingredientItems) {
             playerInventory.RemoveItem(_item);
         }
 
         //Create and give new item to player
-        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.name, _recipe.productGameObject);
+        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.ItemScriptableObject.name, _recipe.productItem.gameObject);
         Item _newItem = _newObject.GetComponent<Item>();
         ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         playerInventory.AddItem(_newItem);

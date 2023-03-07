@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 8871663502924224482}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Buildable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8cfb3e1c9af5f4799be86c05309c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemInfo: {fileID: 11400000, guid: 7db51e90fdf867f44898a80bc33e1694, type: 2}
   modelObject: {fileID: 2928658788245128391}
   type: 0
   gridSize: {x: 4, y: 4, z: 4}

@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
   m_Name: Shield Battery
   m_EditorClassIdentifier: 
-  productGameObject: {fileID: 8311958701468999160, guid: 9d02bd4d51e9eba479844323d23a0077,
+  productItem: {fileID: 8311958701468999162, guid: 9d02bd4d51e9eba479844323d23a0077,
     type: 3}
-  productItem: {fileID: 11400000, guid: 5a004d30e33ff70458d0371cec1337bb, type: 2}
   ingredientItems:
-  - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
-  - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
+  - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
+  - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}

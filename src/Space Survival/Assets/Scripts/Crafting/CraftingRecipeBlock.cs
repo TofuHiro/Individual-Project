@@ -27,10 +27,10 @@ public class CraftingRecipeBlock : MonoBehaviour
         recipe = _recipe;
 
         //Initialize icons
-        productIcon.texture = recipe.productItem.icon;
-        foreach (ItemScriptable _item in recipe.ingredientItems) {
+        productIcon.texture = recipe.productItem.ItemScriptableObject.icon;
+        foreach (Item _item in recipe.ingredientItems) {
             SlotUI _recipeBlock = Instantiate(ingredientIconPrefab, ingredientsParent).GetComponent<SlotUI>();
-            _recipeBlock.SetIcon(_item.icon);
+            _recipeBlock.SetIcon(_item.ItemScriptableObject.icon);
         }
     }
 

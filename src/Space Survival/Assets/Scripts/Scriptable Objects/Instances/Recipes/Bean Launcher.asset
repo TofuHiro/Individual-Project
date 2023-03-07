@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
   m_Name: Bean Launcher
   m_EditorClassIdentifier: 
-  productGameObject: {fileID: 6103128231526736680, guid: 753b59e89fb589645826e58204ebfb85,
+  productItem: {fileID: -865179748182050284, guid: 753b59e89fb589645826e58204ebfb85,
     type: 3}
-  productItem: {fileID: 11400000, guid: ec8903daa977e104399602286dbf937f, type: 2}
   ingredientItems:
-  - {fileID: 11400000, guid: 6608cdbefda4f2545b36b688de892c61, type: 2}
-  - {fileID: 11400000, guid: 6608cdbefda4f2545b36b688de892c61, type: 2}
+  - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
+  - {fileID: -4181673858002766392, guid: 31378084e4516994b8c8d51ebd4ceb6f, type: 3}

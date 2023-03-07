@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Buildable : MonoBehaviour
 {
+    public ItemScriptable ItemInfo { get { return itemInfo; } private set { itemInfo = value; } }
+
+    [Tooltip("The item scriptable object for this buildable")]
+    [SerializeField] ItemScriptable itemInfo;
     [Tooltip("The physical model game object. Make sure that the desired layer is set on this object")]
     [SerializeField] GameObject modelObject;
 
@@ -54,7 +58,6 @@ public class Buildable : MonoBehaviour
     /// Set the position for this buildable to move to
     /// </summary>
     /// <param name="_pos">The vector3 position to move to</param>
-    /// <param name="snapToGrid">Whether to snap to the given grid size of this buildable or not</param>
     public void SetPosition(Vector3 _pos)
     {
         _pos.x = Mathf.RoundToInt(_pos.x / gridSize.x) * gridSize.x;

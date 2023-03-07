@@ -5,13 +5,12 @@ public class BuildingTool : Weapon
     BuildingManager buildingManager;
     InterfaceManager interfaceManager;
 
-    //current building ref
-    BuildingManager.BuildableRecipe currentBuildable;
     Buildable currentBlueprint;
 
     LayerMask layerMask;
     //To switch to blueprint layer and back
     int tempLayer;
+    bool isBlueprinting, isRemoving;
 
     void Start()
     {
@@ -19,7 +18,6 @@ public class BuildingTool : Weapon
         interfaceManager = InterfaceManager.Instance;
         semiAutomatic = true;
 
-        currentBuildable = new BuildingManager.BuildableRecipe();
         layerMask = buildingManager.GetBuildingMasks();
     }
 
@@ -40,31 +38,32 @@ public class BuildingTool : Weapon
     /// Sets and displays a blueprint of the given buildable object
     /// </summary>
     /// <param name="_buildable">The buildable to set the blueprint to build to</param>
-    public void SetBlueprint(BuildableSlot _buildable)
+    public void SetBlueprint(Buildable _buildable)
     {
         if (_buildable == null) {
             CancelBuild();
             return;
         }
 
-        //Set current buildable ref
-        currentBuildable.GameObject = ObjectPooler.SpawnObject(_buildable.BuildableRecipe.ItemInfo.name + "_blueprint", _buildable.BuildableRecipe.GameObject);
-        currentBuildable.ItemInfo = _buildable.BuildableRecipe.ItemInfo;
-        currentBuildable.Ingredients = _buildable.BuildableRecipe.Ingredients;
-        currentBlueprint = currentBuildable.GetBuildable();
+        currentBlueprint = ObjectPooler.SpawnObject(_buildable.ItemInfo.name + "_blueprint", _buildable.gameObject).GetComponent<Buildable>();
 
         //Save layer and switch to blueprint
         tempLayer = currentBlueprint.GetObject().layer;
         currentBlueprint.GetObject().layer = LayerMask.NameToLayer("Blueprint");
         currentBlueprint.StartBlueprint();
+        isBlueprinting = true;
     }
 
     protected override void Update()
     {
         base.Update();
         //blueprint set
-        if (currentBuildable.GameObject != null) {
+        if (isBlueprinting) {
             PositionBlueprint();
+        }
+
+        if (isRemoving) {
+            GetTarget();
         }
     }
 
@@ -84,24 +83,50 @@ public class BuildingTool : Weapon
         }
     }
 
+    /// <summary>
+    /// Gets and highlights the buildable the player is looking at
+    /// </summary>
+    void GetTarget()
+    {
+        //Check for a surface within range
+        RaycastHit _hit;
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
+        if (_hit.transform != null) {
+            if (_hit.transform.CompareTag("Buildable")) {
+                //Highlight object
+            }
+        }
+    }
+
     protected override void Attack()
     {
-        if (currentBuildable.GameObject == null)
-            return;
+        base.Attack();
 
+        if (isBlueprinting) {
+            BuildBlueprint();
+        }
+
+        if (isRemoving) {
+            Remove();
+        }
+    }
+
+    /// <summary>
+    /// Finalizes the blueprint and creates a physical object of the buildable
+    /// </summary>
+    void BuildBlueprint()
+    {
         //Finish transition for real pos
         currentBlueprint.SetPosition(currentBlueprint.GetTargetPos());
 
         //If overlapping
-        if (!buildingManager.BuildObject(currentBuildable))
+        if (!buildingManager.BuildObject(currentBlueprint))
             return;
-
-        base.Attack();
 
         //Create instance
         Buildable _newBuildable = ObjectPooler.SpawnObject(
-            currentBuildable.ItemInfo.name,
-            currentBuildable.GameObject,
+            currentBlueprint.ItemInfo.name,
+            currentBlueprint.gameObject,
             currentBlueprint.GetTargetPos(),
             currentBlueprint.transform.rotation).GetComponent<Buildable>();
         _newBuildable.Build();
@@ -109,19 +134,44 @@ public class BuildingTool : Weapon
         _newBuildable.GetObject().layer = tempLayer;
 
         //Check with remaining items if can continue building
-        if (!buildingManager.CheckIngriedients(currentBuildable)) {
+        if (!buildingManager.CheckIngriedients(currentBlueprint)) {
             SetBlueprint(null);
+        }
+    }
+
+    /// <summary>
+    /// Removes the targeted buildable
+    /// </summary>
+    void Remove()
+    {
+        RaycastHit _hit;
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
+        if (_hit.transform != null) {
+            Buildable _buildable = _hit.transform.GetComponentInParent<Buildable>();
+            if (_buildable != null) {
+                ObjectPooler.PoolObject(_buildable.ItemInfo.name, _buildable.gameObject);
+                buildingManager.RemoveBuildable(_buildable);
+            }
         }
     }
 
     protected override void SecondaryAttack()
     {
         base.SecondaryAttack();
-        //If is building
-        if (currentBuildable.GameObject != null) {
+        //Building
+        if (isBlueprinting) {
             CancelBuild();
+            return;
         }
-        else {
+
+        //Removing
+        if (isRemoving) {
+            CancelBuild();
+            return;
+        }
+
+        //Toggle UI
+        if (!isBlueprinting && !isRemoving) {
             if (!BuildingManager.IsEnabled)
                 interfaceManager.OpenBuilding();
             else
@@ -131,7 +181,7 @@ public class BuildingTool : Weapon
 
     protected override void Reload()
     {
-        if (currentBuildable.GameObject == null)
+        if (currentBlueprint == null)
             return;
 
         base.Reload();
@@ -144,12 +194,22 @@ public class BuildingTool : Weapon
     /// </summary>
     void CancelBuild()
     {
-        if (currentBuildable.GameObject != null) {
+        if (currentBlueprint != null) {
             currentBlueprint.GetObject().layer = tempLayer;
-            ObjectPooler.PoolObject(currentBuildable.ItemInfo.name + "_blueprint", currentBuildable.GameObject);
-            currentBuildable.Clear();
+            ObjectPooler.PoolObject(currentBlueprint.ItemInfo.name + "_blueprint", currentBlueprint.gameObject);
             currentBlueprint = null;
         }
+
         tempLayer = 0;
+        isBlueprinting = false;
+        isRemoving = false;
+    }
+
+    /// <summary>
+    /// Set the tool to remove objects
+    /// </summary>
+    public void StartRemoveMode()
+    {
+        isRemoving = true;
     }
 }

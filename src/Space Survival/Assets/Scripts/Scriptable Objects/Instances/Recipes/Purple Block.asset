@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
   m_Name: Purple Block
   m_EditorClassIdentifier: 
-  productGameObject: {fileID: 3352759806383577489, guid: 31378084e4516994b8c8d51ebd4ceb6f,
+  productItem: {fileID: -4181673858002766392, guid: 31378084e4516994b8c8d51ebd4ceb6f,
     type: 3}
-  productItem: {fileID: 11400000, guid: 6608cdbefda4f2545b36b688de892c61, type: 2}
   ingredientItems:
-  - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
-  - {fileID: 11400000, guid: 52d8a71d63e927d4a8d56fe10c705780, type: 2}
+  - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
+  - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}

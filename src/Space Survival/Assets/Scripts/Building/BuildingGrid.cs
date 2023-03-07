@@ -78,6 +78,24 @@ public class BuildingGrid
     }
 
     /// <summary>
+    /// Removes a given structure from the building grid
+    /// </summary>
+    /// <param name="_buildable">The buildable to remove</param>
+    public void RemoveStructure(Buildable _buildable)
+    {
+        switch (_buildable.GetBuildableType()) {
+            case BuildableType.Floor:
+                RemoveFloor(_buildable.transform.position);
+                break;
+            case BuildableType.Wall:
+                RemoveEdge(_buildable.transform.position, _buildable.transform.rotation);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
     /// Add a floor to a grid point
     /// </summary>
     /// <param name="_pos">The world space position of the buildable</param>
@@ -101,6 +119,18 @@ public class BuildingGrid
             return true;
         }
 
+    }
+
+    /// <summary>
+    /// Removes a floor from the grid
+    /// </summary>
+    /// <param name="_pos">The position of the floor</param>
+    void RemoveFloor(Vector3 _pos)
+    {
+        //World space pos unit to normalized grid unit
+        _pos /= gridSize;
+
+        gridConstructions[_pos].Floor = false;
     }
 
     /// <summary>
@@ -166,5 +196,36 @@ public class BuildingGrid
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Remove an edge on the grid
+    /// </summary>
+    /// <param name="_pos">The position of the edge</param>
+    /// <param name="_rot">The rotation of the edge</param>
+    void RemoveEdge(Vector3 _pos, Quaternion _rot)
+    {
+        //World space pos unit to normalized grid unit
+        _pos /= gridSize;
+
+        //Each unit is 90 deg. Assume 0 deg is foward, rotating clockwise, 90 - right, 180 - back, 270 - left
+        int _unit = ((int)_rot.eulerAngles.y / 90);
+
+        //Front
+        if (_unit == 0) {
+            gridConstructions[_pos].GetEdge(Edge.Front) = false;
+        }
+        //Right
+        else if (_unit == 1) {
+            gridConstructions[_pos].GetEdge(Edge.Right) = false;
+        }
+        //Back
+        else if (_unit == 2) {
+            gridConstructions[_pos].GetEdge(Edge.Back) = false;
+        }
+        //Left
+        else if (_unit == 3) {
+            gridConstructions[_pos].GetEdge(Edge.Left) = false;
+        }
     }
 }
