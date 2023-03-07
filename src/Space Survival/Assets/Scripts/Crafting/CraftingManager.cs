@@ -150,7 +150,7 @@ public class CraftingManager : MonoBehaviour
 
         for (int i = 0; i < _items.Count; i++) {
             for (int j = 0; j < _recipe.ingredientItems.Length; j++) {
-                if (_items[i] == _recipe.ingredientItems[j] && !_acquired[j]) {
+                if (_items[i].ItemScriptableObject == _recipe.ingredientItems[j].ItemScriptableObject && !_acquired[j]) {
                     _acquired[j] = true;
                     break;
                 }
@@ -175,7 +175,7 @@ public class CraftingManager : MonoBehaviour
         if (!CheckRecipe(_recipe)) {
             return;
         }
-
+        
         //Remove all ingredient item from player inventory
         foreach (Item _item in _recipe.ingredientItems) {
             playerInventory.RemoveItem(_item);

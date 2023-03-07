@@ -148,6 +148,7 @@ public class PlayerInventory : MonoBehaviour
         IsEnabled = false;
         UIGameObject.SetActive(false);
         OnInventoryClose?.Invoke();
+        ResetInventory();
     }
 
     /// <summary>
@@ -328,6 +329,7 @@ public class PlayerInventory : MonoBehaviour
         DisplayItemInfo(null);
         DisplayDragItem(null);
         SelectedSlot = null;
+        hoveredSlot = null;
     }
 
     /// <summary>
