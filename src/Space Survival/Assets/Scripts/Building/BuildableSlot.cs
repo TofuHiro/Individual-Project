@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class BuildableSlot : MonoBehaviour
 {
-    public BuildingManager.BuildableRecipe BuildableRecipe { get; private set; }
+    public BuildableRecipe BuildableRecipe { get; private set; }
 
     BuildingManager buildingManager;
     SlotUI slotUI;
@@ -14,18 +14,18 @@ public class BuildableSlot : MonoBehaviour
     /// </summary>
     /// <param name="_buildable">The buildable prefab</param>
     /// <param name="_itemScriptable">The item scriptable object containing its information</param>
-    public void Init(GameObject _buildable, ItemScriptable _itemScriptable, List<ItemScriptable> _ingredients)
+    public void Init(Buildable _buildable, List<ItemScriptable> _ingredients)
     {
         buildingManager = BuildingManager.Instance;
         slotUI = GetComponent<SlotUI>();
 
-        BuildableRecipe = new BuildingManager.BuildableRecipe();
-
-        BuildableRecipe.GameObject = _buildable;
-        BuildableRecipe.ItemInfo = _itemScriptable;
-        BuildableRecipe.Ingredients = _ingredients;
-
-        slotUI.SetIcon(BuildableRecipe.ItemInfo.icon);
+        BuildableRecipe = new BuildableRecipe
+        {
+            Buildable = _buildable,
+            Ingredients = _ingredients
+        };
+       
+        slotUI.SetIcon(_buildable.ItemInfo.icon);
     }
 
     //Event system 

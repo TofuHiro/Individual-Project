@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.5537, g: 2263.3438, b: 3286.375, a: 1}
+  m_IndirectSpecularColor: {r: 2159.538, g: 2263.3047, b: 3286.375, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3847,20 +3847,17 @@ MonoBehaviour:
     m_Bits: 119
   gridSize: 4
   buildableCatalog:
-  - GameObject: {fileID: 8871663502924224483, guid: 81d458aa444fa894a9e47a7a94a1492c,
+  - Buildable: {fileID: 8871663502924224482, guid: 81d458aa444fa894a9e47a7a94a1492c,
       type: 3}
-    ItemInfo: {fileID: 11400000, guid: 7db51e90fdf867f44898a80bc33e1694, type: 2}
     Ingredients:
     - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
     - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
-  - GameObject: {fileID: 4745508946328770218, guid: c0519ab7c222fba46adf7ecb038d3068,
+  - Buildable: {fileID: 644595297911247784, guid: c0519ab7c222fba46adf7ecb038d3068,
       type: 3}
-    ItemInfo: {fileID: 11400000, guid: bbee5997534c667498b0a20bbb9908fc, type: 2}
     Ingredients:
     - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
-  - GameObject: {fileID: 60166750026231331, guid: 9861ea63147216e42bbae5bf99661b8f,
+  - Buildable: {fileID: 60166750026231328, guid: 9861ea63147216e42bbae5bf99661b8f,
       type: 3}
-    ItemInfo: {fileID: 11400000, guid: 48b1eb55ff9ccc344857b4eb723ad3fc, type: 2}
     Ingredients:
     - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
 --- !u!4 &330138476

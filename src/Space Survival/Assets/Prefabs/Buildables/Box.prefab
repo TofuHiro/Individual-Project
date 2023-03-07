@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8cfb3e1c9af5f4799be86c05309c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemInfo: {fileID: 11400000, guid: 48b1eb55ff9ccc344857b4eb723ad3fc, type: 2}
   modelObject: {fileID: 8396346369667108598}
   type: 2
   gridSize: {x: 0.25, y: 0.25, z: 0.25}

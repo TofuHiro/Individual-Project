@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Buildable : MonoBehaviour
 {
+    public ItemScriptable ItemInfo { get { return itemInfo; } private set { itemInfo = value; } }
+
+    [SerializeField] ItemScriptable itemInfo;
     [Tooltip("The physical model game object. Make sure that the desired layer is set on this object")]
     [SerializeField] GameObject modelObject;
 

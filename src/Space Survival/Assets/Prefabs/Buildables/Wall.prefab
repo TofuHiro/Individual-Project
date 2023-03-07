@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8cfb3e1c9af5f4799be86c05309c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemInfo: {fileID: 11400000, guid: bbee5997534c667498b0a20bbb9908fc, type: 2}
   modelObject: {fileID: 2926683415717387235}
   type: 1
   gridSize: {x: 4, y: 4, z: 4}
