@@ -83,6 +83,9 @@ public class BuildingTool : Weapon
         }
     }
 
+    /// <summary>
+    /// Gets and highlights the buildable the player is looking at
+    /// </summary>
     void GetTarget()
     {
         //Check for a surface within range
@@ -108,6 +111,9 @@ public class BuildingTool : Weapon
         }
     }
 
+    /// <summary>
+    /// Finalizes the blueprint and creates a physical object of the buildable
+    /// </summary>
     void BuildBlueprint()
     {
         //Finish transition for real pos
@@ -133,6 +139,9 @@ public class BuildingTool : Weapon
         }
     }
 
+    /// <summary>
+    /// Removes the targeted buildable
+    /// </summary>
     void Remove()
     {
         RaycastHit _hit;
@@ -140,6 +149,7 @@ public class BuildingTool : Weapon
         if (_hit.transform != null) {
             Buildable _buildable = _hit.transform.GetComponentInParent<Buildable>();
             if (_buildable != null) {
+                ObjectPooler.PoolObject(_buildable.ItemInfo.name, _buildable.gameObject);
                 buildingManager.RemoveBuildable(_buildable);
             }
         }
@@ -195,6 +205,9 @@ public class BuildingTool : Weapon
         isRemoving = false;
     }
 
+    /// <summary>
+    /// Set the tool to remove objects
+    /// </summary>
     public void StartRemoveMode()
     {
         isRemoving = true;

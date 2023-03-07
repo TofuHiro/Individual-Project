@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.538, g: 2263.3047, b: 3286.375, a: 1}
+  m_IndirectSpecularColor: {r: 2159.5537, g: 2263.3438, b: 3286.3984, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3850,16 +3850,16 @@ MonoBehaviour:
   - Buildable: {fileID: 8871663502924224482, guid: 81d458aa444fa894a9e47a7a94a1492c,
       type: 3}
     Ingredients:
-    - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
-    - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
+    - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
+    - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
   - Buildable: {fileID: 644595297911247784, guid: c0519ab7c222fba46adf7ecb038d3068,
       type: 3}
     Ingredients:
-    - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
+    - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
   - Buildable: {fileID: 60166750026231328, guid: 9861ea63147216e42bbae5bf99661b8f,
       type: 3}
     Ingredients:
-    - {fileID: 11400000, guid: e8fa8b986c25b4144bd5534936367aab, type: 2}
+    - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
 --- !u!4 &330138476
 Transform:
   m_ObjectHideFlags: 0

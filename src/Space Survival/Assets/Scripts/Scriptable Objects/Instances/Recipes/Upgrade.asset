@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
   m_Name: Upgrade
   m_EditorClassIdentifier: 
-  productGameObject: {fileID: 5201715205057548557, guid: 9fe98aed7fc34c84cbc0b6a0f9ae5d64,
-    type: 3}
-  productItem: {fileID: 11400000, guid: 851630232afb29c45879c087a649acbb, type: 2}
+  productItem: {fileID: 0}
   ingredientItems:
-  - {fileID: 11400000, guid: 52d8a71d63e927d4a8d56fe10c705780, type: 2}
-  - {fileID: 11400000, guid: 52d8a71d63e927d4a8d56fe10c705780, type: 2}
-  - {fileID: 11400000, guid: 52d8a71d63e927d4a8d56fe10c705780, type: 2}
+  - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}
+  - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}
+  - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}

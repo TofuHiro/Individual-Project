@@ -41,7 +41,7 @@ public class CraftingManager : MonoBehaviour
     PlayerInventory playerInventory;
 
     List<CraftingRecipeBlock> recipeBlocks;
-    ItemScriptable[] playerItems;
+    Item[] playerItems;
 
     void Start()
     {
@@ -158,8 +158,8 @@ public class CraftingManager : MonoBehaviour
             return;
 
         //Get all player items
-        List<ItemScriptable> _items = playerInventory.GetItems();
-        playerItems = new ItemScriptable[_items.Count];
+        List<Item> _items = playerInventory.GetItems();
+        playerItems = new Item[_items.Count];
         for (int i = 0; i < _items.Count; i++) {
             playerItems[i] = _items[i];
         }
@@ -170,9 +170,9 @@ public class CraftingManager : MonoBehaviour
         }
 
         //Check off item for each recipe with all items
-        foreach (ItemScriptable _item in playerItems) {
+        foreach (Item _item in playerItems) {
             foreach (CraftingRecipeBlock _recipeBlock in recipeBlocks) {
-                _recipeBlock.CheckIngredients(_item);
+                _recipeBlock.CheckIngredients(_item.ItemScriptableObject);
             }
         }
     }
@@ -184,12 +184,12 @@ public class CraftingManager : MonoBehaviour
     public void CraftRecipe(ItemRecipe _recipe)
     {
         //Remove all ingredient item from player inventory
-        foreach (ItemScriptable _item in _recipe.ingredientItems) {
+        foreach (Item _item in _recipe.ingredientItems) {
             playerInventory.RemoveItem(_item);
         }
 
         //Create and give new item to player
-        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.name, _recipe.productGameObject);
+        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.ItemScriptableObject.name, _recipe.productItem.gameObject);
         Item _newItem = _newObject.GetComponent<Item>();
         ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         playerInventory.AddItem(_newItem);

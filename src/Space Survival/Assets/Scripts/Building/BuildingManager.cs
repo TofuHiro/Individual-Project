@@ -7,16 +7,7 @@ using UnityEngine;
 public class BuildableRecipe
 {
     public Buildable Buildable;
-    public List<ItemScriptable> Ingredients;
-
-    /// <summary>
-    /// Clears/resets this class
-    /// </summary>
-    public void Clear()
-    {
-        Buildable = null;
-        Ingredients = null;
-    }
+    public List<Item> Ingredients;
 }
 public class BuildingManager : MonoBehaviour
 {
@@ -165,14 +156,15 @@ public class BuildingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks to see if the given recipe can be built based on the player's current items
+    /// Checks to see if the given buildable can be built based on the player's current items
     /// </summary>
-    /// <param name="_buildable">The recipe to check</param>
+    /// <param name="_buildable">The recipe of the buildable to check</param>
     /// <returns>Returns true if the player is able to craft this recipe</returns>
     public bool CheckIngriedients(Buildable _buildable)
     {
-        List<ItemScriptable> _playerItems = playerInventory.GetItems();
-        List<ItemScriptable> _ingredients = GetIngredients(_buildable);
+        List<Item> _playerItems = playerInventory.GetItems();
+        List<Item> _ingredients = GetIngredients(_buildable);
+
         //Array to keep track of all the required items and if they are acquired
         bool[] _acquired = new bool[_ingredients.Count];
 
@@ -180,7 +172,7 @@ public class BuildingManager : MonoBehaviour
         for (int i = 0; i < _playerItems.Count; i++) {
             for (int j = 0; j < _ingredients.Count; j++) {
                 //If so, mark it as acquired
-                if (_playerItems[i] == _ingredients[j] && !_acquired[j]) {
+                if (_playerItems[i].ItemScriptableObject == _ingredients[j].ItemScriptableObject && !_acquired[j]) {
                     _acquired[j] = true;
                     break;
                 }
@@ -197,11 +189,21 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
-    List<ItemScriptable> GetIngredients(Buildable _buildable)
+    /// <summary>
+    /// Get the list of ingredients required to build the given buildable
+    /// </summary>
+    /// <param name="_buildable">The buildable's ingredients to get</param>
+    /// <returns>Returns a list of item objects</returns>
+    List<Item> GetIngredients(Buildable _buildable)
     {
         return buildableCatalog[GetBuildableRecipeIndex(_buildable)].Ingredients;
     }
 
+    /// <summary>
+    /// Returns the index of the buildable in the recipe catalog
+    /// </summary>
+    /// <param name="_buildable"></param>
+    /// <returns></returns>
     int GetBuildableRecipeIndex(Buildable _buildable)
     {
         for (int i = 0; i < buildableCatalog.Count; i++) {
@@ -215,7 +217,7 @@ public class BuildingManager : MonoBehaviour
     /// <summary>
     /// Displays the buildable and its info along with all the ingredients required in the UI
     /// </summary>
-    /// <param name="_buildable">The slot with the buildable and its info</param>
+    /// <param name="_buildable">The recipe to display</param>
     void DisplayBuildable(BuildableRecipe _buildable)
     {
         if (_buildable != null) {
@@ -223,7 +225,7 @@ public class BuildingManager : MonoBehaviour
             //Display all ingredients in icon
             for (int i = 0; i < _buildable.Ingredients.Count; i++) {
                 ingredientSlots[i].gameObject.SetActive(true);
-                ingredientSlots[i].SetIcon(_buildable.Ingredients[i].icon);
+                ingredientSlots[i].SetIcon(_buildable.Ingredients[i].ItemScriptableObject.icon);
             }
             //And hide all other icons
             for (int i = _buildable.Ingredients.Count; i < ingredientSlots.Length; i++) {
@@ -244,17 +246,17 @@ public class BuildingManager : MonoBehaviour
     /// <summary>
     /// Adds the buildable to the grid and removes the ingredient items from the player inventory
     /// </summary>
-    /// <param name="_buildable">The recipe that has been built</param>
+    /// <param name="_buildable">The buildable that has been built</param>
     /// <returns>Returns true if the structure is not overlapping another in the grid</returns>
     public bool BuildObject(Buildable _buildable)
     {
         if (!buildingGrid.AddStructure(_buildable)) 
             return false;
 
-        List<ItemScriptable> _ingredients = GetIngredients(_buildable);
+        List<Item> _ingredients = GetIngredients(_buildable);
 
         //Remove items
-        foreach (ItemScriptable _item in _ingredients) {
+        foreach (Item _item in _ingredients) {
             playerInventory.RemoveItem(_item);
         }
 
@@ -262,18 +264,32 @@ public class BuildingManager : MonoBehaviour
     }
 
     //UI Button
+    /// <summary>
+    /// Sets the current building tool to remove objects
+    /// </summary>
     public void StartRemoveMode()
     {
         equippedTool.StartRemoveMode();
         interfaceManager.CloseBuilding();
     }
 
+    /// <summary>
+    /// Removes the buidable from the building grid and refunds items to player
+    /// </summary>
+    /// <param name="_buildable">The buildable that has been removed</param>
     public void RemoveBuildable(Buildable _buildable)
     {
-        ObjectPooler.PoolObject(_buildable.ItemInfo.name, _buildable.gameObject);
         buildingGrid.RemoveStructure(_buildable);
 
         //Give items
+        List<Item> _ingredients = GetIngredients(_buildable);
+
+        foreach (Item _item in _ingredients) {
+            GameObject _newObject = ObjectPooler.SpawnObject(_item.ItemScriptableObject.name, _item.gameObject);
+            Item _newItem = _newObject.GetComponent<Item>();
+            ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
+            playerInventory.AddItem(_newItem);
+        }
     }
 
     /// <summary>

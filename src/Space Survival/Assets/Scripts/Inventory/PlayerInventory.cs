@@ -68,12 +68,12 @@ public class PlayerInventory : MonoBehaviour
     /// Returns all the players items in inventory slots
     /// </summary>
     /// <returns></returns>
-    public List<ItemScriptable> GetItems()
+    public List<Item> GetItems()
     {
-        List<ItemScriptable> _items = new List<ItemScriptable>();
+        List<Item> _items = new List<Item>();
         foreach (InventorySlot _item in inventorySlots) {
             if (_item.CurrentItem != null) {
-                _items.Add(_item.CurrentItem.ItemScriptableObject);
+                _items.Add(_item.CurrentItem);
             }
         }
 
@@ -172,13 +172,13 @@ public class PlayerInventory : MonoBehaviour
     /// Removes the given item from the inventory
     /// </summary>
     /// <param name="_item">The item to remove from the inventory</param>
-    public void RemoveItem(ItemScriptable _item)
+    public void RemoveItem(Item _item)
     {
         //Find item in inventory slots
         foreach (InventorySlot _slot in inventorySlots) {
             if (_slot.CurrentItem != null) {
                 //If equal, remove
-                if (_slot.CurrentItem.ItemScriptableObject == _item) {
+                if (_slot.CurrentItem.ItemScriptableObject == _item.ItemScriptableObject) {
                     _slot.ClearItem();
                     return;
                 }

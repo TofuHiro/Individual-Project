@@ -13,8 +13,8 @@ public class BuildableSlot : MonoBehaviour
     /// Initialize this build slot with a buildable object and its information
     /// </summary>
     /// <param name="_buildable">The buildable prefab</param>
-    /// <param name="_itemScriptable">The item scriptable object containing its information</param>
-    public void Init(Buildable _buildable, List<ItemScriptable> _ingredients)
+    /// <param name="_ingredients">The ingredients of the buildable</param>
+    public void Init(Buildable _buildable, List<Item> _ingredients)
     {
         buildingManager = BuildingManager.Instance;
         slotUI = GetComponent<SlotUI>();

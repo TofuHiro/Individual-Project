@@ -44,15 +44,17 @@ public class CraftingRecipeBlock : MonoBehaviour
         //Initialize key value pairs to be checked off
         acquiredIngredients = new IngredientCheck[recipe.ingredientItems.Length];
         for (int i = 0; i < acquiredIngredients.Length; i++) {
-            acquiredIngredients[i] = new IngredientCheck();
-            acquiredIngredients[i].Item = recipe.ingredientItems[i];
+            acquiredIngredients[i] = new IngredientCheck
+            {
+                Item = recipe.ingredientItems[i].ItemScriptableObject
+            };
         }
 
         //Initialize icons
-        productIcon.texture = recipe.productItem.icon;
-        foreach (ItemScriptable _item in recipe.ingredientItems) {
+        productIcon.texture = recipe.productItem.ItemScriptableObject.icon;
+        foreach (Item _item in recipe.ingredientItems) {
             SlotUI _recipeBlock = Instantiate(ingredientIconPrefab, ingredientsParent).GetComponent<SlotUI>();
-            _recipeBlock.SetIcon(_item.icon);
+            _recipeBlock.SetIcon(_item.ItemScriptableObject.icon);
         }
     }
 
