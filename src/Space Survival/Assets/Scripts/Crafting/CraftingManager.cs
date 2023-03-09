@@ -25,7 +25,7 @@ public class CraftingManager : MonoBehaviour
         public List<ItemRecipe> Recipes;
     }
 
-    public bool IsEnabled { get; private set; }
+    public static bool IsEnabled { get; private set; }
 
     [Tooltip("Game object holding the crafting user interface")]
     [SerializeField] GameObject UIGameObject;

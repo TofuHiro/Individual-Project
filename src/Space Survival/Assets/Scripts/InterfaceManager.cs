@@ -36,8 +36,6 @@ public class InterfaceManager : MonoBehaviour
     void OnDisable()
     {
         PlayerController.OnInventoryToggle -= ToggleInventory;
-        PlayerController.OnInventoryToggle -= CloseCrafting;
-        PlayerController.OnInventoryToggle -= CloseBuilding;
     }
 
     /// <summary>
@@ -45,9 +43,17 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     void ToggleInventory()
     {
-        bool _state = !PlayerInventory.IsEnabled;
+        if (CraftingManager.IsEnabled) {
+            CloseCrafting();
+            return;
+        }
 
-        if (_state) 
+        if (BuildingManager.IsEnabled) {
+            CloseBuilding();
+            return;
+        }
+
+        if (!PlayerInventory.IsEnabled) 
             OpenInventory();
         else 
             CloseInventory();
@@ -83,14 +89,13 @@ public class InterfaceManager : MonoBehaviour
     /// <param name="_type">The set of recipes to display</param>
     public void OpenCrafting(CraftingStationType _type)
     {
-        OpenInventory();
+        inventory.SetInventory(true);
         crafting.OpenCraftingInterface(_type);
 
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
         ToggleInterfaceInputs(true);
-        PlayerController.OnInventoryToggle += CloseCrafting;
     }
 
     /// <summary>
@@ -98,13 +103,13 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     void CloseCrafting()
     {
+        inventory.SetInventory(false);
         crafting.CloseInterface();
         
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
         ToggleInterfaceInputs(false);
-        PlayerController.OnInventoryToggle -= CloseCrafting;
     }
 
     /// <summary>
@@ -112,12 +117,11 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     public void OpenBuilding()
     {
+        inventory.SetInventory(true);
         building.OpenInterface();
         
         player.ToggleRotation(false);
-        player.ToggleAttack(false);
         ToggleInterfaceInputs(true);
-        PlayerController.OnInventoryToggle += CloseBuilding;
     }
 
     /// <summary>
@@ -125,12 +129,11 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     public void CloseBuilding()
     {
+        inventory.SetInventory(false);
         building.CloseInterface();
 
-        ToggleInterfaceInputs(false);
         player.ToggleRotation(true);
-        player.ToggleAttack(true);
-        PlayerController.OnInventoryToggle -= CloseBuilding;
+        ToggleInterfaceInputs(false);
     }
 
     /// <summary>

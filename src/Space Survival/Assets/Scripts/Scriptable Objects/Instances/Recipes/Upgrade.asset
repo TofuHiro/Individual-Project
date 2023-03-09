@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
   m_Name: Upgrade
   m_EditorClassIdentifier: 
-  productItem: {fileID: 0}
+  productItem: {fileID: 5201715205057548559, guid: 9fe98aed7fc34c84cbc0b6a0f9ae5d64,
+    type: 3}
   ingredientItems:
   - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}
   - {fileID: 8843436759824929345, guid: cfa4d98fcc5e53841bb2ff61e51a7b66, type: 3}

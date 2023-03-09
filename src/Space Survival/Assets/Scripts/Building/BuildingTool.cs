@@ -32,6 +32,7 @@ public class BuildingTool : Weapon
         base.Holster();
         CancelBuild();
         buildingManager.SetTool(null);
+        buildingManager.CloseInterface();
     }
 
     /// <summary>
