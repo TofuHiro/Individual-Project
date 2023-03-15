@@ -3845,7 +3845,7 @@ MonoBehaviour:
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 119
-  gridSize: 4
+  gridUnit: 4
   buildableCatalog:
   - Buildable: {fileID: 8871663502924224482, guid: 81d458aa444fa894a9e47a7a94a1492c,
       type: 3}

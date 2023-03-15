@@ -3,177 +3,141 @@ using UnityEngine;
 
 public class BuildingGrid
 {
-    class StructureSystem
-    {
-        readonly Vector3Int[] traverseDir =
-        {
-        new Vector3Int(0, -1, 0),   //Down
-        new Vector3Int(0, 0, 1),    //Front
-        new Vector3Int(1, 0, 0),    //Right
-        new Vector3Int(0, 0, -1),   //Back
-        new Vector3Int(-1, 0, 0),   //Left
-        new Vector3Int(0, 1, 0),    //Up
-        };
-
-        GridStructure[,,] grid;
-        Vector3Int gridDimension;
-        int gridSize;
-
-        public StructureSystem(int _gridSize)
-        {
-            gridSize = _gridSize;
-        }
-
-        public void CreateGrid(Vector3Int _size)
-        {
-            grid = new GridStructure[_size.x, _size.y, _size.z];
-            gridDimension = _size;
-        }
-
-        public bool CheckPosConnected(Vector3 _worldSpacePos)
-        {
-            Vector3Int _gridPos = new Vector3Int((int)_worldSpacePos.x, (int)_worldSpacePos.y, (int)_worldSpacePos.z);
-            bool _connected = false;
-            for (int i = 0; i < 6; i++) {
-                if (CheckPosForStructure(_gridPos + (traverseDir[i]))) {
-                    _connected = true;
-                }
-            }
-            return _connected;
-        }
-
-        bool CheckPosForStructure(Vector3Int _gridPos)
-        {
-            if (CheckPosInGrid(_gridPos))
-                return false;
-            else 
-                return grid[_gridPos.x, _gridPos.y, _gridPos.z] != null;
-        }
-
-        bool CheckPosInGrid(Vector3Int _gridPos)
-        {
-            if (_gridPos.x < 0
-                || _gridPos.x > gridDimension.x
-                || _gridPos.y < 0
-                || _gridPos.y > gridDimension.y
-                || _gridPos.z < 0
-                || _gridPos.z > gridDimension.z)
-                return false;
-            else
-                return true;
-        }
-
-        public void AddFloor(Vector3Int _gridPos)
-        {
-            //Change grid size if need
-
-            grid[_gridPos.x, _gridPos.y, _gridPos.z].Floor = true;
-        }
-
-        public bool CheckOverlapFloor(Vector3Int _gridPos)
-        {
-            if (!CheckPosInGrid(_gridPos))
-                return false;
-            else
-                return grid[_gridPos.x, _gridPos.y, _gridPos.z].Floor == true;
-        }
-
-        public void AddEdge(Vector3Int _gridPos, Edge _edge)
-        {
-            //Change grid size if need
-
-            grid[_gridPos.x, _gridPos.y, _gridPos.z].GetEdge(_edge) = true;
-        }
-
-        public bool CheckOverlapEdge(Vector3Int _gridPos, Edge _edge)
-        {
-            if (!CheckPosInGrid(_gridPos))
-                return false;
-            else
-                return grid[_gridPos.x, _gridPos.y, _gridPos.z].GetEdge(_edge) == true;
-        }
-    }
-
-    //Each point on the grid
-    class GridStructure
-    {
-        //Each point will include these structures that may not overlap
-        public bool Floor, FrontWall, RightWall, BackWall, LeftWall;
-        public bool Sealed;
-
-        /// <summary>
-        /// Get the reference of the corresponding edge bool
-        /// </summary>
-        /// <param name="_edge">The edge to get</param>
-        /// <returns>The bool ref of the given edge</returns>
-        public ref bool GetEdge(Edge _edge)
-        {
-            switch (_edge) {
-                case Edge.Right:
-                    return ref RightWall;
-                case Edge.Back:
-                    return ref BackWall;
-                case Edge.Left:
-                    return ref LeftWall;
-                default:
-                    //Edge.Front
-                    return ref FrontWall;
-            }
-        }
-    }
-
-    public enum Edge
-    {
-        Front,
-        Right,
-        Back,
-        Left
-    }
-
     List<StructureSystem> systems;
-    int gridSize;
+    int gridUnit;
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="_gridSize">The size of each unit in the building grid</param>
-    public BuildingGrid(int _gridSize)
+    /// <param name="_gridUnit">The size of each unit in the building grid</param>
+    public BuildingGrid(int _gridUnit)
     {
         systems = new List<StructureSystem>();
-        gridSize = _gridSize;
+        gridUnit = _gridUnit;
     }
 
-    StructureSystem GetConnectedSystem(Vector3 _worldSpacePos)
+    /// <summary>
+    /// Creates a new building system 
+    /// </summary>
+    /// <param name="_worldSpacePos">The origin position of the new system</param>
+    /// <returns>Returns the new system created</returns>
+    StructureSystem CreateNewSystem(Vector3 _worldSpacePos)
     {
-        int _connections = 0;
-        List<StructureSystem> _connectedSystem = new List<StructureSystem>();
+        StructureSystem _newSystem = new StructureSystem(_worldSpacePos, Vector3Int.one,gridUnit);
+        systems.Add(_newSystem);
+
+        return _newSystem;
+    }
+
+    /// <summary>
+    /// Returns the system if there is an exisiting structure at the given position
+    /// </summary>
+    /// <param name="_worldSpacePos">The world space position to check</param>
+    /// <returns>Returns the system at the position</returns>
+    StructureSystem GetSystem(Vector3 _worldSpacePos)
+    {
+        foreach (StructureSystem _system in systems) {
+            if (_system.CheckPosForStructure(_worldSpacePos)) {
+                return _system;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns a system for the given position to join
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to find a system for</param>
+    /// <returns>Returns a system that links to the position</returns>
+    StructureSystem JoinSystem(Vector3 _worldSpacePos)
+    {
+        if (GetSystem(_worldSpacePos) != null) {
+            return GetSystem(_worldSpacePos);
+        }
+
+        List<StructureSystem> _systems = GetConnectedSystems(_worldSpacePos);
+        //No connected systems
+        if (_systems.Count == 0) {
+            return CreateNewSystem(_worldSpacePos);
+        }
+        //1 or more systems
+        else {
+            //Connect all systems to one
+            for (int i = 1; i < _systems.Count; i++) {
+                _systems[0] = ConnectSystems(_systems[0], _systems[i]);
+            }
+            return _systems[0];
+        }
+    }
+
+    /// <summary>
+    /// Gets all systems that are connected to the given position
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to check for systems</param>
+    /// <returns>A list of systems that are connected to the position</returns>
+    List<StructureSystem> GetConnectedSystems(Vector3 _worldSpacePos)
+    {
+        List<StructureSystem> _connectedSystems = new List<StructureSystem>();
         foreach (StructureSystem _system in systems) {
             if (_system.CheckPosConnected(_worldSpacePos)) {
-                _connectedSystem.Add(_system);
-                _connections++;
+                _connectedSystems.Add(_system);
             }
         }
 
-        if (_connections == 1) {
-            return _connectedSystem[0];
-        }
-        /*else if (_connections > 1) {
-            return ConnectSystems(_connectedSystem);
-        }*/
-        else {
-            return null;
-        }
+        return _connectedSystems;
     }
 
-    StructureSystem CreateNewSystem()
+    /// <summary>
+    /// Connects 2 systems together and returns the connected system
+    /// </summary>
+    /// <param name="_first"></param>
+    /// <param name="_second"></param>
+    /// <returns>The connected systems</returns>
+    StructureSystem ConnectSystems(StructureSystem _first, StructureSystem _second)
     {
-        return new StructureSystem(gridSize);
+        //Check size between one end of one system to highest end of other system
+        int _xMax = Mathf.Max((int)(_second.OriginWorldPos.x + (_second.GridSize.x * gridUnit) - _first.OriginWorldPos.x) / gridUnit, (int)(_first.OriginWorldPos.x + (_first.GridSize.x * gridUnit) - _second.OriginWorldPos.x) / gridUnit);
+        //Check if sizes of grids are bigger
+        _xMax = Mathf.Max(_xMax, _first.GridSize.x);
+        _xMax = Mathf.Max(_xMax, _second.GridSize.x);
+
+        int _yMax = Mathf.Max((int)(_second.OriginWorldPos.y + (_second.GridSize.y * gridUnit) - _first.OriginWorldPos.y) / gridUnit, (int)(_first.OriginWorldPos.y + (_first.GridSize.y * gridUnit) - _second.OriginWorldPos.y) / gridUnit);
+        _yMax = Mathf.Max(_yMax, _first.GridSize.y);
+        _yMax = Mathf.Max(_yMax, _second.GridSize.y);
+        
+        int _zMax = Mathf.Max((int)(_second.OriginWorldPos.z + (_second.GridSize.z * gridUnit) - _first.OriginWorldPos.z) / gridUnit, (int)(_first.OriginWorldPos.z + (_first.GridSize.z * gridUnit) - _second.OriginWorldPos.z) / gridUnit);
+        _zMax = Mathf.Max(_zMax, _first.GridSize.z);
+        _zMax = Mathf.Max(_zMax, _second.GridSize.z);
+
+        Vector3 _newOrigin = Vector3.Min(_first.OriginWorldPos, _second.OriginWorldPos);
+        StructureSystem _newSystem = new StructureSystem(_newOrigin, new Vector3Int(_xMax, _yMax, _zMax), gridUnit);
+
+        Vector3Int _firstOffset = Vector3Int.RoundToInt(_first.OriginWorldPos - _newOrigin) / gridUnit;
+        Vector3Int _secondOffset = Vector3Int.RoundToInt(_second.OriginWorldPos - _newOrigin) / gridUnit;
+
+        _newSystem.CombineGrid(_first.GetGrid(), _first.GridSize, _firstOffset);
+        _newSystem.CombineGrid(_second.GetGrid(), _second.GridSize, _secondOffset);
+
+        systems.Remove(_first);
+        systems.Remove(_second);
+        systems.Add(_newSystem);
+
+        return _newSystem;
     }
 
-    /*StructureSystem ConnectSystems(List<StructureSystem> _systems)
+    /// <summary>
+    /// Splits a system to many others given a point to split from
+    /// </summary>
+    /// <param name="_system">The system to split</param>
+    /// <param name="_splitPoint">The point to split the system from</param>
+    void SplitSystem(StructureSystem _system, Vector3 _splitPoint)
     {
-
-    }*/
+        List<StructureSystem> _newSystems = _system.SplitSystem(_splitPoint);
+        foreach (StructureSystem _newSystem in _newSystems) {
+            systems.Add(_newSystem);
+        }
+        systems.Remove(_system);
+    }
 
     /// <summary>
     /// Add a structure to the grid
@@ -202,6 +166,10 @@ public class BuildingGrid
         }
     }
 
+    /// <summary>
+    /// Removes a given structure from the grid
+    /// </summary>
+    /// <param name="_buildable"></param>
     public void RemoveStructure(Buildable _buildable)
     {
         switch (_buildable.GetBuildableType()) {
@@ -216,70 +184,104 @@ public class BuildingGrid
         }
     }
 
+    /// <summary>
+    /// Attempts to add a floor to a given position
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to add the floor to</param>
+    /// <returns>Returns false if overlapping another floor, otherwise true if successful</returns>
     bool AddFloor(Vector3 _worldSpacePos)
     {
         if (CheckOverlapFloor(_worldSpacePos)) 
             return false;
 
-        StructureSystem _system = GetConnectedSystem(_worldSpacePos);
-        if (_system == null) {
-            _system = CreateNewSystem();
-        }
-
-        Vector3Int _gridPos = new Vector3Int((int)_worldSpacePos.x, (int)_worldSpacePos.y, (int)_worldSpacePos.z);
-        _system.AddFloor(_gridPos);
+        JoinSystem(_worldSpacePos).AddFloor(_worldSpacePos);
         return true;
     }
 
+    /// <summary>
+    /// Removes a floor at a given position and splits the system if needed
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to remove the floor at</param>
     void RemoveFloor(Vector3 _worldSpacePos)
     {
-
+        StructureSystem _system = GetSystem(_worldSpacePos);
+        int _splitPoints = _system.RemoveFloor(_worldSpacePos);
+        if (_splitPoints == 0) {
+            systems.Remove(_system);
+        }
+        else if (_splitPoints > 1) {
+            SplitSystem(_system, _worldSpacePos);
+        }
     }
 
+    /// <summary>
+    /// Checks a position if a floor exists
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to check at</param>
+    /// <returns>Returns true if overlapping another floor</returns>
     bool CheckOverlapFloor(Vector3 _worldSpacePos)
     {
-        Vector3Int _gridPos = new Vector3Int((int)_worldSpacePos.x, (int)_worldSpacePos.y, (int)_worldSpacePos.z);
-
         foreach (StructureSystem _system in systems) {
-            if (_system.CheckOverlapFloor(_gridPos)) {
+            if (_system.CheckOverlapFloor(_worldSpacePos)) {
                 return true;
             }
         }
         return false;
     }
 
+    /// <summary>
+    /// Attempts to add an edge to a given position
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to add the edge to</param>
+    /// <param name="_edge">The edge type to add</param>
+    /// <returns>Returns false if overlapping another edge, otherwise true if successful</returns>
     bool AddEdge(Vector3 _worldSpacePos, Edge _edge)
     {
         if (CheckOverlapEdge(_worldSpacePos, _edge))
             return false;
 
-        StructureSystem _system = GetConnectedSystem(_worldSpacePos);
-        if (_system == null) {
-            _system = CreateNewSystem();
-        }
-
-        Vector3Int _gridPos = new Vector3Int((int)_worldSpacePos.x, (int)_worldSpacePos.y, (int)_worldSpacePos.z);
-        _system.AddEdge(_gridPos, _edge);
+        JoinSystem(_worldSpacePos).AddEdge(_worldSpacePos, _edge);
         return true;
     }
 
+    /// <summary>
+    /// Removes an edge at the given position and splits the system if needed
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to remove the edge at</param>
+    /// <param name="_edge">The type of edge to remove</param>
     void RemoveEdge(Vector3 _worldSpacePos, Edge _edge)
     {
-
+        StructureSystem _system = GetSystem(_worldSpacePos);
+        int _splitPoints = _system.RemoveEdge(_worldSpacePos, _edge);
+        if (_splitPoints == 0) {
+            systems.Remove(_system);
+        }
+        else if (_splitPoints > 1) {
+            SplitSystem(_system, _worldSpacePos);
+        }
     }
 
+    /// <summary>
+    /// Checks a position if an edge exists
+    /// </summary>
+    /// <param name="_worldSpacePos">The position to check at</param>
+    /// <param name="_edge">The type of edge to check for</param>
+    /// <returns>Returns true if overlapping another edge</returns>
     bool CheckOverlapEdge(Vector3 _worldSpacePos, Edge _edge)
     {
-        Vector3Int _gridPos = new Vector3Int((int)_worldSpacePos.x, (int)_worldSpacePos.y, (int)_worldSpacePos.z);
-
         foreach (StructureSystem _system in systems) {
-            if (_system.CheckOverlapEdge(_gridPos, _edge)) {
+            if (_system.CheckOverlapEdge(_worldSpacePos, _edge)) {
                 return true;
             }
         }
         return false;
     }
 
+    /// <summary>
+    /// Returns an edge type depending on a rotation
+    /// </summary>
+    /// <param name="_rot">The rotation to convert from</param>
+    /// <returns>Edge enum of the type of edge</returns>
     Edge RotationToEdge(Quaternion _rot)
     {
         //Each unit is 90 deg. Assume 0 deg is foward, rotating clockwise, 90 - right, 180 - back, 270 - left

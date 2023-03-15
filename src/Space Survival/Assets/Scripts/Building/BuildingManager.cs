@@ -39,7 +39,7 @@ public class BuildingManager : MonoBehaviour
     [Tooltip("Layer mask to ignore collision when detecting a surface for blueprints")]
     [SerializeField] LayerMask ignoreLayers;
     [Tooltip("The default size of each unit grid used for building")]
-    [SerializeField] int gridSize = 4;
+    [SerializeField] int gridUnit = 4;
 
     [Header("Catalog Setup")]
     [Tooltip("Set a catalog of all the buildable objects to be buildable and its required ingredients")]
@@ -73,7 +73,7 @@ public class BuildingManager : MonoBehaviour
             _slot.gameObject.SetActive(false);
         }
 
-        buildingGrid = new BuildingGrid(gridSize);
+        buildingGrid = new BuildingGrid(gridUnit);
 
         //Close after init
         CloseInterface();
