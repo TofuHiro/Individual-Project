@@ -7,6 +7,7 @@ public class GridStructure
     public bool LeftWall;
 
     public bool IsSealed;
+
     public bool IsEmpty { get { return !Floor && !FrontWall && !RightWall && !BackWall && !LeftWall; } }
 
     /// <summary>
