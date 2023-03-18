@@ -62,7 +62,7 @@ public class InterfaceManager : MonoBehaviour
     /// <summary>
     /// Shows inventory interface
     /// </summary>
-    void OpenInventory()
+    public void OpenInventory()
     {
         inventory.SetInventory(true);
 
@@ -74,7 +74,7 @@ public class InterfaceManager : MonoBehaviour
     /// <summary>
     /// Hides inventory interface
     /// </summary>
-    void CloseInventory()
+    public void CloseInventory()
     {
         inventory.SetInventory(false);
 
