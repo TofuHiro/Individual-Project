@@ -8864,6 +8864,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 5554083332992802433, guid: bb31373ddb3ef9f4e97025e80df6d436,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.5099983
+      objectReference: {fileID: 0}
     - target: {fileID: 6248562972436383878, guid: bb31373ddb3ef9f4e97025e80df6d436,
         type: 3}
       propertyPath: m_Pivot.x
@@ -28885,6 +28890,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Slot (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554083332992802433, guid: bb31373ddb3ef9f4e97025e80df6d436,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.5099983
       objectReference: {fileID: 0}
     - target: {fileID: 6248562972436383878, guid: bb31373ddb3ef9f4e97025e80df6d436,
         type: 3}
