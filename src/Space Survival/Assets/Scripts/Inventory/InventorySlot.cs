@@ -3,6 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
+    [SerializeField] bool isStorageSlot;
+
+    public bool IsStorageSlot { get { return isStorageSlot; } set { isStorageSlot = value; } }
     public Item CurrentItem { get; private set; }
     public bool IsOccupied { get; private set; } = false;
 

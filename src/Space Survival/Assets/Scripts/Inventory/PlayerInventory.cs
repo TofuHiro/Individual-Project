@@ -90,14 +90,14 @@ public class PlayerInventory : MonoBehaviour
             OpenInventory();
             
             PlayerController.OnUIClickStarted += SelectHoveredSlot;
-            PlayerController.OnUIClickCancelled += SwitchSlots;
+            PlayerController.OnUIClickCancelled += SwitchSelectedSlot;
             PlayerController.OnInteraction += UseSlot;
         }
         else {
             CloseInventory();
 
             PlayerController.OnUIClickStarted -= SelectHoveredSlot;
-            PlayerController.OnUIClickCancelled -= SwitchSlots;
+            PlayerController.OnUIClickCancelled -= SwitchSelectedSlot;
             PlayerController.OnInteraction -= UseSlot;
 
         }
@@ -151,6 +151,16 @@ public class PlayerInventory : MonoBehaviour
         ResetInventory();
     }
 
+    public InventorySlot GetVacantSlot()
+    {
+        foreach (InventorySlot _slot in inventorySlots) {
+            if (_slot.CurrentItem == null) {
+                return _slot;
+            }
+        }
+        return null;
+    }
+
     /// <summary>
     /// Adds a given item to a inventory slot
     /// </summary>
@@ -165,7 +175,6 @@ public class PlayerInventory : MonoBehaviour
                 return true;
             }
         }
-        
         return false;
     }
 
@@ -188,9 +197,24 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Removes the item at a given slot
+    /// </summary>
+    /// <param name="_targetSlot">The inventory slot to remove the item from</param>
+    public void RemoveItem(InventorySlot _targetSlot)
+    {
+        //Find item in inventory slots
+        foreach (InventorySlot _slot in inventorySlots) {
+            if (_slot == _targetSlot) {
+                _slot.ClearItem();
+                return;
+            }
+        }
+    }
+
+    /// <summary>
     /// Switches the hovered slot and the selected slot if able to
     /// </summary>
-    void SwitchSlots()
+    void SwitchSelectedSlot()
     {
         //If no selected slot set, or selected slot does not store an item
         if (SelectedSlot == null || SelectedSlot.CurrentItem == null) {
@@ -215,7 +239,7 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
 
-        SwitchSelectedSlot(SelectedSlot, hoveredSlot);
+        SwitchSlots(SelectedSlot, hoveredSlot);
     }
 
     /// <summary>
@@ -223,7 +247,7 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     /// <param name="_from">The slot to move item from</param>
     /// <param name="_to">The slot to move item to</param>
-    void SwitchSelectedSlot(InventorySlot _from, InventorySlot _to) 
+    void SwitchSlots(InventorySlot _from, InventorySlot _to) 
     {
         //Temp store the item at slot to move to
         if (_to.CurrentItem != null) {
@@ -252,13 +276,31 @@ public class PlayerInventory : MonoBehaviour
         if (hoveredSlot == null || hoveredSlot.CurrentItem == null)
             return;
 
-        SelectedSlot = hoveredSlot;
+        //Move to storage if active
+        if (Storage.StorageIsActive) {
+            //Move from storage to inventory
+            if (hoveredSlot.IsStorageSlot) {
+                InventorySlot _inventSlot = GetVacantSlot();
+                if (_inventSlot != null) {
+                    SwitchSlots(hoveredSlot, _inventSlot);
+                }
+            }
+            //Move from inventory to storage
+            else {
+                InventorySlot _storageSlot = Storage.ActiveStorage.GetVacantSlot();
+                if (_storageSlot != null) {
+                    SwitchSlots(hoveredSlot, _storageSlot);
+                }
+            }
+            return;
+        }
+
         //Get item type of the item that was clicked
-        ItemType _type = SelectedSlot.CurrentItem.GetItemType();
+        ItemType _type = hoveredSlot.CurrentItem.GetItemType();
 
         InventorySlot[] _slots;
         //Return to main inventory if in special slot
-        if (SelectedSlot.GetSlotType() != ItemType.Item)
+        if (hoveredSlot.GetSlotType() != ItemType.Item)
             _slots = inventorySlots;
         //Get the slots for the item type
         else
@@ -267,7 +309,7 @@ public class PlayerInventory : MonoBehaviour
         //Finds next vacant slot and switches/moves
         foreach (InventorySlot _slot in _slots) {
             if (!_slot.IsOccupied) {
-                SwitchSelectedSlot(SelectedSlot, _slot);
+                SwitchSlots(hoveredSlot, _slot);
                 return;
             }
         }
