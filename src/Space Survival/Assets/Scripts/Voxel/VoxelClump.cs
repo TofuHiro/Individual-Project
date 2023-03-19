@@ -7,14 +7,16 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class VoxelClump : MonoBehaviour
 {
-    [SerializeField] protected Vector3Int chunkSize = new Vector3Int(5, 5, 5);
+    [SerializeField] int chunkSize = 5;
     [SerializeField] protected int voxelPerUnit = 1;
-    [SerializeField] float roundingRadius = 5f;
     [SerializeField] int seed;
     [SerializeField] bool useRandomSeed;
     [SerializeField] float noiseScale = .1f;
     [Range(0f, 1f)]
     [SerializeField] float noiseThreshold = .4f;
+    [SerializeField] float thresholdFalloff = .3f;
+    [SerializeField] float falloffRadius = 3;
+    [SerializeField] float coreRadius = 2;
 
     MeshFilter meshFilter;
     MeshCollider meshCollider;
@@ -34,13 +36,19 @@ public class VoxelClump : MonoBehaviour
         vertices = new List<Vector3>();
         triangles = new List<int>();
         uvs = new List<Vector2>();
-        voxelMap = new bool[chunkSize.x * voxelPerUnit, chunkSize.y * voxelPerUnit, chunkSize.z * voxelPerUnit];
+        voxelMap = new bool[chunkSize * voxelPerUnit, chunkSize * voxelPerUnit, chunkSize * voxelPerUnit];
 
         if (useRandomSeed)
             seed = Random.Range(0, 100000);
 
         transform.position = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
 
+        PopulateVoxelMap();
+        UpdateMeshData();
+    }
+
+    void Update()
+    {
         PopulateVoxelMap();
         UpdateMeshData();
     }
@@ -78,11 +86,28 @@ public class VoxelClump : MonoBehaviour
 
     void PopulateVoxelMap()
     {
-        for (float x = 0; x < chunkSize.x; x += (1f / voxelPerUnit)) {
-            for (float y = 0; y < chunkSize.y; y += (1f / voxelPerUnit)) {
-                for (float z = 0; z < chunkSize.z; z += (1f / voxelPerUnit)) {
-                    if ((Vector3.Distance(new Vector3(x, y, z), Vector3.one * roundingRadius) <= roundingRadius)) {
-                        if (Noise.Perlin3D((x * noiseScale) + seed, (y * noiseScale) + seed, (z * noiseScale) + seed) >= noiseThreshold) {
+        voxelMap = new bool[chunkSize * voxelPerUnit, chunkSize * voxelPerUnit, chunkSize * voxelPerUnit];
+
+        for (float x = 0; x < chunkSize; x += (1f / voxelPerUnit)) {
+            for (float y = 0; y < chunkSize; y += (1f / voxelPerUnit)) {
+                for (float z = 0; z < chunkSize; z += (1f / voxelPerUnit)) {
+                    //Start with threshold low for center, higher the further out
+                    float _distFromCenter = Vector3.Distance(new Vector3(x, y, z), Vector3.one * (chunkSize / 2));
+                    if (_distFromCenter >= (chunkSize + 2) / 2) {
+                        continue;
+                    }
+
+                    if (_distFromCenter < coreRadius) {
+                        voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                    }
+                    else if (_distFromCenter >= falloffRadius) {
+                        float _distBasedThresh = noiseThreshold + (thresholdFalloff * (_distFromCenter - falloffRadius / ((chunkSize / 2) - falloffRadius)));
+                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= _distBasedThresh) {
+                            voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                        }
+                    }
+                    else {
+                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= noiseThreshold) {
                             voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
                         }
                     }
@@ -95,9 +120,9 @@ public class VoxelClump : MonoBehaviour
     {
         ClearMeshData();
 
-        for (float x = 0; x < chunkSize.x; x += 1f / voxelPerUnit) {
-            for (float y = 0; y < chunkSize.y; y += 1f / voxelPerUnit) {
-                for (float z = 0; z < chunkSize.z; z += 1f / voxelPerUnit) {
+        for (float x = 0; x < chunkSize; x += 1f / voxelPerUnit) {
+            for (float y = 0; y < chunkSize; y += 1f / voxelPerUnit) {
+                for (float z = 0; z < chunkSize; z += 1f / voxelPerUnit) {
                     if (voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)]) {
                         AddVoxel(new Vector3(x, y, z));
                     }
@@ -143,7 +168,7 @@ public class VoxelClump : MonoBehaviour
 
     bool CheckVoxel(Vector3 _pos)
     {
-        if ((_pos.x < 0) || (_pos.x > chunkSize.x - (1f / voxelPerUnit)) || (_pos.y < 0) || (_pos.y > chunkSize.y - (1f / voxelPerUnit)) || (_pos.z < 0) || (_pos.z > chunkSize.z - (1f / voxelPerUnit)))
+        if ((_pos.x < 0) || (_pos.x > chunkSize - (1f / voxelPerUnit)) || (_pos.y < 0) || (_pos.y > chunkSize - (1f / voxelPerUnit)) || (_pos.z < 0) || (_pos.z > chunkSize - (1f / voxelPerUnit)))
             return false;
 
         return voxelMap[(int)(_pos.x * voxelPerUnit), (int)(_pos.y * voxelPerUnit), (int)(_pos.z * voxelPerUnit)];
