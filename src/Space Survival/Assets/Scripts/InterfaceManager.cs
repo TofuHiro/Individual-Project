@@ -19,6 +19,7 @@ public class InterfaceManager : MonoBehaviour
     PlayerInventory inventory;
     CraftingManager crafting;
     BuildingManager building;
+    Storage currentStorage;
 
     void Start()
     {
@@ -53,6 +54,11 @@ public class InterfaceManager : MonoBehaviour
             return;
         }
 
+        if (Storage.StorageIsActive) {
+            CloseStorage();
+            return;
+        }
+
         if (!PlayerInventory.IsEnabled) 
             OpenInventory();
         else 
@@ -62,7 +68,7 @@ public class InterfaceManager : MonoBehaviour
     /// <summary>
     /// Shows inventory interface
     /// </summary>
-    void OpenInventory()
+    public void OpenInventory()
     {
         inventory.SetInventory(true);
 
@@ -74,7 +80,7 @@ public class InterfaceManager : MonoBehaviour
     /// <summary>
     /// Hides inventory interface
     /// </summary>
-    void CloseInventory()
+    public void CloseInventory()
     {
         inventory.SetInventory(false);
 
@@ -133,6 +139,30 @@ public class InterfaceManager : MonoBehaviour
         building.CloseInterface();
 
         player.ToggleRotation(true);
+        ToggleInterfaceInputs(false);
+    }
+
+    public void OpenStorage(Storage _storage)
+    {
+        currentStorage = _storage;
+        currentStorage.OpenInterface();
+        inventory.SetInventory(true);
+
+        player.ToggleMovement(false);
+        player.ToggleRotation(false);
+        player.ToggleAttack(false);
+        ToggleInterfaceInputs(true);
+    }
+
+    void CloseStorage()
+    {
+        currentStorage.CloseInterface();
+        currentStorage = null;
+        inventory.SetInventory(false);
+
+        player.ToggleMovement(true);
+        player.ToggleRotation(true);
+        player.ToggleAttack(true);
         ToggleInterfaceInputs(false);
     }
 
