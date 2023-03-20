@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1569780302361151565}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: -197365999462447535}
   - component: {fileID: -865179748182050284}
   - component: {fileID: -7350247325097614570}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bean Launcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,4 +174,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f38f32236d74541459fd768dbb7e768e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  semiAutomatic: 0
   projectileStartPoint: {fileID: 1569780302361151565}

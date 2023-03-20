@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5423048317039227025}
   - component: {fileID: 5423048317039227024}
   - component: {fileID: 5423048317039227023}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Oxygen Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,3 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: baaac9f2e04c9ae4780948b2b580a75b, type: 2}
+  pickable: 1

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3375713807519409777}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3375713808153150571}
   - component: {fileID: 3375713808153150580}
   - component: {fileID: 1464318101495343741}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Raygun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,4 +174,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05901f2b8ec1534facaa16f9049fae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  semiAutomatic: 0
   rayStartPoint: {fileID: 3375713807519409777}

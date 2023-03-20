@@ -50,6 +50,12 @@ public class PlayerInventory : MonoBehaviour
         weaponSlots = weaponSlotsHolder.GetComponentsInChildren<WeaponSlot>();
         upgradeSlots = upgradeSlotsHolder.GetComponentsInChildren<UpgradeSlot>();
 
+        //Change depend on difficulty
+        DeathManager.OnDie += DropInventoryItems;
+        DeathManager.OnDie += DropWeapons;
+        DeathManager.OnDie += DropArmours;
+        DeathManager.OnDie += DropUpgrades;
+
         //Start open to init children, then disable
         SetInventory(false);
     }
@@ -398,5 +404,49 @@ public class PlayerInventory : MonoBehaviour
             DragIconUI.SetIcon(null);
 
         DragIconUI.FollowCursor(_newItem != null);
+    }
+
+    /// <summary>
+    /// Drops all items in the player main inventory
+    /// </summary>
+    void DropInventoryItems()
+    {
+        foreach (InventorySlot _slot in inventorySlots) {
+            if (_slot.IsOccupied)
+                _slot.DropItem();
+        }
+    }
+
+    /// <summary>
+    /// Drops all of the players weapons
+    /// </summary>
+    void DropWeapons()
+    {
+        foreach (InventorySlot _slot in weaponSlots) {
+            if (_slot.IsOccupied)
+                _slot.DropItem();
+        }
+    }
+
+    /// <summary>
+    /// Drops all of the players armour
+    /// </summary>
+    void DropArmours()
+    {
+        foreach (InventorySlot _slot in armourSlots) {
+            if (_slot.IsOccupied)
+                _slot.DropItem();
+        }
+    }
+    
+    /// <summary>
+    /// Drops all of the players upgrades
+    /// </summary>
+    void DropUpgrades()
+    {
+        foreach (InventorySlot _slot in upgradeSlots) {
+            if (_slot.IsOccupied)
+                _slot.DropItem();
+        }
     }
 }

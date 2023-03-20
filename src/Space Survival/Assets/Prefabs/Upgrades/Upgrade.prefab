@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5201715205057548545}
   - component: {fileID: 5201715205057548544}
   - component: {fileID: 5201715205057548559}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Upgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}

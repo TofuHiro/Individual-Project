@@ -75,6 +75,9 @@ public class Enemy : MonoBehaviour, IDamagable
         health = maxHealth;
         nextTimeToAttack = attackRate;
 
+        DeathManager.OnDie += Disable;
+        DeathManager.OnRespawn += Enable;
+
         currentWeapon.Equip(hands);
     }
 
@@ -290,5 +293,15 @@ public class Enemy : MonoBehaviour, IDamagable
     void StopMovement()
     {
         Move(Vector3.zero);
+    }
+
+    void Disable()
+    {
+        SetActive(false);
+    }
+
+    void Enable()
+    {
+        SetActive(true);
     }
 }

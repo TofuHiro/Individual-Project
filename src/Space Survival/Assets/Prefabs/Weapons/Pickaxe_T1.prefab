@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4155121693483265041}
   - component: {fileID: 4155121693483265042}
   - component: {fileID: 4155121693483265043}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pickaxe_T1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5304549181156221412}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -15,11 +16,14 @@ public class InterfaceManager : MonoBehaviour
     }
     #endregion
 
+    [SerializeField] List<GameObject> hudObjects;
+
     PlayerController player;
     PlayerInventory inventory;
     CraftingManager crafting;
     BuildingManager building;
     Storage currentStorage;
+    DeathManager deathManager;
 
     void Start()
     {
@@ -27,6 +31,7 @@ public class InterfaceManager : MonoBehaviour
         inventory = PlayerInventory.Instance;
         crafting = CraftingManager.Instance;
         building = BuildingManager.Instance;
+        deathManager = DeathManager.Instance;
     }
 
     void OnEnable()
@@ -44,6 +49,10 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     void ToggleInventory()
     {
+        if (PlayerVitals.IsDead) {
+            return;
+        }
+
         if (CraftingManager.IsEnabled) {
             CloseCrafting();
             return;
@@ -181,6 +190,54 @@ public class InterfaceManager : MonoBehaviour
         else {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    public void ShowHUD()
+    {
+        foreach (GameObject _object in hudObjects) {
+            _object.SetActive(true);
+        }
+    }
+
+    public void HideHUD()
+    {
+        foreach (GameObject _object in hudObjects) {
+            _object.SetActive(false);
+        }
+    }
+
+    public void OpenDeathScreen()
+    {
+        CloseAll();
+        HideHUD();
+        deathManager.OpenInterface();
+
+        player.ToggleMovement(false);
+        player.ToggleRotation(false);
+        player.ToggleAttack(false);
+        ToggleInterfaceInputs(true);
+    }
+
+    public void CloseDeathScreen()
+    {
+        ShowHUD();
+        deathManager.CloseInterface();
+
+        player.ToggleMovement(true);
+        player.ToggleRotation(true);
+        player.ToggleAttack(true);
+        ToggleInterfaceInputs(false);
+    }
+
+    void CloseAll()
+    {
+        inventory.SetInventory(false);
+        crafting.CloseInterface();
+        building.CloseInterface();
+        if (currentStorage != null) {
+            currentStorage.CloseInterface();
+            currentStorage = null;
         }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8311958701468999156}
   - component: {fileID: 8311958701468999157}
   - component: {fileID: 8311958701468999162}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Shield Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}

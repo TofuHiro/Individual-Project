@@ -16,6 +16,8 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     #endregion
 
+    public static bool IsDead;
+
     [Header("Shield")]
     [Tooltip("The starting maximum shield of the player")]
     [SerializeField] float maxShield = 0f;
@@ -65,6 +67,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     bool isSuffocating, inAir;
     float nextSuffocateTick, currentMaxOxygenTime;
 
+    DeathManager deathManager;
     VitalsUI UI;
     float timer;
 
@@ -127,7 +130,10 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     void Start()
     {
+        deathManager = DeathManager.Instance;
         UI = GetComponent<VitalsUI>();
+
+        DeathManager.OnRespawn += Respawn;
 
         //Shield
         UI.SetMaxShield(maxShield);
@@ -158,6 +164,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     void Update()
     {
+        if (IsDead)
+            return;
+
         timer += Time.deltaTime;
 
         //Recover shields
@@ -222,7 +231,16 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     public void Die()
     {
-        //Die
+        IsDead = true;
+        deathManager.Die();
+    }
+
+    void Respawn()
+    {
+        IsDead = false;
+
+        Health = maxHealth;
+        Oxygen = currentMaxOxygenTime;
     }
 
     /// <summary>
@@ -254,6 +272,15 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
 
     /// <summary>
+    /// Sets the player's current health to a value
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetHealth(float _value)
+    {
+        Health = _value;
+    }
+
+    /// <summary>
     /// Add a value to the player's current maximum health
     /// </summary>
     /// <param name="_value">The value to add</param>
@@ -273,6 +300,15 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
 
     /// <summary>
+    /// Sets the player's current water levels to a value
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetWater(float _value)
+    {
+        Water = _value;
+    }
+
+    /// <summary>
     /// Add a value to the player's current maximum water levels
     /// </summary>
     /// <param name="_value">The value to add</param>
@@ -289,6 +325,15 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     public void AddFood(float _value)
     {
         Food += _value;
+    }
+
+    /// <summary>
+    /// Sets the player's current food levels to a value
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetFood(float _value)
+    {
+        Food = _value;
     }
 
     /// <summary>
