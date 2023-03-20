@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5702776415691511468}
   - component: {fileID: 5702776415691511469}
   - component: {fileID: 5702776415691511470}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Green Destructible Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
