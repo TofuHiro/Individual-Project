@@ -75,7 +75,7 @@ public class RayWeapon : Weapon
 
         //Determine where to shoot from
         Transform _transform;
-        if (currentHolder != null)
+        if (playerHolder != null)
             _transform = Camera.main.transform;
         else
             _transform = rayStartPoint;
@@ -143,10 +143,10 @@ public class RayWeapon : Weapon
     /// </summary>
     void UpdateAmmoUI()
     {
-        if (currentHolder == null)
+        if (playerHolder == null)
             return;
 
-        currentHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
+        playerHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
     }
     
     /// <summary>
@@ -155,9 +155,9 @@ public class RayWeapon : Weapon
     /// <param name="_state">State to toggle to</param>
     void ToggleAmmoUI(bool _state)
     {
-        if (currentHolder == null)
+        if (playerHolder == null)
             return;
 
-        currentHolder.ToggleAmmoUI(_state);
+        playerHolder.ToggleAmmoUI(_state);
     }
 }

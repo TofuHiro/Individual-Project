@@ -47,12 +47,6 @@ public class VoxelClump : MonoBehaviour
         UpdateMeshData();
     }
 
-    void Update()
-    {
-        PopulateVoxelMap();
-        UpdateMeshData();
-    }
-
     public Vector3 GetVoxel(Vector3 _worldSpacePos)
     {
         float _x = _worldSpacePos.x - (_worldSpacePos.x % (1f / voxelPerUnit));

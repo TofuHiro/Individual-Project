@@ -28,7 +28,7 @@ public class MeleeWeapon : Weapon
 
         //Determine where to attack from
         Transform _transform;
-        if (currentHolder != null)
+        if (playerHolder != null)
             _transform = Camera.main.transform;
         else
             _transform = rayStartPoint;
@@ -41,6 +41,11 @@ public class MeleeWeapon : Weapon
             if (hitRadius > 0) {
                 Collider[] _colliders = Physics.OverlapSphere(hit.transform.position, hitRadius, ~0, QueryTriggerInteraction.Ignore);
                 foreach (Collider _collider in _colliders) {
+                    //Avoid player self damaging
+                    if (playerHolder != null)
+                        if (_collider.CompareTag("Player"))
+                            continue;
+
                     //Apply damage
                     damagable = _collider.GetComponent<IDamagable>();
                     if (damagable != null) {

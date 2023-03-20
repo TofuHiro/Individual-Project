@@ -8,7 +8,7 @@ public abstract class Weapon : MonoBehaviour
     Animator animator;
     Rigidbody rb;
 
-    protected PlayerWeapons currentHolder;
+    protected PlayerWeapons playerHolder;
     Collider[] weaponColliders;//
 
     protected WeaponScriptable weaponScriptable;
@@ -43,7 +43,7 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="_newHolder">The holder of this weapon, if null and active, an AI is the holder</param>
     public void SetHolder(PlayerWeapons _newHolder)
     {
-        currentHolder = _newHolder;
+        playerHolder = _newHolder;
     }
 
     /// <summary>
