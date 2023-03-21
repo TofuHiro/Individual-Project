@@ -9,12 +9,12 @@ public class ArmourScriptable : ItemScriptable
     public override void Equip()
     {
         base.Equip();
-        PlayerVitals.Instance.AddMaxShield(shieldAmount);
+        PlayerVitals.Instance.MaxShield += shieldAmount;
     }
 
     public override void Unequip()
     {
         base.Equip();
-        PlayerVitals.Instance.AddMaxShield(-shieldAmount);
+        PlayerVitals.Instance.MaxShield -= shieldAmount;
     }
 }

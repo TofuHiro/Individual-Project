@@ -22,6 +22,7 @@ public class BuildingManager : MonoBehaviour
     }
     #endregion
 
+    public static bool UseIngredients { get; set; }
     public static bool IsEnabled { get; private set; }
 
     [Tooltip("The game object holding the building UI")]
@@ -34,8 +35,6 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] Transform ingredientSlotsParent;
 
     [Header("Building Settings")]
-    [Tooltip("Whether building structure requires any ingredients")]
-    [SerializeField] bool buildingRequirements;
     [Tooltip("The transition time when a blueprint snaps to another snap point")]
     [SerializeField] float buildingSmoothTime = .05f;
     [Tooltip("Layer mask to ignore collision when detecting a surface for blueprints")]
@@ -66,11 +65,11 @@ public class BuildingManager : MonoBehaviour
         //Create a buildable recipe block for each buildable set in the catalog
         foreach (BuildableRecipe _item in buildableCatalog) {
             BuildableSlot _newSlot = Instantiate(buildableSlotPrefab, blueprintSlotsParents).GetComponent<BuildableSlot>();
-            if (buildingRequirements) {
+            if (UseIngredients) {
                 _newSlot.Init(_item.Buildable, _item.Ingredients);
             }
             else {
-                _newSlot.Init(_item.Buildable, null);
+                _newSlot.Init(_item.Buildable, new List<Item>());
             }
         }
 

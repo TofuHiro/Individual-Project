@@ -17,6 +17,8 @@ namespace SpaceGame
         }
         #endregion
 
+        public DifficultyModes SelectedDifficulty;
+
         public delegate void GameEvent();
         public static event GameEvent OnGameStart, OnPlayerDie, OnPlayerRespawn;
 
@@ -27,13 +29,48 @@ namespace SpaceGame
         [Tooltip("The UI holding the death screen")]
         [SerializeField] GameObject deathScreenUI;
 
+        PlayerVitals vitals;
         InterfaceManager interfaceManager;
 
         void Start()
         {
+            vitals = PlayerVitals.Instance;
             interfaceManager = InterfaceManager.Instance;
 
+            RespawnBeacon.ActiveRespawnBeacon = staticSpawn;
+
+            InitDifficulty();
             StartGame();
+        }
+
+        void InitDifficulty()
+        {
+            vitals.MaxHealth = SelectedDifficulty.startingMaxHealth;
+            vitals.SetHealthRegen(SelectedDifficulty.healthOverTime);
+            vitals.SetSustenanceMultipler(SelectedDifficulty.sustenanceEffectMultiplier);
+            vitals.SetWaterDecayRate(SelectedDifficulty.waterDecayRate);
+            vitals.SetDehydrationRate(SelectedDifficulty.dehydrationDamageRate);
+            vitals.SetDehydrationDamage(SelectedDifficulty.dehydrationDamage);
+            vitals.SetFoodDecayRate(SelectedDifficulty.foodDecayRate);
+            vitals.SetStarveRate(SelectedDifficulty.starveDamageRate);
+            vitals.SetStarveDamage(SelectedDifficulty.starveDamage);
+            vitals.UseOxygen(SelectedDifficulty.useOxygen);
+            vitals.MaxOxygen = SelectedDifficulty.startingMaxOxygen;
+            vitals.SetSuffocateRate(SelectedDifficulty.suffocateDamageRate);
+            vitals.SetSuffocateDamage(SelectedDifficulty.suffocationDamage);
+            vitals.SetRespawnHealth(SelectedDifficulty.respawnHealth);
+            vitals.SetRespawnWater(SelectedDifficulty.respawnWater);
+            vitals.SetRespawnFood(SelectedDifficulty.respawnFood);
+
+            Enemy.GlobalDamageMultiplier = SelectedDifficulty.enemyDamageMultiplier;
+
+            BuildingManager.UseIngredients = SelectedDifficulty.buildingRequirements;
+            CraftingManager.UseIngredients = SelectedDifficulty.craftingRequirements;
+
+            PlayerInventory.Instance.DropItemsOnDeath(SelectedDifficulty.dropItemsOnDeath);
+            PlayerInventory.Instance.DropWeaponsOnDeath(SelectedDifficulty.dropWeaponsOnDeath);
+            PlayerInventory.Instance.DropUpgradesOnDeath(SelectedDifficulty.dropUpgradesOnDeath);
+            PlayerInventory.Instance.DropArmoursOnDeath(SelectedDifficulty.dropArmoursOnDeath);
         }
 
         void StartGame()

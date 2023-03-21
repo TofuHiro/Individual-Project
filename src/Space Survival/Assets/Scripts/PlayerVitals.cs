@@ -4,23 +4,15 @@ using SpaceGame;
 [RequireComponent(typeof(VitalsUI))]
 public class PlayerVitals : MonoBehaviour, IDamagable
 {
-    #region Singleton
     public static PlayerVitals Instance;
-    void Awake()
-    {
-        if (Instance != null && Instance != this) {
-            Destroy(Instance);
-        }
-        else {
-            Instance = this;
-        }
-    }
-    #endregion
-
+   
     /// <summary>
     /// If this player is dead
     /// </summary>
     public static bool IsDead { get; private set; }
+
+    [Tooltip("The multiplier applied on the effects of consuming nutritions")]
+    [SerializeField] float sustenanceMultiplier = 1f;
 
     [Header("Shield")]
     [Tooltip("The starting maximum shield of the player")]
@@ -37,6 +29,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [Tooltip("The health regenerated per second")]
     [SerializeField] float healthRegen = .1f;
     float nextHealTick;
+    float respawnHealth;
 
     [Header("Water")]
     [Tooltip("The starting maximum water levels")]
@@ -44,11 +37,12 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [Tooltip("The time between each decrement of water level")]
     [SerializeField] float waterDecayRate = 15f;
     [Tooltip("The time between taking damage from being parched")]
-    [SerializeField] float parchedDamageRate = 1f;
+    [SerializeField] float dehydrationDamageRate = 1f;
     [Tooltip("The damage taken from being parched")]
-    [SerializeField] float parchDamage = 1f;
-    bool isParched;
-    float nextParchTick, nextWaterTick;
+    [SerializeField] float dehydrationDamage = 1f;
+    bool isDehydrating;
+    float nextDehydrateTick, nextWaterTick;
+    float respawnWater;
 
     [Header("Food")]
     [Tooltip("The starting maximum food levels")]
@@ -61,8 +55,11 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [SerializeField] float starveDamage = 1f;
     bool isStarving;
     float nextStarveTick, nextFoodTick;
+    float respawnFood;
 
     [Header("Oxygen")]
+    [Tooltip("Whether to consume oxygen")]
+    [SerializeField] bool useOxygen = true;
     [Tooltip("The starting maximum oxygen breathing time")]
     [SerializeField] float baseOxygenTime = 60f;
     [Tooltip("The time between each damage taken from suffocation")]
@@ -78,6 +75,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     VitalsUI UI;
     float timer;
 
+    /// <summary>
+    /// The shield levels of the player
+    /// </summary>
     public float Shield { get { return shield; }
         set {
             shield = value;
@@ -87,6 +87,19 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     float shield;
 
+    /// <summary>
+    /// The maximum shield levels of the player
+    /// </summary>
+    public float MaxShield { get { return maxShield; }
+        set {
+            maxShield = value;
+            UI.SetMaxShield(value);
+        }
+    }
+
+    /// <summary>
+    /// The health of the player
+    /// </summary>
     public float Health { get { return health; }
         set {
             health = value;
@@ -100,17 +113,43 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     float health;
 
+    /// <summary>
+    /// The maximum health of the player
+    /// </summary>
+    public float MaxHealth { get { return maxHealth; }
+        set {
+            maxHealth = value;
+            UI.SetMaxHealth(value);
+        }
+    }
+    
+    /// <summary>
+    /// The water levels of the player
+    /// </summary>
     public float Water { get { return water; }
         set {
             water = value;
             water = Mathf.Clamp(water, 0f, maxWater);
             UI.SetWater(water);
 
-            isParched = (water <= 0f);
+            isDehydrating = (water <= 0f);
         }
     }
     float water;
 
+    /// <summary>
+    /// The maximum water levels of the player
+    /// </summary>
+    public float MaxWater { get { return maxWater; }
+        set {
+            maxWater = value;
+            UI.SetMaxWater(value);
+        }
+    }
+
+    /// <summary>
+    /// The food levels of the player
+    /// </summary>
     public float Food { get { return food; }
         set {
             food = value;
@@ -122,6 +161,19 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     float food;
 
+    /// <summary>
+    /// The maximum food levels of the player
+    /// </summary>
+    public float MaxFood { get { return maxFood; }
+        set {
+            maxFood = value;
+            UI.SetMaxFood(value);
+        }
+    }
+
+    /// <summary>
+    /// The oxygen levels of the player
+    /// </summary>
     public float Oxygen
     {
         get { return oxygen; }
@@ -135,10 +187,32 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     float oxygen;
 
+    /// <summary>
+    /// The maximum oxygen levels of the player
+    /// </summary>
+    public float MaxOxygen { get { return currentMaxOxygenTime; }
+        set {
+            currentMaxOxygenTime = value;
+            UI.SetMaxOxygen(currentMaxOxygenTime);
+        }
+    }
+
+    void Awake()
+    {
+        //Singleton
+        if (Instance != null && Instance != this) {
+            Destroy(Instance);
+        }
+        else {
+            Instance = this;
+        }
+
+        UI = GetComponent<VitalsUI>();
+    }
+
     void Start()
     {
         gameManager = GameManager.Instance;
-        UI = GetComponent<VitalsUI>();
 
         GameManager.OnPlayerRespawn += Respawn;
 
@@ -154,7 +228,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         UI.SetMaxWater(maxWater);
         Water = maxWater;
         nextWaterTick = waterDecayRate;
-        nextParchTick = parchedDamageRate;
+        nextDehydrateTick = dehydrationDamageRate;
 
         //Food
         UI.SetMaxFood(maxFood);
@@ -187,9 +261,11 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         }
 
         //Recover health
-        if (timer >= nextHealTick) {
-            Health += healthRegen;
-            nextHealTick = timer + 1;
+        if (healthRegen > 0) {
+            if (timer >= nextHealTick) {
+                Health += healthRegen;
+                nextHealTick = timer + 1;
+            }
         }
 
         //Decrease water
@@ -198,9 +274,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
             nextWaterTick = timer + waterDecayRate;
         }
         //Decrease health if parched
-        if (isParched && timer >= nextParchTick) {
-            Health -= parchDamage;
-            nextParchTick = timer + parchedDamageRate;
+        if (isDehydrating && timer >= nextDehydrateTick) {
+            Health -= dehydrationDamage;
+            nextDehydrateTick = timer + dehydrationDamageRate;
         }
 
         //Decrease food
@@ -214,17 +290,19 @@ public class PlayerVitals : MonoBehaviour, IDamagable
             nextStarveTick = timer + starveDamageRate;
         }
 
-        //Decrease oxygen
-        if (!inAir) {
-            Oxygen -= Time.deltaTime;
-        }
-        else {
-            Oxygen += Time.deltaTime * oxygenRecoverRate;
-        }
-        //Decrease health is suffocating
-        if (isSuffocating && timer >= nextSuffocateTick) {
-            Health -= suffocateDamage;
-            nextSuffocateTick = timer + suffocateDamageRate;
+        if (useOxygen) {
+            //Decrease oxygen
+            if (!inAir) {
+                Oxygen -= Time.deltaTime;
+            }
+            else {
+                Oxygen += Time.deltaTime * oxygenRecoverRate;
+            }
+            //Decrease health is suffocating
+            if (isSuffocating && timer >= nextSuffocateTick) {
+                Health -= suffocateDamage;
+                nextSuffocateTick = timer + suffocateDamageRate;
+            }
         }
     }
 
@@ -256,131 +334,181 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     void Respawn()
     {
         IsDead = false;
-
-        Health = maxHealth;
+        Health = respawnHealth;
+        Water = respawnWater;
+        Food = respawnFood;
         Oxygen = currentMaxOxygenTime;
     }
 
     /// <summary>
-    /// Add a value to the player's current shield levels
+    /// Add a value to current shield level
     /// </summary>
-    /// <param name="_value">The value to add</param>
+    /// <param name="_value"></param>
     public void AddShield(float _value)
     {
         Shield += _value;
     }
 
     /// <summary>
-    /// Add a value to the player's current maximum shield levels
+    /// Add a value to current health level
     /// </summary>
-    /// <param name="_value">The value to add</param>
-    public void AddMaxShield(float _value)
-    {
-        maxShield += _value;
-        UI.SetMaxShield(maxShield);
-    }
-
-    /// <summary>
-    /// Add a value to the player's current health
-    /// </summary>
-    /// <param name="_value">The value to add</param>
+    /// <param name="_value"></param>
     public void AddHealth(float _value)
     {
         Health += _value;
     }
 
     /// <summary>
-    /// Sets the player's current health to a value
+    /// Add a value to current water level
     /// </summary>
     /// <param name="_value"></param>
-    public void SetHealth(float _value)
-    {
-        Health = _value;
-    }
-
-    /// <summary>
-    /// Add a value to the player's current maximum health
-    /// </summary>
-    /// <param name="_value">The value to add</param>
-    public void AddMaxHealth(float _value)
-    {
-        maxHealth += _value;
-        UI.SetMaxHealth(_value);
-    }
-
-    /// <summary>
-    /// Add a value to the player's current water levels
-    /// </summary>
-    /// <param name="_value">The value to add</param>
     public void AddWater(float _value)
     {
-        Water += _value;
+        Water += _value * sustenanceMultiplier;
     }
 
     /// <summary>
-    /// Sets the player's current water levels to a value
+    /// Add a value to current food level
     /// </summary>
     /// <param name="_value"></param>
-    public void SetWater(float _value)
-    {
-        Water = _value;
-    }
-
-    /// <summary>
-    /// Add a value to the player's current maximum water levels
-    /// </summary>
-    /// <param name="_value">The value to add</param>
-    public void AddMaxWater(float _value)
-    {
-        maxWater += _value;
-        UI.SetMaxWater(_value);
-    }
-
-    /// <summary>
-    /// Add a value to the player's current food levels
-    /// </summary>
-    /// <param name="_value">The value to add</param>
     public void AddFood(float _value)
     {
-        Food += _value;
+        Food += _value * sustenanceMultiplier;
     }
 
     /// <summary>
-    /// Sets the player's current food levels to a value
+    /// Add a value to current oxygen level
     /// </summary>
     /// <param name="_value"></param>
-    public void SetFood(float _value)
-    {
-        Food = _value;
-    }
-
-    /// <summary>
-    /// Add a value to the player's current maximum food levels
-    /// </summary>
-    /// <param name="_value">The value to add</param>
-    public void AddMaxFood(float _value)
-    {
-        maxFood += _value;
-        UI.SetMaxFood(_value);
-    }
-
-    /// <summary>
-    /// Add a value to the player's current oxygen levels
-    /// </summary>
-    /// <param name="_value">The value to add</param>
     public void AddOxygen(float _value)
     {
         Oxygen += _value;
     }
 
     /// <summary>
-    /// Add a value to the player's current maximum oxygen levels
+    /// Set the player's health regen per second
     /// </summary>
-    /// <param name="_value">The value to add</param>
-    public void AddMaxOxygen(float _value)
+    /// <param name="_value"></param>
+    public void SetHealthRegen(float _value)
     {
-        currentMaxOxygenTime += _value;
-        UI.SetMaxOxygen(_value);
+        healthRegen = _value;
+    }
+
+    /// <summary>
+    /// Set the multiplier applied when consuming sustenance
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetSustenanceMultipler(float _value)
+    {
+        sustenanceMultiplier = _value;
+    }
+
+    /// <summary>
+    /// Set the time taken for water to decrement
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetWaterDecayRate(float _value)
+    {
+        waterDecayRate = _value;
+    }
+
+    /// <summary>
+    /// Set the time between damage while dehydrating
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetDehydrationRate(float _value)
+    {
+        dehydrationDamageRate = _value;
+    }
+
+    /// <summary>
+    /// Set the damage taken by dehyrdating
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetDehydrationDamage(float _value)
+    {
+        dehydrationDamage = _value;
+    }
+
+    /// <summary>
+    /// Set the time taken for food to decrement
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetFoodDecayRate(float _value)
+    {
+        foodDecayRate = _value;
+    }
+
+    /// <summary>
+    /// Set the time between damage while starving
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetStarveRate(float _value)
+    {
+        starveDamageRate = _value;
+    }
+
+    /// <summary>
+    /// Set the damage taken by starving
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetStarveDamage(float _value)
+    {
+        starveDamage = _value;
+    }
+
+    /// <summary>
+    /// Set whether the player will use oxygen or not
+    /// </summary>
+    /// <param name="_state"></param>
+    public void UseOxygen(bool _state)
+    {
+        useOxygen = _state;
+    }
+
+    /// <summary>
+    /// Set the time taken between each damage from suffocation
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetSuffocateRate(float _value)
+    {
+        suffocateDamageRate = _value;
+    }
+
+    /// <summary>
+    /// Set the damage taken by suffocating
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetSuffocateDamage(float _value)
+    {
+        suffocateDamage = _value;
+    }
+
+    /// <summary>
+    /// Set the value of health given when respawned
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetRespawnHealth(float _value)
+    {
+        respawnHealth = _value;
+    }
+
+    /// <summary>
+    /// Set the water level given when respawned
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetRespawnWater(float _value)
+    {
+        respawnWater = _value;
+    }
+
+    /// <summary>
+    /// Set the food level given when respawned
+    /// </summary>
+    /// <param name="_value"></param>
+    public void SetRespawnFood(float _value)
+    {
+        respawnFood = _value;
     }
 
     //Determine whether player is in oxygen or not

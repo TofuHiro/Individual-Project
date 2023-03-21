@@ -14,27 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingMaxHealth: 100
   healthOverTime: 0
-  sustenanceEffectMultiplier: 1.25
-  waterDecayRate: 15
+  sustenanceEffectMultiplier: 0.8
+  waterDecayRate: 12
   dehydrationDamageRate: 1
   dehydrationDamage: 1
-  foodDecayRate: 20
-  starveDamageRate: 2
+  foodDecayRate: 16
+  starveDamageRate: 1
   starveDamage: 1
   useOxygen: 1
-  startingMaxOxygen: 60
+  startingMaxOxygen: 45
   suffocateDamageRate: 0.5
   suffocationDamage: 5
-  respawnHealth: 80
-  respawnWater: 60
-  respawnFood: 60
+  respawnHealth: 50
+  respawnWater: 40
+  respawnFood: 40
   enemies: 1
-  enemySpawnMultiplier: 1
-  enemyDamageMultiplier: 1
+  enemySpawnMultiplier: 1.5
+  enemyDamageMultiplier: 1.5
   buildingRequirements: 1
   craftingRequirements: 1
-  resourceSpawnMultiplier: 1
-  dropItemsOnDeath: 0
-  dropWeaponsOnDeath: 0
-  dropUpgradesOnDeath: 0
-  dropArmoursOnDeath: 0
+  dropItemsOnDeath: 1
+  dropWeaponsOnDeath: 1
+  dropUpgradesOnDeath: 1
+  dropArmoursOnDeath: 1

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.6748, g: 2264.084, b: 3287.5273, a: 1}
+  m_IndirectSpecularColor: {r: 2161.3838, g: 2265.4043, b: 3288.5703, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10124,6 +10124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0420f26a67e7594992f378823e779b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectedDifficulty: {fileID: 11400000, guid: 53fe825ae8713784d9eb953ba3e4a6b6, type: 2}
   staticSpawn: {fileID: 409206373}
   player: {fileID: 2115074535}
   deathScreenUI: {fileID: 69228495}
@@ -35332,18 +35333,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b62c29582d8c94e8534512df4f888a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sustenanceMultiplier: 1
   maxShield: 0
   shieldRecoverRate: 10
   shieldRecoverStartDelay: 3
   maxHealth: 100
+  healthRegen: 0.1
   maxWater: 100
   waterDecayRate: 15
-  parchedDamageRate: 1
-  parchDamage: 1
+  dehydrationDamageRate: 1
+  dehydrationDamage: 1
   maxFood: 100
   foodDecayRate: 10
   starveDamageRate: 2
   starveDamage: 1
+  useOxygen: 1
   baseOxygenTime: 45
   suffocateDamageRate: 0.5
   suffocateDamage: 5

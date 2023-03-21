@@ -52,8 +52,6 @@ public class DifficultyModes : ScriptableObject
     public bool buildingRequirements;
     [Tooltip("Whether crafting requires any ingredients")]
     public bool craftingRequirements;
-    [Tooltip("The multiplier applied to the number of generated resources")]
-    public float resourceSpawnMultiplier;
     [Tooltip("Whether the player drops all their items in their main inventory on death")]
     public bool dropItemsOnDeath;
     [Tooltip("Whether the player drops all their weapons on death")]

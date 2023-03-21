@@ -6,6 +6,8 @@ using SpaceGame;
 [RequireComponent(typeof(AICamera))]
 public class Enemy : MonoBehaviour, IDamagable
 {
+    public static float GlobalDamageMultiplier = 1f;
+
     [Tooltip("The name for this enemy")]
     [SerializeField] new string name;
     [Tooltip("The hand transform of this enemy. This stores the position of the weapon")]
@@ -18,8 +20,6 @@ public class Enemy : MonoBehaviour, IDamagable
     [Header("Attack")]
     [Tooltip("The starting weapon for this enemy")]
     [SerializeField] Weapon currentWeapon;
-    [Tooltip("The multiplier applied to this enemy's attacks")]
-    [SerializeField] float attackMultiplier = 1f;
     [Tooltip("The distance between the enemy and player where the enemy will attempt to attack")]
     [SerializeField] float attackRange = 5f;
     [Tooltip("The distance between the enemy and player where the enemy will start chasing the player. ")]
@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour, IDamagable
         GameManager.OnPlayerRespawn += Enable;
 
         currentWeapon.Equip(hands);
-        currentWeapon.ApplyDamageMultiplier(attackMultiplier);
+        currentWeapon.ApplyDamageMultiplier(GlobalDamageMultiplier);
     }
 
     void OnDisable()

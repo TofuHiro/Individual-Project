@@ -51,12 +51,6 @@ public class PlayerInventory : MonoBehaviour
         weaponSlots = weaponSlotsHolder.GetComponentsInChildren<WeaponSlot>();
         upgradeSlots = upgradeSlotsHolder.GetComponentsInChildren<UpgradeSlot>();
 
-        //Change depend on difficulty
-        GameManager.OnPlayerDie += DropInventoryItems;
-        GameManager.OnPlayerDie += DropWeapons;
-        GameManager.OnPlayerDie += DropArmours;
-        GameManager.OnPlayerDie += DropUpgrades;
-
         //Start open to init children, then disable
         SetInventory(false);
     }
@@ -69,6 +63,10 @@ public class PlayerInventory : MonoBehaviour
     void OnDisable()
     {
         PlayerController.OnUIRightClick -= QuickEquipItem;
+        GameManager.OnPlayerDie -= DropInventoryItems;
+        GameManager.OnPlayerDie -= DropWeapons;
+        GameManager.OnPlayerDie -= DropArmours;
+        GameManager.OnPlayerDie -= DropUpgrades;
     }
 
     /// <summary>
@@ -453,5 +451,37 @@ public class PlayerInventory : MonoBehaviour
             if (_slot.IsOccupied)
                 _slot.DropItem();
         }
+    }
+
+    public void DropItemsOnDeath(bool _state)
+    {
+        if (_state) 
+            GameManager.OnPlayerDie += DropInventoryItems;
+        else 
+            GameManager.OnPlayerDie -= DropInventoryItems;
+    }
+
+    public void DropWeaponsOnDeath(bool _state)
+    {
+        if (_state)
+            GameManager.OnPlayerDie += DropWeapons;
+        else
+            GameManager.OnPlayerDie -= DropWeapons;
+    }
+
+    public void DropUpgradesOnDeath(bool _state)
+    {
+        if (_state)
+            GameManager.OnPlayerDie += DropUpgrades;
+        else
+            GameManager.OnPlayerDie -= DropUpgrades;
+    }
+
+    public void DropArmoursOnDeath(bool _state)
+    {
+        if (_state)
+            GameManager.OnPlayerDie += DropArmours;
+        else
+            GameManager.OnPlayerDie -= DropArmours;
     }
 }

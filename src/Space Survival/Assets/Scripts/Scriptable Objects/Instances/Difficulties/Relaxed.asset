@@ -15,10 +15,10 @@ MonoBehaviour:
   startingMaxHealth: 500
   healthOverTime: 100
   sustenanceEffectMultiplier: 2
-  waterDecayRate: 0
+  waterDecayRate: 500
   dehydrationDamageRate: 0
   dehydrationDamage: 0
-  foodDecayRate: 0
+  foodDecayRate: 500
   starveDamageRate: 0
   starveDamage: 0
   useOxygen: 0
@@ -33,7 +33,6 @@ MonoBehaviour:
   enemyDamageMultiplier: 0
   buildingRequirements: 0
   craftingRequirements: 0
-  resourceSpawnMultiplier: 2
   dropItemsOnDeath: 0
   dropWeaponsOnDeath: 0
   dropUpgradesOnDeath: 0
