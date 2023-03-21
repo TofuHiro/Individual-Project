@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class BuildableSlot : MonoBehaviour
 {
+    /// <summary>
+    /// The recipe stored in this slot
+    /// </summary>
     public BuildableRecipe BuildableRecipe { get; private set; }
 
     BuildingManager buildingManager;

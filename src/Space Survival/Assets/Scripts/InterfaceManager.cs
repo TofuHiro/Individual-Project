@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using SpaceGame;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class InterfaceManager : MonoBehaviour
     }
     #endregion
 
+    [Tooltip("The HUD UI objects")]
     [SerializeField] List<GameObject> hudObjects;
 
     PlayerController player;
@@ -23,7 +25,7 @@ public class InterfaceManager : MonoBehaviour
     CraftingManager crafting;
     BuildingManager building;
     Storage currentStorage;
-    DeathManager deathManager;
+    GameManager gameManager;
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class InterfaceManager : MonoBehaviour
         inventory = PlayerInventory.Instance;
         crafting = CraftingManager.Instance;
         building = BuildingManager.Instance;
-        deathManager = DeathManager.Instance;
+        gameManager = GameManager.Instance;
     }
 
     void OnEnable()
@@ -99,7 +101,7 @@ public class InterfaceManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Opens a specified set of recipes for a crafting station
+    /// Opens a specified set of recipes for a crafting station and inventory
     /// </summary>
     /// <param name="_type">The set of recipes to display</param>
     public void OpenCrafting(CraftingStationType _type)
@@ -128,7 +130,7 @@ public class InterfaceManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the building interface
+    /// Shows the building interface and inventory
     /// </summary>
     public void OpenBuilding()
     {
@@ -151,6 +153,10 @@ public class InterfaceManager : MonoBehaviour
         ToggleInterfaceInputs(false);
     }
 
+    /// <summary>
+    /// Opens a storage interface and inventory
+    /// </summary>
+    /// <param name="_storage">The storage to open</param>
     public void OpenStorage(Storage _storage)
     {
         currentStorage = _storage;
@@ -163,6 +169,9 @@ public class InterfaceManager : MonoBehaviour
         ToggleInterfaceInputs(true);
     }
 
+    /// <summary>
+    /// Hides the storage UI;
+    /// </summary>
     void CloseStorage()
     {
         currentStorage.CloseInterface();
@@ -193,6 +202,9 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the HUD
+    /// </summary>
     public void ShowHUD()
     {
         foreach (GameObject _object in hudObjects) {
@@ -200,6 +212,9 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the HUD
+    /// </summary>
     public void HideHUD()
     {
         foreach (GameObject _object in hudObjects) {
@@ -207,11 +222,14 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the death screen
+    /// </summary>
     public void OpenDeathScreen()
     {
         CloseAll();
         HideHUD();
-        deathManager.OpenInterface();
+        gameManager.ShowDeathScreen();
 
         player.ToggleMovement(false);
         player.ToggleRotation(false);
@@ -219,10 +237,13 @@ public class InterfaceManager : MonoBehaviour
         ToggleInterfaceInputs(true);
     }
 
+    /// <summary>
+    /// Hides the death screen
+    /// </summary>
     public void CloseDeathScreen()
     {
         ShowHUD();
-        deathManager.CloseInterface();
+        gameManager.HideDeathScreen();
 
         player.ToggleMovement(true);
         player.ToggleRotation(true);
@@ -230,6 +251,9 @@ public class InterfaceManager : MonoBehaviour
         ToggleInterfaceInputs(false);
     }
 
+    /// <summary>
+    /// Closes all interface
+    /// </summary>
     void CloseAll()
     {
         inventory.SetInventory(false);

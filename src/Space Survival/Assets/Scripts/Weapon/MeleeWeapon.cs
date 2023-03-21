@@ -4,6 +4,7 @@ public class MeleeWeapon : Weapon
 {
     [Tooltip("Transform position where ray starts from")]
     [SerializeField] Transform rayStartPoint;
+    [Tooltip("The radius around the hit point to apply damage around")]
     [SerializeField] protected float hitRadius;
 
     LayerMask mask;

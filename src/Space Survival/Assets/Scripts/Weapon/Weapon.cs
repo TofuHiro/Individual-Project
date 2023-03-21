@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Item))]
 public abstract class Weapon : MonoBehaviour
 {
+    [Tooltip("Weapon will only fire upon each click")]
     [SerializeField] protected bool semiAutomatic;
 
     Animator animator;
@@ -12,7 +13,8 @@ public abstract class Weapon : MonoBehaviour
     Collider[] weaponColliders;//
 
     protected WeaponScriptable weaponScriptable;
-    protected int damage;
+    float baseDamage;
+    protected float damage;
     protected float range;
     protected float attackRate, nextTimeToAttack, attackTimer;
     protected float maxDurablity, durablity;
@@ -23,7 +25,8 @@ public abstract class Weapon : MonoBehaviour
         //Init weapon stats
         weaponScriptable = (WeaponScriptable)GetComponent<Item>().ItemScriptableObject;
 
-        damage = weaponScriptable.damage;
+        baseDamage = weaponScriptable.damage;
+        damage = baseDamage;
         range = weaponScriptable.maxRange;
 
         attackRate = weaponScriptable.attackRate;
@@ -35,6 +38,11 @@ public abstract class Weapon : MonoBehaviour
         //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         weaponColliders = GetComponentsInChildren<Collider>();
+    }
+
+    public void ApplyDamageMultiplier(float _value)
+    {
+        damage = baseDamage * _value;
     }
 
     /// <summary>

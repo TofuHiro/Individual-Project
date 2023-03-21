@@ -1,4 +1,5 @@
 using UnityEngine;
+using SpaceGame;
 
 [RequireComponent(typeof(VitalsUI))]
 public class PlayerVitals : MonoBehaviour, IDamagable
@@ -16,7 +17,10 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     }
     #endregion
 
-    public static bool IsDead;
+    /// <summary>
+    /// If this player is dead
+    /// </summary>
+    public static bool IsDead { get; private set; }
 
     [Header("Shield")]
     [Tooltip("The starting maximum shield of the player")]
@@ -30,6 +34,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [Header("Health")]
     [Tooltip("The starting maximum health")]
     [SerializeField] float maxHealth = 100f;
+    [Tooltip("The health regenerated per second")]
+    [SerializeField] float healthRegen = .1f;
+    float nextHealTick;
 
     [Header("Water")]
     [Tooltip("The starting maximum water levels")]
@@ -67,7 +74,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     bool isSuffocating, inAir;
     float nextSuffocateTick, currentMaxOxygenTime;
 
-    DeathManager deathManager;
+    GameManager gameManager;
     VitalsUI UI;
     float timer;
 
@@ -130,10 +137,10 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     void Start()
     {
-        deathManager = DeathManager.Instance;
+        gameManager = GameManager.Instance;
         UI = GetComponent<VitalsUI>();
 
-        DeathManager.OnRespawn += Respawn;
+        GameManager.OnPlayerRespawn += Respawn;
 
         //Shield
         UI.SetMaxShield(maxShield);
@@ -162,6 +169,11 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         nextSuffocateTick = suffocateDamageRate;
     }
 
+    void OnDisable()
+    {
+        GameManager.OnPlayerRespawn -= Respawn;
+    }
+
     void Update()
     {
         if (IsDead)
@@ -172,6 +184,12 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         //Recover shields
         if (timer >= nextTimeToStartShieldRecover) {
             Shield += Time.deltaTime * shieldRecoverRate;
+        }
+
+        //Recover health
+        if (timer >= nextHealTick) {
+            Health += healthRegen;
+            nextHealTick = timer + 1;
         }
 
         //Decrease water
@@ -232,7 +250,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     public void Die()
     {
         IsDead = true;
-        deathManager.Die();
+        gameManager.Die();
     }
 
     void Respawn()

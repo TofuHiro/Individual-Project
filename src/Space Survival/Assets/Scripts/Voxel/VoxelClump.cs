@@ -7,15 +7,24 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class VoxelClump : MonoBehaviour
 {
+    [Tooltip("The cube size of this chunk")]
     [SerializeField] int chunkSize = 5;
+    [Tooltip("The number of voxels per unit cube")]
     [SerializeField] protected int voxelPerUnit = 1;
+    [Tooltip("A seed value to generate")]
     [SerializeField] int seed;
+    [Tooltip("Use a randomly generated seed")]
     [SerializeField] bool useRandomSeed;
+    [Tooltip("Scale applied when generating a noise map")]
     [SerializeField] float noiseScale = .1f;
+    [Tooltip("Values from the noise map below this value will be considered solid")]
     [Range(0f, 1f)]
     [SerializeField] float noiseThreshold = .4f;
+    [Tooltip("The value added to the noise threshold as a gradient from the fall off radius and outwards")]
     [SerializeField] float thresholdFalloff = .3f;
+    [Tooltip("The radius where the threshold falloff is added from")]
     [SerializeField] float falloffRadius = 3;
+    [Tooltip("The radius where voxels are guranteed to be solid")]
     [SerializeField] float coreRadius = 2;
 
     MeshFilter meshFilter;
@@ -47,6 +56,11 @@ public class VoxelClump : MonoBehaviour
         UpdateMeshData();
     }
 
+    /// <summary>
+    /// Turns a world space position of the voxel to local 3d coordinates in the voxel map
+    /// </summary>
+    /// <param name="_worldSpacePos">The world space position of the voxel</param>
+    /// <returns>Vector3 coords of the voxel in the voxel map</returns>
     public Vector3 GetVoxel(Vector3 _worldSpacePos)
     {
         float _x = _worldSpacePos.x - (_worldSpacePos.x % (1f / voxelPerUnit));
@@ -55,6 +69,12 @@ public class VoxelClump : MonoBehaviour
         return new Vector3(_x, _y, _z) - transform.position;
     }
 
+    /// <summary>
+    /// Returns all voxels within a radius from a given world space point
+    /// </summary>
+    /// <param name="_worldSpacePos">The world space position of the point</param>
+    /// <param name="_radius">The radius around the point to get from</param>
+    /// <returns></returns>
     public List<Vector3> GetVoxelsInRadius(Vector3 _worldSpacePos, float _radius)
     {
         _worldSpacePos.x -= (_worldSpacePos.x % (1f / voxelPerUnit));
@@ -78,6 +98,9 @@ public class VoxelClump : MonoBehaviour
         return _voxelPos;
     }
 
+    /// <summary>
+    /// Creates the voxel map using 3D noise
+    /// </summary>
     void PopulateVoxelMap()
     {
         voxelMap = new bool[chunkSize * voxelPerUnit, chunkSize * voxelPerUnit, chunkSize * voxelPerUnit];
@@ -110,6 +133,9 @@ public class VoxelClump : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Recalculates the mesh data based on the voxel map
+    /// </summary>
     void UpdateMeshData()
     {
         ClearMeshData();
@@ -127,6 +153,10 @@ public class VoxelClump : MonoBehaviour
         CreateMesh();
     }
 
+    /// <summary>
+    /// Adds vertices, triangle and uv data for a voxel at a point
+    /// </summary>
+    /// <param name="_pos">The 3D index of the voxel in the voxel map</param>
     void AddVoxel(Vector3 _pos)
     {
         for (int i = 0; i < 6; i++) {
@@ -153,6 +183,10 @@ public class VoxelClump : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Removes a voxel from the voxel map and updates the mesh
+    /// </summary>
+    /// <param name="_pos"></param>
     protected void RemoveVoxel(Vector3 _pos)
     {
         voxelMap[(int)(_pos.x * voxelPerUnit), (int)(_pos.y * voxelPerUnit), (int)(_pos.z * voxelPerUnit)] = false;
@@ -160,6 +194,11 @@ public class VoxelClump : MonoBehaviour
         UpdateMeshData();
     }
 
+    /// <summary>
+    /// Returns true if there's a voxel at a given coord in the voxel map
+    /// </summary>
+    /// <param name="_pos">The 3D coord of the voxel map to check</param>
+    /// <returns>Returns true if voxel exists at a coord</returns>
     bool CheckVoxel(Vector3 _pos)
     {
         if ((_pos.x < 0) || (_pos.x > chunkSize - (1f / voxelPerUnit)) || (_pos.y < 0) || (_pos.y > chunkSize - (1f / voxelPerUnit)) || (_pos.z < 0) || (_pos.z > chunkSize - (1f / voxelPerUnit)))
@@ -168,6 +207,9 @@ public class VoxelClump : MonoBehaviour
         return voxelMap[(int)(_pos.x * voxelPerUnit), (int)(_pos.y * voxelPerUnit), (int)(_pos.z * voxelPerUnit)];
     }
 
+    /// <summary>
+    /// Creates the mesh 
+    /// </summary>
     void CreateMesh()
     {
         Mesh _mesh = new Mesh
@@ -186,6 +228,9 @@ public class VoxelClump : MonoBehaviour
         meshCollider.sharedMesh = _mesh;
     }
 
+    /// <summary>
+    /// Clears the current mesh data
+    /// </summary>
     void ClearMeshData()
     {
         vertexIndex = 0;

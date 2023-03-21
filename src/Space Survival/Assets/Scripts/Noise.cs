@@ -4,6 +4,14 @@ using UnityEngine;
 
 public static class Noise 
 {
+    /// <summary>
+    /// Returns a value between 0 and 1 from a 3D perlin noise map
+    /// </summary>
+    /// <param name="_x"></param>
+    /// <param name="_y"></param>
+    /// <param name="_z"></param>
+    /// <param name="_scale">The scale of the noise map</param>
+    /// <returns>Float value between 0 and 1</returns>
     public static float Perlin3D(float _x, float _y, float _z, float _scale)
     {
         float _ab = Mathf.PerlinNoise((_x + 2.3f) * _scale, (_y + 4.2f) * _scale);

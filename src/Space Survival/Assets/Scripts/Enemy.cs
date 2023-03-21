@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using SpaceGame;
 
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(AICamera))]
@@ -17,6 +18,8 @@ public class Enemy : MonoBehaviour, IDamagable
     [Header("Attack")]
     [Tooltip("The starting weapon for this enemy")]
     [SerializeField] Weapon currentWeapon;
+    [Tooltip("The multiplier applied to this enemy's attacks")]
+    [SerializeField] float attackMultiplier = 1f;
     [Tooltip("The distance between the enemy and player where the enemy will attempt to attack")]
     [SerializeField] float attackRange = 5f;
     [Tooltip("The distance between the enemy and player where the enemy will start chasing the player. ")]
@@ -75,10 +78,17 @@ public class Enemy : MonoBehaviour, IDamagable
         health = maxHealth;
         nextTimeToAttack = attackRate;
 
-        DeathManager.OnDie += Disable;
-        DeathManager.OnRespawn += Enable;
+        GameManager.OnPlayerDie += Disable;
+        GameManager.OnPlayerRespawn += Enable;
 
         currentWeapon.Equip(hands);
+        currentWeapon.ApplyDamageMultiplier(attackMultiplier);
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnPlayerDie -= Disable;
+        GameManager.OnPlayerRespawn -= Enable;
     }
 
     /// <summary>
@@ -295,11 +305,19 @@ public class Enemy : MonoBehaviour, IDamagable
         Move(Vector3.zero);
     }
 
+    /// <summary>
+    /// Disabled the enemy
+    /// </summary>
     void Disable()
     {
+        StopRotation();
+        StopMovement();
         SetActive(false);
     }
 
+    /// <summary>
+    /// Enables the enemy
+    /// </summary>
     void Enable()
     {
         SetActive(true);

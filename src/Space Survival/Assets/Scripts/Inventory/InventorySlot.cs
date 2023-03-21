@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
+    [Tooltip("If this slot is a storage slot")]
     [SerializeField] bool isStorageSlot;
 
     public bool IsStorageSlot { get { return isStorageSlot; } set { isStorageSlot = value; } }

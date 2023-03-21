@@ -6,7 +6,7 @@ public class HarvestingTool : MeleeWeapon
     [SerializeField] int tier;
     [Tooltip("The type of resource this tool can harvest")]
     [SerializeField] HarvestTypes harvestType;
-
+    [Tooltip("If this tool can harvest voxels")]
     [SerializeField] bool harvestVoxel;
 
     HarvestableVoxel voxelChunk;
@@ -44,7 +44,7 @@ public class HarvestingTool : MeleeWeapon
                     //Get chunk reference
                     voxelChunk = hit.transform.GetComponent<HarvestableVoxel>();
                     if (voxelChunk != null) {
-                        voxelChunk.TakeDamage(hit.point - (hit.normal * .01f), hitRadius, harvestType, tier);
+                        voxelChunk.Harvest(hit.point - (hit.normal * .01f), hitRadius, harvestType, tier);
                     }
                 }
             }

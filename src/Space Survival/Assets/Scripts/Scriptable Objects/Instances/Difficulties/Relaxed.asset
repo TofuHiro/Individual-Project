@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ba97ee09dd20249b817e5faa48b931, type: 3}
+  m_Name: Relaxed
+  m_EditorClassIdentifier: 
+  startingMaxHealth: 500
+  healthOverTime: 100
+  sustenanceEffectMultiplier: 2
+  waterDecayRate: 0
+  dehydrationDamageRate: 0
+  dehydrationDamage: 0
+  foodDecayRate: 0
+  starveDamageRate: 0
+  starveDamage: 0
+  useOxygen: 0
+  startingMaxOxygen: 60
+  suffocateDamageRate: 0
+  suffocationDamage: 0
+  respawnHealth: 500
+  respawnWater: 100
+  respawnFood: 100
+  enemies: 0
+  enemySpawnMultiplier: 0
+  enemyDamageMultiplier: 0
+  buildingRequirements: 0
+  craftingRequirements: 0
+  resourceSpawnMultiplier: 2
+  dropItemsOnDeath: 0
+  dropWeaponsOnDeath: 0
+  dropUpgradesOnDeath: 0
+  dropArmoursOnDeath: 0

@@ -11,7 +11,14 @@ public class HarvestableVoxel : VoxelClump
     [Tooltip("Array of item to drop with specified spawn rates")]
     [SerializeField] ObjectChance[] drops;
 
-    public void TakeDamage(Vector3 _worldSpacePos, float _radius, HarvestTypes _toolType, int _toolTier)
+    /// <summary>
+    /// Harvests voxels within a radius around a point
+    /// </summary>
+    /// <param name="_worldSpacePos">The point to harvest around</param>
+    /// <param name="_radius">The radius to harvest from. If set to 0, only harvest single target at point</param>
+    /// <param name="_toolType">The tool type used to harvest</param>
+    /// <param name="_toolTier">The tier of the tool used to harvest</param>
+    public void Harvest(Vector3 _worldSpacePos, float _radius, HarvestTypes _toolType, int _toolTier)
     {
         if (_toolTier < minTier || _toolType != harvestType)
             return;
@@ -30,6 +37,10 @@ public class HarvestableVoxel : VoxelClump
         }
     }
 
+    /// <summary>
+    /// Spawns the set resource
+    /// </summary>
+    /// <param name="_pos">The position to spawn at</param>
     void SpawnResource(Vector3 _pos)
     {
         float _chance = Random.Range(.01f, 100f);

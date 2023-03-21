@@ -29,6 +29,8 @@ public class CraftingManager : MonoBehaviour
 
     [Tooltip("Game object holding the crafting user interface")]
     [SerializeField] GameObject UIGameObject;
+    [Tooltip("Whether crafting requires any ingredients")]
+    [SerializeField] bool craftingRequirements;
     [Tooltip("Scroll box holding standard recipe blocks")]
     [SerializeField] Transform standardRecipeScrollBox;
     [Tooltip("Scroll box holding weapon recipe blocks")]
@@ -41,7 +43,6 @@ public class CraftingManager : MonoBehaviour
     PlayerInventory playerInventory;
 
     List<CraftingRecipeBlock> recipeBlocks;
-    Item[] playerItems;
 
     void Start()
     {
@@ -145,6 +146,9 @@ public class CraftingManager : MonoBehaviour
     /// <returns>Returns true if the player is able to craft the recipe</returns>
     bool CheckRecipe(ItemRecipe _recipe)
     {
+        if (!craftingRequirements)
+            return true;
+
         List<Item> _items = playerInventory.GetItems();
         bool[] _acquired = new bool[_recipe.ingredientItems.Length];
 

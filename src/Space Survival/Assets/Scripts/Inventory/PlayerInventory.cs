@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceGame;
 
 [RequireComponent(typeof(ItemDisplayUI))]
 public class PlayerInventory : MonoBehaviour
@@ -51,10 +52,10 @@ public class PlayerInventory : MonoBehaviour
         upgradeSlots = upgradeSlotsHolder.GetComponentsInChildren<UpgradeSlot>();
 
         //Change depend on difficulty
-        DeathManager.OnDie += DropInventoryItems;
-        DeathManager.OnDie += DropWeapons;
-        DeathManager.OnDie += DropArmours;
-        DeathManager.OnDie += DropUpgrades;
+        GameManager.OnPlayerDie += DropInventoryItems;
+        GameManager.OnPlayerDie += DropWeapons;
+        GameManager.OnPlayerDie += DropArmours;
+        GameManager.OnPlayerDie += DropUpgrades;
 
         //Start open to init children, then disable
         SetInventory(false);
@@ -157,6 +158,10 @@ public class PlayerInventory : MonoBehaviour
         ResetInventory();
     }
 
+    /// <summary>
+    /// Returns the next vacant slot in the main inventory
+    /// </summary>
+    /// <returns>The vacant inventory slot</returns>
     public InventorySlot GetVacantSlot()
     {
         foreach (InventorySlot _slot in inventorySlots) {
