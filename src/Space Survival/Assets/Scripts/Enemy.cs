@@ -7,6 +7,7 @@ using SpaceGame;
 public class Enemy : MonoBehaviour, IDamagable
 {
     public static float GlobalDamageMultiplier = 1f;
+    public string Name { get { return name; } }
 
     [Tooltip("The name for this enemy")]
     [SerializeField] new string name;
@@ -59,6 +60,7 @@ public class Enemy : MonoBehaviour, IDamagable
     public bool IsAggro { get; private set; }
     public bool IsActive { get; private set; } = true;
 
+    EnemySpawner spawner;
     PlayerController player;
     PlayerMotor motor;
     AICamera orientation;
@@ -75,20 +77,39 @@ public class Enemy : MonoBehaviour, IDamagable
         orientation = GetComponent<AICamera>();
         rb = GetComponent<Rigidbody>();
 
-        health = maxHealth;
-        nextTimeToAttack = attackRate;
-
-        GameManager.OnPlayerDie += Disable;
-        GameManager.OnPlayerRespawn += Enable;
-
         currentWeapon.Equip(hands);
         currentWeapon.ApplyDamageMultiplier(GlobalDamageMultiplier);
+
+        ResetEnemy();
+    }
+
+    void ResetEnemy()
+    {
+        health = maxHealth;
+        nextTimeToAttack = attackRate;
+        IsActive = true;
+    }
+
+    void OnEnable()
+    {
+        ResetEnemy();
+        GameManager.OnPlayerDie += Disable;
+        GameManager.OnPlayerRespawn += Enable;
     }
 
     void OnDisable()
     {
         GameManager.OnPlayerDie -= Disable;
         GameManager.OnPlayerRespawn -= Enable;
+    }
+
+    /// <summary>
+    /// Set the spawner origin of this enemy
+    /// </summary>
+    /// <param name="_spawner"></param>
+    public void SetSpawner(EnemySpawner _spawner)
+    {
+        spawner = _spawner;
     }
 
     /// <summary>
@@ -161,7 +182,9 @@ public class Enemy : MonoBehaviour, IDamagable
 
         if (IsAggro) {
             //Stop idle moving
-            StopCoroutine(lastIdleRoutine);
+            if (lastIdleRoutine != null) {
+                StopCoroutine(lastIdleRoutine);
+            }
             StopMovement();
             StopRotation();
             isIdling = false;
@@ -263,20 +286,12 @@ public class Enemy : MonoBehaviour, IDamagable
     /// </summary>
     public void Die()
     {
-        StopAllCoroutines();
-        StopMovement();
-        StopRotation();
-
-        isAttacking = false;
-        IsActive = false;
-
-        //Drop weapon
-        currentWeapon.SetPrimaryAttack(false);
-        currentWeapon.Holster();
-
+        Disable();
+        spawner.EnemyNumber--;
+        
         //Change to corpse
-        ObjectPooler.PoolObject(name, gameObject);
-        ObjectPooler.SpawnObject(name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
+        ObjectPooler.PoolObject(Name, gameObject);
+        ObjectPooler.SpawnObject(Name + "_corpse", corpsePrefab, orientation.GetOrientation().position, orientation.GetOrientation().rotation);
     }
 
     /// <summary>
@@ -310,9 +325,15 @@ public class Enemy : MonoBehaviour, IDamagable
     /// </summary>
     void Disable()
     {
+        StopCoroutine(lastIdleRoutine);
         StopRotation();
         StopMovement();
         SetActive(false);
+        isAttacking = false;
+        isIdling = false;
+        IsAggro = false;
+        currentWeapon.SetPrimaryAttack(false);
+        currentWeapon.SetSecondaryAttack(false);
     }
 
     /// <summary>

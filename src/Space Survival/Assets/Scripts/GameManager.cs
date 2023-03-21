@@ -62,6 +62,8 @@ namespace SpaceGame
             vitals.SetRespawnWater(SelectedDifficulty.respawnWater);
             vitals.SetRespawnFood(SelectedDifficulty.respawnFood);
 
+            EnemySpawner.EnemiesAllowed = SelectedDifficulty.enemies;
+            EnemySpawner.SpawnNumberMultiplier = SelectedDifficulty.enemySpawnMultiplier;
             Enemy.GlobalDamageMultiplier = SelectedDifficulty.enemyDamageMultiplier;
 
             BuildingManager.UseIngredients = SelectedDifficulty.buildingRequirements;
