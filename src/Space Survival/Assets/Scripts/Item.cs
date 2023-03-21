@@ -40,7 +40,10 @@ public class Item : MonoBehaviour, IPickable
         //Pick up
         bool _success = inventory.AddItem(this);
         if (_success) {
-            ObjectPooler.PoolObject(item.name, gameObject);
+            if (item.unique)
+                gameObject.SetActive(false);
+            else
+                ObjectPooler.PoolObject(item.name, gameObject);
         }
     }
 
@@ -50,7 +53,10 @@ public class Item : MonoBehaviour, IPickable
     public void Drop()
     {
         Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
+        if (item.unique)
+            gameObject.SetActive(true);
+        else
+            ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
     }
 
     /// <summary>

@@ -185,9 +185,17 @@ public class CraftingManager : MonoBehaviour
         }
 
         //Create and give new item to player
-        GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.ItemScriptableObject.name, _recipe.productItem.gameObject);
-        Item _newItem = _newObject.GetComponent<Item>();
-        ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
-        playerInventory.AddItem(_newItem);
+        if (_recipe.productItem.ItemScriptableObject.unique) {
+            GameObject _newObject = Instantiate(_recipe.productItem.gameObject);
+            Item _newItem = _newObject.GetComponent<Item>();
+            playerInventory.AddItem(_newItem);
+            _newObject.SetActive(false);
+        }
+        else {
+            GameObject _newObject = ObjectPooler.SpawnObject(_recipe.productItem.ItemScriptableObject.name, _recipe.productItem.gameObject);
+            Item _newItem = _newObject.GetComponent<Item>();
+            playerInventory.AddItem(_newItem);
+            ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
+        }
     }
 }

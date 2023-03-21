@@ -11,6 +11,8 @@ public class ItemScriptable : ScriptableObject
     public Texture icon;
     [Tooltip("The description for this item")]
     public string description;
+    [Tooltip("This item will not be stored with other in the object pool")]
+    public bool unique;
 
     /// <summary>
     /// Action when used inside the inventory

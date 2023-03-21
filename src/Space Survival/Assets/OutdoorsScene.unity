@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2161.3252, g: 2265.3418, b: 3288.5742, a: 1}
+  m_IndirectSpecularColor: {r: 2158.7236, g: 2263.3691, b: 3286.8203, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10124,7 +10124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0420f26a67e7594992f378823e779b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedDifficulty: {fileID: 11400000, guid: 53fe825ae8713784d9eb953ba3e4a6b6, type: 2}
+  SelectedDifficulty: {fileID: 11400000, guid: 083e154e830a9c249a7365696b1b203a, type: 2}
   staticSpawn: {fileID: 409206373}
   player: {fileID: 2115074535}
   deathScreenUI: {fileID: 69228495}
