@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
+public class HarvestableMarchingCube : MarchingCube, IHarvestableVoxel
 {
     [Tooltip("The minimum tool tier required to be harvested")]
     [SerializeField] int minTier;
@@ -11,36 +11,27 @@ public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
     [Tooltip("Array of item to drop with specified spawn rates")]
     [SerializeField] ObjectChance[] drops;
 
-    /// <summary>
-    /// Harvests voxels within a radius around a point
-    /// </summary>
-    /// <param name="_worldSpacePos">The point to harvest around</param>
-    /// <param name="_radius">The radius to harvest from. If set to 0, only harvest single target at point</param>
-    /// <param name="_toolType">The tool type used to harvest</param>
-    /// <param name="_toolTier">The tier of the tool used to harvest</param>
+    
     public void Harvest(Vector3 _worldSpacePos, float _radius, HarvestTypes _toolType, int _toolTier)
     {
         if (_toolTier < minTier || _toolType != harvestType)
             return;
 
         if (_radius > 0) {
-            List<Vector3> _voxels = GetVoxelsInRadius(_worldSpacePos, _radius);
-            RemoveVoxels(_voxels);
-            foreach (Vector3 _voxel in _voxels) {
-                SpawnResource(_voxel + transform.position);
+            List<Vector3> _verts = GetVertsInRadius(_worldSpacePos, _radius);
+            RemoveVerts(_verts);
+            foreach (Vector3 _vert in _verts) {
+                SpawnResource(_vert + transform.position);
             }
         }
         else {
-            Vector3 _voxelMapCoord = GetVoxel(_worldSpacePos);
-            RemoveVoxel(_voxelMapCoord);
-            SpawnResource(_voxelMapCoord + transform.position);
+            Vector3 _vertMapCoord = GetVert(_worldSpacePos);
+            RemoveVert(_vertMapCoord);
+            SpawnResource(_vertMapCoord + transform.position);
         }
     }
 
-    /// <summary>
-    /// Spawns the set resource
-    /// </summary>
-    /// <param name="_pos">The position to spawn at</param>
+   
     void SpawnResource(Vector3 _pos)
     {
         float _chance = Random.Range(.01f, 100f);

@@ -9,7 +9,7 @@ public class HarvestingTool : MeleeWeapon
     [Tooltip("If this tool can harvest voxels")]
     [SerializeField] bool harvestVoxel;
 
-    HarvestableVoxel voxelChunk;
+    IHarvestableVoxel voxelChunk;
     IHarvestable harvestable;
 
     protected override void Attack()
@@ -42,7 +42,7 @@ public class HarvestingTool : MeleeWeapon
                 //Harvest all voxels in radius
                 if (harvestVoxel) {
                     //Get chunk reference
-                    voxelChunk = hit.transform.GetComponent<HarvestableVoxel>();
+                    voxelChunk = hit.transform.GetComponent<IHarvestableVoxel>();
                     if (voxelChunk != null) {
                         voxelChunk.Harvest(hit.point - (hit.normal * .01f), hitRadius, harvestType, tier);
                     }

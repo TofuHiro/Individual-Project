@@ -16,16 +16,17 @@ public class VoxelClump : MonoBehaviour
     [Tooltip("Use a randomly generated seed")]
     [SerializeField] bool useRandomSeed;
     [Tooltip("Scale applied when generating a noise map")]
-    [SerializeField] float noiseScale = .1f;
+    [SerializeField] float noiseScale = .6f;
     [Tooltip("Values from the noise map below this value will be considered solid")]
     [Range(0f, 1f)]
-    [SerializeField] float noiseThreshold = .4f;
+    [SerializeField] float noiseThreshold = .7f;
     [Tooltip("The value added to the noise threshold as a gradient from the fall off radius and outwards")]
-    [SerializeField] float thresholdFalloff = .3f;
-    [Tooltip("The radius where the threshold falloff is added from")]
-    [SerializeField] float falloffRadius = 3;
+    [Range(0f, 1f)]
+    [SerializeField] float thresholdFalloff = .2f;
+    [Tooltip("The distance from the outer radius where the threshold falloff is added from")]
+    [SerializeField] float falloffRadius = 1.5f;
     [Tooltip("The radius where voxels are guranteed to be solid")]
-    [SerializeField] float coreRadius = 2;
+    [SerializeField] float coreRadius = 1.5f;
 
     MeshFilter meshFilter;
     MeshCollider meshCollider;
@@ -99,15 +100,15 @@ public class VoxelClump : MonoBehaviour
     }
 
     /// <summary>
-    /// Creates the voxel map using 3D noise
+    /// Populates the voxel map using 3D noise
     /// </summary>
     void PopulateVoxelMap()
     {
         voxelMap = new bool[chunkSize * voxelPerUnit, chunkSize * voxelPerUnit, chunkSize * voxelPerUnit];
 
-        for (float x = 0; x < chunkSize; x += (1f / voxelPerUnit)) {
-            for (float y = 0; y < chunkSize; y += (1f / voxelPerUnit)) {
-                for (float z = 0; z < chunkSize; z += (1f / voxelPerUnit)) {
+        for (float x = 0; x < chunkSize; x += 1f / voxelPerUnit) {
+            for (float y = 0; y < chunkSize; y += 1f / voxelPerUnit) {
+                for (float z = 0; z < chunkSize; z += 1f / voxelPerUnit) {
                     //Start with threshold low for center, higher the further out
                     float _distFromCenter = Vector3.Distance(new Vector3(x, y, z), Vector3.one * (chunkSize / 2));
                     if (_distFromCenter >= (chunkSize + 2) / 2) {
@@ -190,6 +191,19 @@ public class VoxelClump : MonoBehaviour
     protected void RemoveVoxel(Vector3 _pos)
     {
         voxelMap[(int)(_pos.x * voxelPerUnit), (int)(_pos.y * voxelPerUnit), (int)(_pos.z * voxelPerUnit)] = false;
+
+        UpdateMeshData();
+    }
+
+    /// <summary>
+    /// Removes voxels from the given list of positions and updates mesh
+    /// </summary>
+    /// <param name="_positions">List of vector3 positions of voxels</param>
+    protected void RemoveVoxels(List<Vector3> _positions)
+    {
+        foreach (Vector3 _pos in _positions) {
+            voxelMap[(int)(_pos.x * voxelPerUnit), (int)(_pos.y * voxelPerUnit), (int)(_pos.z * voxelPerUnit)] = false;
+        }
 
         UpdateMeshData();
     }
