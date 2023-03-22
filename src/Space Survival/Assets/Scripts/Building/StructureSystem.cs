@@ -567,15 +567,17 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks and marks all grids as sealed or unsealed
+    /// Checks and marks all grids as sealed or unsealed and returns the positions that are sealed
     /// </summary>
-    public void CheckSealed()
+    /// <returns>3D array of sealed positions</returns>
+    public bool[,,] CheckSealed()
     {
+        bool[,,] _sealedPos = new bool[GridSize.x, GridSize.y, GridSize.z];
+        //Arrays used for traverse checks
         bool[,,] _traversed = new bool[GridSize.x, GridSize.y, GridSize.z];
         bool[,,] _sealCheck = new bool[GridSize.x, GridSize.y, GridSize.z];
         bool[,,] _voidCheck = new bool[GridSize.x, GridSize.y, GridSize.z];
         Vector3Int _breachPoint = Vector3Int.zero;
-
         for (int x = 0; x < GridSize.x; x++) {
             for (int y = 0; y < GridSize.y; y++) {
                 for (int z = 0; z < GridSize.z; z++) {
@@ -583,10 +585,10 @@ public class StructureSystem
                     if (CheckGridPosForStructure(new Vector3Int(x, y, z))) {
                         if (!_traversed[x, y, z]) {
                             //If no breach found
-                            if (Traverse(new Vector3Int(x, y, z))) 
+                            if (Traverse(new Vector3Int(x, y, z)))
                                 Seal(new Vector3Int(x, y, z));
                             //Else breach found
-                            else 
+                            else
                                 Unseal(new Vector3Int(x, y, z), _breachPoint);
                         }
                     }
@@ -638,11 +640,11 @@ public class StructureSystem
 
             for (int i = 0; i < 6; i++) {
                 Vector3Int _traverseDir = _startPos + traverseDir[i];
-                //If structure dont exist, dont traverse
-                if (!CheckGridPosForStructure(_traverseDir))
-                    continue;
                 //If wall/floor, ignore/no traverse
                 if (CheckStructureAtDir(_startPos, i) || CheckStructureFromDir(_traverseDir, i))
+                    continue;
+                //If structure dont exist, dont traverse
+                if (!CheckPosInGrid(_traverseDir))
                     continue;
                 //Ignore breachpoint, no traverse
                 if (_traverseDir == _breachPoint)
@@ -659,15 +661,16 @@ public class StructureSystem
         {
             _sealCheck[_startPos.x, _startPos.y, _startPos.z] = true;
             _traversed[_startPos.x, _startPos.y, _startPos.z] = true;
+            _sealedPos[_startPos.x, _startPos.y, _startPos.z] = true;
             grid[_startPos.x, _startPos.y, _startPos.z].IsSealed = true;
 
             for (int i = 0; i < 6; i++) {
                 Vector3Int _traverseDir = _startPos + traverseDir[i];
-                //If structure dont exist, dont traverse
-                if (!CheckGridPosForStructure(_traverseDir))
-                    continue;
                 //If wall/floor, ignore/no traverse
                 if (CheckStructureAtDir(_startPos, i) || CheckStructureFromDir(_traverseDir, i))
+                    continue;
+                //If out of bounds, dont traverse
+                if (!CheckPosInGrid(_traverseDir))
                     continue;
 
                 if (!_sealCheck[_traverseDir.x, _traverseDir.y, _traverseDir.z]) {
@@ -703,5 +706,7 @@ public class StructureSystem
             }
             return false;
         }
+
+        return _sealedPos;
     }
 }

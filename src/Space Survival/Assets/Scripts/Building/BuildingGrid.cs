@@ -200,7 +200,7 @@ public class BuildingGrid
 
         StructureSystem _system = JoinSystem(_worldSpacePos);
         _system.AddFloor(_worldSpacePos);
-        _system.CheckSealed();
+        SealSystem(_system);
         return true;
     }
 
@@ -220,12 +220,12 @@ public class BuildingGrid
         }
         //Impossible to split
         else if (_splitPoints == 1) {
-            _system.CheckSealed();
+            SealSystem(_system);
         }
         //Check to split
         else if (_splitPoints > 1) {
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
-                _sys.CheckSealed();
+                SealSystem(_sys);
             }
         }
     }
@@ -258,7 +258,7 @@ public class BuildingGrid
 
         StructureSystem _system = JoinSystem(_worldSpacePos);
         _system.AddEdge(_worldSpacePos, _edge);
-        _system.CheckSealed();
+        SealSystem(_system);
         return true;
     }
 
@@ -278,12 +278,12 @@ public class BuildingGrid
         }
         //Impossible to split
         else if (_splitPoints == 1) {
-            _system.CheckSealed();
+            SealSystem(_system);
         }
         //Check to split
         else if (_splitPoints > 1) {
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
-                _sys.CheckSealed();
+                SealSystem(_sys);
             }
         }
     }
@@ -302,6 +302,14 @@ public class BuildingGrid
             }
         }
         return false;
+    }
+
+    void SealSystem(StructureSystem _system)
+    {
+        Vector3 _origin = _system.OriginWorldPos;
+        bool[,,] _sealedPositions = _system.CheckSealed();
+        //Create oxygen triggers with appropiate sizes:
+        
     }
 
     /// <summary>
