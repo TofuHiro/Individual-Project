@@ -7,10 +7,20 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class MarchingCube : MonoBehaviour
 {
+    [Tooltip("For testing. Whether to continuesly update the mesh")]
+    [SerializeField] bool updateGeneration;
+
+    [Header("Size")]
     [Tooltip("The cube size of this chunk")]
-    [SerializeField] int cubeSize = 5;
+    [SerializeField] int cubeSize = 4;
+    [Tooltip("The radius where voxels are guranteed to be solid")]
+    [SerializeField] float coreRadius = 2f;
+    [Tooltip("The radius where voxels are guranteed to be empty")]
+    [SerializeField] float falloffDistance = 2f;
     [Tooltip("The number of voxels per unit cube")]
     [SerializeField] protected int voxelPerUnit = 1;
+
+    [Header("Noise Generation")]
     [Tooltip("A seed value to generate")]
     [SerializeField] int seed;
     [Tooltip("Use a randomly generated seed")]
@@ -19,14 +29,14 @@ public class MarchingCube : MonoBehaviour
     [SerializeField] float noiseScale = .6f;
     [Tooltip("Values from the noise map below this value will be considered solid")]
     [Range(0f, 1f)]
-    [SerializeField] float noiseThreshold = .7f;
-    [Tooltip("The value added to the noise threshold as a gradient from the fall off radius and outwards")]
-    [Range(0f, 1f)]
-    [SerializeField] float thresholdFalloff = .2f;
-    [Tooltip("The distance from the outer radius where the threshold falloff is added from")]
-    [SerializeField] float falloffRadius = 1.5f;
-    [Tooltip("The radius where voxels are guranteed to be solid")]
-    [SerializeField] float coreRadius = 1.5f;
+    [SerializeField] float noiseThreshold = .5f;
+    [Tooltip("Controls increase in noise frequency from octaves. Frequency = Lacunarity ^ Octave")]
+    [SerializeField] float lacunarity = 2f;
+    [Tooltip("The number of octaves to calculate noise frequencies")]
+    [SerializeField] int octaves = 3;
+    [Range(0, 1)]
+    [Tooltip("Controls decrease in noise amplitudes from octaves. Amplitude = Persistance ^ Octave")]
+    [SerializeField] float persistance = .5f;
 
     MeshFilter meshFilter;
     MeshCollider meshCollider;
@@ -48,9 +58,21 @@ public class MarchingCube : MonoBehaviour
 
         if (useRandomSeed)
             seed = Random.Range(0, 100000);
+        if (lacunarity < 1)
+            lacunarity = 1;
+        if (octaves < 0)
+            octaves = 0;
 
         PopulateVertMap();
         UpdateMeshData();
+    }
+
+    void Update()
+    {
+        if (updateGeneration) {
+            PopulateVertMap();
+            UpdateMeshData();
+        }
     }
 
     /// <summary>
@@ -100,28 +122,32 @@ public class MarchingCube : MonoBehaviour
     /// </summary>
     void PopulateVertMap()
     {
+        vertMap = new bool[(cubeSize * voxelPerUnit) + voxelPerUnit, (cubeSize * voxelPerUnit) + voxelPerUnit, (cubeSize * voxelPerUnit) + voxelPerUnit];
+
         for (float x = 0; x < cubeSize + 1; x += 1f / voxelPerUnit) {
             for (float y = 0; y < cubeSize + 1; y += 1f / voxelPerUnit) {
                 for (float z = 0; z < cubeSize + 1; z += 1f / voxelPerUnit) {
                     //Start with threshold low for center, higher the further out
                     float _distFromCenter = Vector3.Distance(new Vector3(x, y, z), Vector3.one * (cubeSize / 2));
                     //Rounding from max radius
-                    if (_distFromCenter >= cubeSize / 2) 
+                    if (_distFromCenter >= cubeSize - (cubeSize - falloffDistance)) 
                         continue;
                     
                     //Solid core from radius
                     if (_distFromCenter < coreRadius) 
                         vertMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
                     
-                    else if (_distFromCenter >= falloffRadius) {
-                        float _distBasedThresh = noiseThreshold + (thresholdFalloff * (_distFromCenter - falloffRadius / ((cubeSize / 2) - falloffRadius)));
-                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= _distBasedThresh) {
-                            vertMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
-                        }
-                    }
                     else {
-                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= noiseThreshold) {
-                            vertMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                        float _frequency = 1;
+                        float _amplitude = 1;
+                        float _noiseVal;
+                        for (int i = 0; i < octaves; i++) {
+                            _noiseVal = Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale * _frequency) * _amplitude;
+                            if (_noiseVal > noiseThreshold) {
+                                vertMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                            }
+                            _frequency *= lacunarity;
+                            _amplitude *= persistance;
                         }
                     }
                 }

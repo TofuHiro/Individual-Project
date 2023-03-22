@@ -7,10 +7,20 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class VoxelClump : MonoBehaviour
 {
+    [Tooltip("For testing. Whether to continuesly update the mesh")]
+    [SerializeField] bool updateGeneration;
+
+    [Header("Size")]
     [Tooltip("The cube size of this chunk")]
-    [SerializeField] int chunkSize = 5;
+    [SerializeField] int chunkSize = 4;
+    [Tooltip("The radius where voxels are guranteed to be solid")]
+    [SerializeField] float coreRadius = 2f;
+    [Tooltip("The distance from the outer radius where the threshold falloff is added from")]
+    [SerializeField] float falloffDistance = 2f;
     [Tooltip("The number of voxels per unit cube")]
     [SerializeField] protected int voxelPerUnit = 1;
+
+    [Header("Noise Generation")]
     [Tooltip("A seed value to generate")]
     [SerializeField] int seed;
     [Tooltip("Use a randomly generated seed")]
@@ -19,14 +29,14 @@ public class VoxelClump : MonoBehaviour
     [SerializeField] float noiseScale = .6f;
     [Tooltip("Values from the noise map below this value will be considered solid")]
     [Range(0f, 1f)]
-    [SerializeField] float noiseThreshold = .7f;
-    [Tooltip("The value added to the noise threshold as a gradient from the fall off radius and outwards")]
-    [Range(0f, 1f)]
-    [SerializeField] float thresholdFalloff = .2f;
-    [Tooltip("The distance from the outer radius where the threshold falloff is added from")]
-    [SerializeField] float falloffRadius = 1.5f;
-    [Tooltip("The radius where voxels are guranteed to be solid")]
-    [SerializeField] float coreRadius = 1.5f;
+    [SerializeField] float noiseThreshold = .5f;
+    [Tooltip("Controls increase in noise frequency from octaves. Frequency = Lacunarity ^ Octave")]
+    [SerializeField] float lacunarity = 2f;
+    [Tooltip("The number of octaves to calculate noise frequencies")]
+    [SerializeField] int octaves = 3;
+    [Range(0, 1)]
+    [Tooltip("Controls decrease in noise amplitudes from octaves. Amplitude = Persistance ^ Octave")]
+    [SerializeField] float persistance = .5f;
 
     MeshFilter meshFilter;
     MeshCollider meshCollider;
@@ -36,7 +46,7 @@ public class VoxelClump : MonoBehaviour
     List<Vector2> uvs;
     protected bool[,,] voxelMap;
 
-    int vertexIndex = 0;
+    int vertIndex = 0;
 
     protected virtual void Start()
     {
@@ -50,11 +60,23 @@ public class VoxelClump : MonoBehaviour
 
         if (useRandomSeed)
             seed = Random.Range(0, 100000);
+        if (lacunarity < 1)
+            lacunarity = 1;
+        if (octaves < 0)
+            octaves = 0;
 
         transform.position = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
 
         PopulateVoxelMap();
         UpdateMeshData();
+    }
+
+    void Update()
+    {
+        if (updateGeneration) {
+            PopulateVoxelMap();
+            UpdateMeshData();
+        }
     }
 
     /// <summary>
@@ -111,22 +133,26 @@ public class VoxelClump : MonoBehaviour
                 for (float z = 0; z < chunkSize; z += 1f / voxelPerUnit) {
                     //Start with threshold low for center, higher the further out
                     float _distFromCenter = Vector3.Distance(new Vector3(x, y, z), Vector3.one * (chunkSize / 2));
-                    if (_distFromCenter >= (chunkSize + 2) / 2) {
+                    //Rounding from max radius
+                    if (_distFromCenter >= chunkSize - (chunkSize - falloffDistance)) 
                         continue;
-                    }
 
-                    if (_distFromCenter < coreRadius) {
+                    //Solid core from radius
+                    if (_distFromCenter < coreRadius)
                         voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
-                    }
-                    else if (_distFromCenter >= falloffRadius) {
-                        float _distBasedThresh = noiseThreshold + (thresholdFalloff * (_distFromCenter - falloffRadius / ((chunkSize / 2) - falloffRadius)));
-                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= _distBasedThresh) {
-                            voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
-                        }
-                    }
+
+                    //Random
                     else {
-                        if (Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale) >= noiseThreshold) {
-                            voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                        float _frequency = 1;
+                        float _amplitude = 1;
+                        float _noiseVal;
+                        for (int i = 0; i < octaves; i++) {
+                            _noiseVal = Noise.Perlin3D(x + seed, y + seed, z + seed, noiseScale * _frequency) * _amplitude;
+                            if (_noiseVal > noiseThreshold) {
+                                voxelMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
+                            }
+                            _frequency *= lacunarity;
+                            _amplitude *= persistance;
                         }
                     }
                 }
@@ -172,14 +198,14 @@ public class VoxelClump : MonoBehaviour
                 uvs.Add(VoxelData.uvs[3]);
 
                 //Pattern order in voxeldata to exclude duplicates
-                triangles.Add(vertexIndex);
-                triangles.Add(vertexIndex + 1);
-                triangles.Add(vertexIndex + 2);
-                triangles.Add(vertexIndex + 2);
-                triangles.Add(vertexIndex + 1);
-                triangles.Add(vertexIndex + 3);
+                triangles.Add(vertIndex);
+                triangles.Add(vertIndex + 1);
+                triangles.Add(vertIndex + 2);
+                triangles.Add(vertIndex + 2);
+                triangles.Add(vertIndex + 1);
+                triangles.Add(vertIndex + 3);
 
-                vertexIndex += 4;
+                vertIndex += 4;
             }
         }
     }
@@ -247,7 +273,7 @@ public class VoxelClump : MonoBehaviour
     /// </summary>
     void ClearMeshData()
     {
-        vertexIndex = 0;
+        vertIndex = 0;
         vertices.Clear();
         triangles.Clear();
         uvs.Clear();
