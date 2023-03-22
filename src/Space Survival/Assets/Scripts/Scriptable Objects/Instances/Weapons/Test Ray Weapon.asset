@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Test Raygun
   icon: {fileID: 2800000, guid: fba4512e3548e0548b2cf4f11913e257, type: 3}
   description: Testing ray gun that shoots strong beams
-  weaponType: 0
+  unique: 1
   maxDurability: 100
   damage: 20
   maxRange: 200

@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Cutters
   icon: {fileID: 2800000, guid: 6d6088174bb906b49ad8428526ee337b, type: 3}
   description: Basic cutters used to cut things
-  weaponType: 2
+  unique: 1
   maxDurability: 100
   damage: 10
   maxRange: 2

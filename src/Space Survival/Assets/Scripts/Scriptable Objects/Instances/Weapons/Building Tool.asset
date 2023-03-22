@@ -16,6 +16,7 @@ MonoBehaviour:
   name: Building Tool
   icon: {fileID: 2800000, guid: cdf2b54d520524c418aed1dc00eec185, type: 3}
   description: A tool to construct buildings
+  unique: 1
   maxDurability: 100
   damage: 0
   maxRange: 5

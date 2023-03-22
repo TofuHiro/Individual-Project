@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Tier 1 pickaxe
   icon: {fileID: 2800000, guid: 9c6313a5316f8a34b852bf94ff96e3ab, type: 3}
   description: A basic mining tool
-  weaponType: 2
+  unique: 1
   maxDurability: 100
   damage: 25
   maxRange: 2.5

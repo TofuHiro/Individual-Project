@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Test Bean Launcher
   icon: {fileID: 2800000, guid: d88596134c72c47b99d7d55583f4c6bf, type: 3}
   description: Launches beans at unexpecting targets
-  weaponType: 1
+  unique: 1
   maxDurability: 100
   damage: 50
   maxRange: 100
