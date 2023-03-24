@@ -1,19 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingGrid
+public class BuildingGrid : MonoBehaviour
 {
-    List<StructureSystem> systems;
-    int gridUnit;
+    #region Singleton
+    public static BuildingGrid Instance;
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+    #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_gridUnit">The size of each unit in the building grid</param>
-    public BuildingGrid(int _gridUnit)
+    [Tooltip("The default size of each unit grid used for building")]
+    [SerializeField] int gridUnit = 4;
+
+    List<StructureSystem> systems;
+
+    void Start()
     {
         systems = new List<StructureSystem>();
-        gridUnit = _gridUnit;
+    }
+
+    public int GetGridUnit()
+    {
+        return gridUnit;
     }
 
     /// <summary>
@@ -34,7 +47,7 @@ public class BuildingGrid
     /// </summary>
     /// <param name="_worldSpacePos">The world space position to check</param>
     /// <returns>Returns the system at the position</returns>
-    StructureSystem GetSystem(Vector3 _worldSpacePos)
+    public StructureSystem GetSystem(Vector3 _worldSpacePos)
     {
         foreach (StructureSystem _system in systems) {
             if (_system.CheckPosForStructure(_worldSpacePos)) {
@@ -120,8 +133,8 @@ public class BuildingGrid
         _newSystem.CombineGrid(_first.GetGrid(), _first.GridSize, _firstOffset);
         _newSystem.CombineGrid(_second.GetGrid(), _second.GridSize, _secondOffset);
 
-        systems.Remove(_first);
-        systems.Remove(_second);
+        DeleteSystem(_first);
+        DeleteSystem(_second);
         systems.Add(_newSystem);
 
         return _newSystem;
@@ -139,8 +152,14 @@ public class BuildingGrid
         foreach (StructureSystem _newSystem in _newSystems) {
             systems.Add(_newSystem);
         }
-        systems.Remove(_system);
+        DeleteSystem(_system);
         return _newSystems;
+    }
+
+    void DeleteSystem(StructureSystem _system)
+    {
+        _system.OnDelete();
+        systems.Remove(_system);
     }
 
     /// <summary>
@@ -200,7 +219,7 @@ public class BuildingGrid
 
         StructureSystem _system = JoinSystem(_worldSpacePos);
         _system.AddFloor(_worldSpacePos);
-        SealSystem(_system);
+        _system.Seal();
         return true;
     }
 
@@ -216,16 +235,16 @@ public class BuildingGrid
 
         //Remove system as nothing exists
         if (_splitPoints == 0) {
-            systems.Remove(_system);
+            DeleteSystem(_system);
         }
         //Impossible to split
         else if (_splitPoints == 1) {
-            SealSystem(_system);
+            _system.Seal();
         }
         //Check to split
         else if (_splitPoints > 1) {
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
-                SealSystem(_sys);
+                _sys.Seal();
             }
         }
     }
@@ -258,7 +277,7 @@ public class BuildingGrid
 
         StructureSystem _system = JoinSystem(_worldSpacePos);
         _system.AddEdge(_worldSpacePos, _edge);
-        SealSystem(_system);
+        _system.Seal();
         return true;
     }
 
@@ -274,16 +293,16 @@ public class BuildingGrid
 
         //Remove system as nothing exists
         if (_splitPoints == 0) {
-            systems.Remove(_system);
+            DeleteSystem(_system);
         }
         //Impossible to split
         else if (_splitPoints == 1) {
-            SealSystem(_system);
+            _system.Seal();
         }
         //Check to split
         else if (_splitPoints > 1) {
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
-                SealSystem(_sys);
+                _sys.Seal();
             }
         }
     }
@@ -302,14 +321,6 @@ public class BuildingGrid
             }
         }
         return false;
-    }
-
-    void SealSystem(StructureSystem _system)
-    {
-        Vector3 _origin = _system.OriginWorldPos;
-        bool[,,] _sealedPositions = _system.CheckSealed();
-        //Create oxygen triggers with appropiate sizes:
-        
     }
 
     /// <summary>

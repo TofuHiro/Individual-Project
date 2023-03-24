@@ -45,7 +45,7 @@ public class RayWeapon : Weapon
         CurrentClip = rayScriptable.clipSize;
         clipSize = rayScriptable.clipSize;
         reloadTime = rayScriptable.reloadTime;
-        mask = ~LayerMask.GetMask("Zone");
+        mask = ~LayerMask.GetMask("Ignore Raycast");
     }
 
     public override void Equip(Transform _parent)

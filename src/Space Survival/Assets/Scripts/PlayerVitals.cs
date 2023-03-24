@@ -2,6 +2,7 @@ using UnityEngine;
 using SpaceGame;
 
 [RequireComponent(typeof(VitalsUI))]
+[RequireComponent(typeof(OxygenConsumer))]
 public class PlayerVitals : MonoBehaviour, IDamagable
 {
     public static PlayerVitals Instance;
@@ -10,6 +11,118 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     /// If this player is dead
     /// </summary>
     public static bool IsDead { get; private set; }
+
+    /// <summary>
+    /// The shield levels of the player
+    /// </summary>
+    public float Shield
+    {
+        get { return shield; }
+        set {
+            shield = value;
+            shield = Mathf.Clamp(shield, 0f, maxShield);
+            UI.SetShield(shield);
+        }
+    }
+    float shield;
+
+    /// <summary>
+    /// The maximum shield levels of the player
+    /// </summary>
+    public float MaxShield
+    {
+        get { return maxShield; }
+        set {
+            maxShield = value;
+            UI.SetMaxShield(value);
+        }
+    }
+
+    /// <summary>
+    /// The health of the player
+    /// </summary>
+    public float Health
+    {
+        get { return health; }
+        set {
+            health = value;
+            health = Mathf.Clamp(health, 0f, maxHealth);
+            UI.SetHealth(health);
+
+            if (health <= 0f) {
+                Die();
+            }
+        }
+    }
+    float health;
+
+    /// <summary>
+    /// The maximum health of the player
+    /// </summary>
+    public float MaxHealth
+    {
+        get { return maxHealth; }
+        set {
+            maxHealth = value;
+            UI.SetMaxHealth(value);
+        }
+    }
+
+    /// <summary>
+    /// The water levels of the player
+    /// </summary>
+    public float Water
+    {
+        get { return water; }
+        set {
+            water = value;
+            water = Mathf.Clamp(water, 0f, maxWater);
+            UI.SetWater(water);
+
+            isDehydrating = (water <= 0f);
+        }
+    }
+    float water;
+
+    /// <summary>
+    /// The maximum water levels of the player
+    /// </summary>
+    public float MaxWater
+    {
+        get { return maxWater; }
+        set {
+            maxWater = value;
+            UI.SetMaxWater(value);
+        }
+    }
+
+    /// <summary>
+    /// The food levels of the player
+    /// </summary>
+    public float Food
+    {
+        get { return food; }
+        set {
+            food = value;
+            food = Mathf.Clamp(food, 0f, maxFood);
+            UI.SetFood(food);
+
+            isStarving = (food <= 0f);
+        }
+    }
+    float food;
+
+    /// <summary>
+    /// The maximum food levels of the player
+    /// </summary>
+    public float MaxFood
+    {
+        get { return maxFood; }
+        set {
+            maxFood = value;
+            UI.SetMaxFood(value);
+        }
+    }
 
     [Tooltip("The multiplier applied on the effects of consuming nutritions")]
     [SerializeField] float sustenanceMultiplier = 1f;
@@ -60,142 +173,16 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [Header("Oxygen")]
     [Tooltip("Whether to consume oxygen")]
     [SerializeField] bool useOxygen = true;
-    [Tooltip("The starting maximum oxygen breathing time")]
-    [SerializeField] float baseOxygenTime = 60f;
     [Tooltip("The time between each damage taken from suffocation")]
     [SerializeField] float suffocateDamageRate = .5f;
     [Tooltip("The damage taken from suffocating")]
     [SerializeField] float suffocateDamage = 10f;
-    [Tooltip("The rate of oxygen recovery")]
-    [SerializeField] float oxygenRecoverRate = 10f;
-    bool isSuffocating, inAir;
-    float nextSuffocateTick, currentMaxOxygenTime;
+    float nextSuffocateTick;
 
+    OxygenConsumer playerOxygen;
     GameManager gameManager;
     VitalsUI UI;
     float timer;
-
-    /// <summary>
-    /// The shield levels of the player
-    /// </summary>
-    public float Shield { get { return shield; }
-        set {
-            shield = value;
-            shield = Mathf.Clamp(shield, 0f, maxShield);
-            UI.SetShield(shield);
-        }
-    }
-    float shield;
-
-    /// <summary>
-    /// The maximum shield levels of the player
-    /// </summary>
-    public float MaxShield { get { return maxShield; }
-        set {
-            maxShield = value;
-            UI.SetMaxShield(value);
-        }
-    }
-
-    /// <summary>
-    /// The health of the player
-    /// </summary>
-    public float Health { get { return health; }
-        set {
-            health = value;
-            health = Mathf.Clamp(health, 0f, maxHealth);
-            UI.SetHealth(health);
-
-            if (health <= 0f) {
-                Die();
-            }
-        }
-    }
-    float health;
-
-    /// <summary>
-    /// The maximum health of the player
-    /// </summary>
-    public float MaxHealth { get { return maxHealth; }
-        set {
-            maxHealth = value;
-            UI.SetMaxHealth(value);
-        }
-    }
-    
-    /// <summary>
-    /// The water levels of the player
-    /// </summary>
-    public float Water { get { return water; }
-        set {
-            water = value;
-            water = Mathf.Clamp(water, 0f, maxWater);
-            UI.SetWater(water);
-
-            isDehydrating = (water <= 0f);
-        }
-    }
-    float water;
-
-    /// <summary>
-    /// The maximum water levels of the player
-    /// </summary>
-    public float MaxWater { get { return maxWater; }
-        set {
-            maxWater = value;
-            UI.SetMaxWater(value);
-        }
-    }
-
-    /// <summary>
-    /// The food levels of the player
-    /// </summary>
-    public float Food { get { return food; }
-        set {
-            food = value;
-            food = Mathf.Clamp(food, 0f, maxFood);
-            UI.SetFood(food);
-
-            isStarving = (food <= 0f);
-        }
-    }
-    float food;
-
-    /// <summary>
-    /// The maximum food levels of the player
-    /// </summary>
-    public float MaxFood { get { return maxFood; }
-        set {
-            maxFood = value;
-            UI.SetMaxFood(value);
-        }
-    }
-
-    /// <summary>
-    /// The oxygen levels of the player
-    /// </summary>
-    public float Oxygen
-    {
-        get { return oxygen; }
-        set {
-            oxygen = value;
-            oxygen = Mathf.Clamp(oxygen, 0f, currentMaxOxygenTime);
-            UI.SetOxygen(oxygen);
-
-            isSuffocating = (oxygen <= 0f);
-        }
-    }
-    float oxygen;
-
-    /// <summary>
-    /// The maximum oxygen levels of the player
-    /// </summary>
-    public float MaxOxygen { get { return currentMaxOxygenTime; }
-        set {
-            currentMaxOxygenTime = value;
-            UI.SetMaxOxygen(currentMaxOxygenTime);
-        }
-    }
 
     void Awake()
     {
@@ -208,12 +195,12 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         }
 
         UI = GetComponent<VitalsUI>();
+        playerOxygen = GetComponent<OxygenConsumer>();
     }
 
     void Start()
     {
         gameManager = GameManager.Instance;
-
         GameManager.OnPlayerRespawn += Respawn;
 
         //Shield
@@ -237,9 +224,8 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         nextStarveTick = starveDamageRate;
 
         //Oxygen
-        UI.SetMaxOxygen(baseOxygenTime);
-        currentMaxOxygenTime = baseOxygenTime;
-        Oxygen = baseOxygenTime;
+        UI.SetMaxOxygen(playerOxygen.GetMaxOxygen());
+        UI.SetOxygen(playerOxygen.GetOxygen());
         nextSuffocateTick = suffocateDamageRate;
     }
 
@@ -291,15 +277,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         }
 
         if (useOxygen) {
-            //Decrease oxygen
-            if (!inAir) {
-                Oxygen -= Time.deltaTime;
-            }
-            else {
-                Oxygen += Time.deltaTime * oxygenRecoverRate;
-            }
+            UI.SetOxygen(playerOxygen.GetOxygen());
             //Decrease health is suffocating
-            if (isSuffocating && timer >= nextSuffocateTick) {
+            if (playerOxygen.IsSuffocating && timer >= nextSuffocateTick) {
                 Health -= suffocateDamage;
                 nextSuffocateTick = timer + suffocateDamageRate;
             }
@@ -337,7 +317,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         Health = respawnHealth;
         Water = respawnWater;
         Food = respawnFood;
-        Oxygen = currentMaxOxygenTime;
+        playerOxygen.SetMax();
     }
 
     /// <summary>
@@ -382,7 +362,14 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     /// <param name="_value"></param>
     public void AddOxygen(float _value)
     {
-        Oxygen += _value;
+        playerOxygen.AddOxygen(_value);
+        UI.SetOxygen(playerOxygen.GetOxygen());
+    }
+
+    public void SetMaxOxygenTime(float _value)
+    {
+        playerOxygen.SetMaxOxygenTime(_value);
+        UI.SetMaxOxygen(_value);
     }
 
     /// <summary>
@@ -509,20 +496,5 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     public void SetRespawnFood(float _value)
     {
         respawnFood = _value;
-    }
-
-    //Determine whether player is in oxygen or not
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Oxygen")) {
-            inAir = true;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Oxygen")) {
-            inAir = false;
-        }
     }
 }

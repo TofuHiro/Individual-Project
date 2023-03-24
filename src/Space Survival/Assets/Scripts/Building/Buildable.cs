@@ -17,7 +17,6 @@ public class Buildable : MonoBehaviour
     [Tooltip("The grid size this building will snap to when being placed")]
     [SerializeField] Vector3 gridSize;
 
-    Collider col;
     Vector3 velocity;
     Vector3 targetPos;
     float smoothTime;
@@ -84,9 +83,9 @@ public class Buildable : MonoBehaviour
     /// </summary>
     public void StartBlueprint()
     {
-        if (col == null)
-            col = gameObject.GetComponentInChildren<Collider>();
-        col.isTrigger = true;
+        foreach (Collider _col in GetComponentsInChildren<Collider>()) {
+            _col.enabled = false;
+        }
     }
 
     /// <summary>
@@ -94,8 +93,8 @@ public class Buildable : MonoBehaviour
     /// </summary>
     public void Build()
     {
-        if (col == null)
-            col = gameObject.GetComponentInChildren<Collider>();
-        col.isTrigger = false;
+        foreach (Collider _col in GetComponentsInChildren<Collider>()) {
+            _col.enabled = true;
+        }
     }
 }

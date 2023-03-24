@@ -37,10 +37,6 @@ public class BuildingManager : MonoBehaviour
     [Header("Building Settings")]
     [Tooltip("The transition time when a blueprint snaps to another snap point")]
     [SerializeField] float buildingSmoothTime = .05f;
-    [Tooltip("Layer mask to ignore collision when detecting a surface for blueprints")]
-    [SerializeField] LayerMask ignoreLayers;
-    [Tooltip("The default size of each unit grid used for building")]
-    [SerializeField] int gridUnit = 4;
 
     [Header("Catalog Setup")]
     [Tooltip("Set a catalog of all the buildable objects to be buildable and its required ingredients")]
@@ -48,17 +44,20 @@ public class BuildingManager : MonoBehaviour
 
     InterfaceManager interfaceManager;
     PlayerInventory playerInventory;
+    BuildingGrid buildingGrid;
+
     BuildingTool equippedTool;
     BuildableSlot hoveredSlot;
+
     ItemDisplayUI itemDisplay;
     SlotUI[] ingredientSlots;
-
-    BuildingGrid buildingGrid;
 
     void Start()
     {
         interfaceManager = InterfaceManager.Instance;
         playerInventory = PlayerInventory.Instance;
+        buildingGrid = BuildingGrid.Instance;
+
         itemDisplay = GetComponent<ItemDisplayUI>();
         ingredientSlots = ingredientSlotsParent.GetComponentsInChildren<SlotUI>();
 
@@ -79,8 +78,6 @@ public class BuildingManager : MonoBehaviour
             _slot.gameObject.SetActive(false);
         }
 
-        buildingGrid = new BuildingGrid(gridUnit);
-
         //Close after init
         CloseInterface();
     }
@@ -92,15 +89,6 @@ public class BuildingManager : MonoBehaviour
     public float GetBuildingSmoothTime()
     {
         return buildingSmoothTime;
-    }
-
-    /// <summary>
-    /// Returns the preset building masks for when placing blueprints
-    /// </summary>
-    /// <returns>The layers to ignore when building</returns>
-    public LayerMask GetBuildingMasks()
-    {
-        return ignoreLayers;
     }
 
     /// <summary>

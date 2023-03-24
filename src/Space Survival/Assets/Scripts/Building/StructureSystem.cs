@@ -17,6 +17,8 @@ public class StructureSystem
     public Vector3Int GridSize { get; private set; }
     public Vector3 OriginWorldPos { get; private set; }
 
+    BoxCollider oxygenTrigger;
+
     GridStructure[,,] grid;
     int gridUnit;
 
@@ -28,8 +30,8 @@ public class StructureSystem
     /// <param name="_gridUnit">The unit size of the building grid</param>
     public StructureSystem(Vector3 _originWorldPos, Vector3Int _gridSize, int _gridUnit)
     {
-        CreateGrid(_gridSize, _originWorldPos);
         gridUnit = _gridUnit;
+        CreateGrid(_gridSize, _originWorldPos);
     }
 
     /// <summary>
@@ -80,9 +82,14 @@ public class StructureSystem
     /// </summary>
     /// <param name="_gridPos">The grid index</param>
     /// <param name="_gridStructure">The grid structure to set</param>
-    void SetGridPos(Vector3Int _gridPos, GridStructure _gridStructure)
+    void SetGridStructure(Vector3Int _gridPos, GridStructure _gridStructure)
     {
         grid[_gridPos.x, _gridPos.y, _gridPos.z] = _gridStructure;
+    }
+
+    public void SetOxygenTrigger(bool _state)
+    {
+        oxygenTrigger.enabled = _state;
     }
 
     /// <summary>
@@ -96,6 +103,19 @@ public class StructureSystem
         GridSize = _size;
         OriginWorldPos = _originPos;
 
+        if (oxygenTrigger == null) {
+            oxygenTrigger = new GameObject("Oxygen Bubble").AddComponent<BoxCollider>();
+            oxygenTrigger.isTrigger = true;
+            oxygenTrigger.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            oxygenTrigger.center = new Vector3(0f, 2f, 0f);
+            oxygenTrigger.transform.position = _originPos + (((_size - Vector3Int.one) * gridUnit) / 2);  
+            oxygenTrigger.size = _size * (Vector3Int.one * gridUnit);
+        }
+        else {
+            oxygenTrigger.transform.position = _originPos + (((_size - Vector3Int.one) * gridUnit) / 2);
+            oxygenTrigger.size = _size * (Vector3Int.one * gridUnit);
+        }
+
         for (int x = 0; x < _size.x; x++) {
             for (int y = 0; y < _size.y; y++) {
                 for (int z = 0; z < _size.z; z++) {
@@ -103,6 +123,11 @@ public class StructureSystem
                 }
             }
         }
+    }
+
+    public void OnDelete()
+    {
+        Object.Destroy(oxygenTrigger.gameObject);
     }
 
     /// <summary>
@@ -553,7 +578,7 @@ public class StructureSystem
                             for (int _z = (int)_minPoint.z; _z < _maxPoint.z + 1; _z++) {
                                 //Add traversed and not already added grids
                                 if (_traversed[_x, _y, _z] && !_added[_x, _y, _z]) {
-                                    _newSystem.SetGridPos(new Vector3Int(_x, _y, _z) - Vector3Int.RoundToInt(_minPoint), grid[_x, _y, _z]);
+                                    _newSystem.SetGridStructure(new Vector3Int(_x, _y, _z) - Vector3Int.RoundToInt(_minPoint), grid[_x, _y, _z]);
                                     _added[_x, _y, _z] = true;
                                 }
                             }
@@ -570,9 +595,8 @@ public class StructureSystem
     /// Checks and marks all grids as sealed or unsealed and returns the positions that are sealed
     /// </summary>
     /// <returns>3D array of sealed positions</returns>
-    public bool[,,] CheckSealed()
+    public void Seal()
     {
-        bool[,,] _sealedPos = new bool[GridSize.x, GridSize.y, GridSize.z];
         //Arrays used for traverse checks
         bool[,,] _traversed = new bool[GridSize.x, GridSize.y, GridSize.z];
         bool[,,] _sealCheck = new bool[GridSize.x, GridSize.y, GridSize.z];
@@ -661,7 +685,6 @@ public class StructureSystem
         {
             _sealCheck[_startPos.x, _startPos.y, _startPos.z] = true;
             _traversed[_startPos.x, _startPos.y, _startPos.z] = true;
-            _sealedPos[_startPos.x, _startPos.y, _startPos.z] = true;
             grid[_startPos.x, _startPos.y, _startPos.z].IsSealed = true;
 
             for (int i = 0; i < 6; i++) {
@@ -706,7 +729,11 @@ public class StructureSystem
             }
             return false;
         }
+    }
 
-        return _sealedPos;
+    public bool CheckPosIsSealed(Vector3 _worldSpacePos)
+    {
+        Vector3Int _gridPos = GetGridPos(_worldSpacePos);
+        return grid[_gridPos.x, _gridPos.y, _gridPos.z].IsSealed;
     }
 }

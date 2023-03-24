@@ -55,7 +55,7 @@ namespace SpaceGame
             vitals.SetStarveRate(SelectedDifficulty.starveDamageRate);
             vitals.SetStarveDamage(SelectedDifficulty.starveDamage);
             vitals.UseOxygen(SelectedDifficulty.useOxygen);
-            vitals.MaxOxygen = SelectedDifficulty.startingMaxOxygen;
+            vitals.SetMaxOxygenTime(SelectedDifficulty.startingMaxOxygen);
             vitals.SetSuffocateRate(SelectedDifficulty.suffocateDamageRate);
             vitals.SetSuffocateDamage(SelectedDifficulty.suffocationDamage);
             vitals.SetRespawnHealth(SelectedDifficulty.respawnHealth);

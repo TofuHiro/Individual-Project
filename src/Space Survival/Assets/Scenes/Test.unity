@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2157.8467, g: 2262.3926, b: 3286.1797, a: 1}
+  m_IndirectSpecularColor: {r: 2159.5537, g: 2263.3438, b: 3286.375, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6434,9 +6434,6 @@ MonoBehaviour:
     type: 3}
   ingredientSlotsParent: {fileID: 1205309751}
   buildingSmoothTime: 0.05
-  ignoreLayers:
-    serializedVersion: 2
-    m_Bits: 119
   gridUnit: 4
   buildableCatalog:
   - Buildable: {fileID: 8871663502924224482, guid: 81d458aa444fa894a9e47a7a94a1492c,
@@ -6449,6 +6446,9 @@ MonoBehaviour:
       type: 3}
     Ingredients:
     - {fileID: 3687271075836520514, guid: 0785db6f31323814f8d6f5e4e6a1c31a, type: 3}
+  - Buildable: {fileID: 2313699409347950395, guid: 89a83c298f967ac498a49218241b29d9,
+      type: 3}
+    Ingredients: []
 --- !u!4 &330138476
 Transform:
   m_ObjectHideFlags: 0
@@ -8419,7 +8419,7 @@ GameObject:
   - component: {fileID: 513836416}
   - component: {fileID: 513836415}
   - component: {fileID: 513836414}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Oxygen Zone
   m_TagString: Oxygen
   m_Icon: {fileID: 0}
@@ -20353,15 +20353,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab98b9bb4611fc345941a58f4c318314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateGeneration: 0
   cubeSize: 5
+  coreRadius: 1.5
+  falloffDistance: 2
   voxelPerUnit: 4
   seed: 0
   useRandomSeed: 0
   noiseScale: 0.6
   noiseThreshold: 0.7
-  thresholdFalloff: 0.2
-  falloffRadius: 1.5
-  coreRadius: 1.5
+  lacunarity: 2
+  octaves: 3
+  persistance: 0.5
   minTier: 0
   harvestType: 0
   drops:

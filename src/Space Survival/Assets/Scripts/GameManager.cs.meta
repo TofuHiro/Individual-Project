@@ -3,7 +3,11 @@ guid: c0420f26a67e7594992f378823e779b6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - SelectedDifficulty: {instanceID: 0}
+  - staticSpawn: {instanceID: 0}
+  - player: {instanceID: 0}
+  - deathScreenUI: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

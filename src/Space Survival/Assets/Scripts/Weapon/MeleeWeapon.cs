@@ -20,7 +20,7 @@ public class MeleeWeapon : Weapon
         base.Awake();
         meleeScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = meleeScriptable.knockbackForce;
-        mask = ~LayerMask.GetMask("Zone");
+        mask = ~LayerMask.GetMask("Ignore Raycast");
     }
 
     protected override void Attack()

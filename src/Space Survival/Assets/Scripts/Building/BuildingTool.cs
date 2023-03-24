@@ -7,7 +7,6 @@ public class BuildingTool : Weapon
 
     Buildable currentBlueprint;
 
-    LayerMask layerMask;
     //To switch to blueprint layer and back
     int tempLayer;
     bool isBlueprinting, isRemoving;
@@ -17,8 +16,6 @@ public class BuildingTool : Weapon
         buildingManager = BuildingManager.Instance;
         interfaceManager = InterfaceManager.Instance;
         semiAutomatic = true;
-
-        layerMask = buildingManager.GetBuildingMasks();
     }
 
     public override void Equip(Transform _parent)
@@ -50,7 +47,7 @@ public class BuildingTool : Weapon
 
         //Save layer and switch to blueprint
         tempLayer = currentBlueprint.GetObject().layer;
-        currentBlueprint.GetObject().layer = LayerMask.NameToLayer("Blueprint");
+        currentBlueprint.GetObject().layer = LayerMask.NameToLayer("Ignore Raycast");
         currentBlueprint.StartBlueprint();
         isBlueprinting = true;
     }
@@ -75,7 +72,7 @@ public class BuildingTool : Weapon
     {
         //Check for a surface within range
         RaycastHit _hit;
-        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range);
         if (_hit.transform != null) {
             currentBlueprint.SetPosition(_hit.point);
         }
@@ -91,7 +88,7 @@ public class BuildingTool : Weapon
     {
         //Check for a surface within range
         RaycastHit _hit;
-        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range);
         if (_hit.transform != null) {
             if (_hit.transform.CompareTag("Buildable")) {
                 //Highlight object
@@ -146,7 +143,7 @@ public class BuildingTool : Weapon
     void Remove()
     {
         RaycastHit _hit;
-        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range, layerMask);
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range);
         if (_hit.transform != null) {
             Buildable _buildable = _hit.transform.GetComponentInParent<Buildable>();
             if (_buildable != null) {
