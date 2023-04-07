@@ -17,19 +17,20 @@ public static class ObjectPooler
         if (!objectPools.ContainsKey(_tag)) {
             objectPools.Add(_tag, new Queue<GameObject>());
         }
-        
+
+        GameObject _newObject;
         //If object in pool exist
         if (objectPools[_tag].Count > 0) {
             //Return it
-            GameObject _newObject = objectPools[_tag].Dequeue();
+            _newObject = objectPools[_tag].Dequeue();
             _newObject.SetActive(true);
-            return _newObject;
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Object.Instantiate(_object);
-            return _newObject;
+            _newObject = Object.Instantiate(_object);
         }
+
+        return _newObject;
     }
 
     /// <summary>
@@ -47,19 +48,20 @@ public static class ObjectPooler
             objectPools.Add(_tag, new Queue<GameObject>());
         }
 
+        GameObject _newObject;
         //If object in pool exist
         if (objectPools[_tag].Count > 0) {
-            GameObject _newObject = objectPools[_tag].Dequeue();
+            _newObject = objectPools[_tag].Dequeue();
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
             _newObject.SetActive(true);
-            return _newObject;
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Object.Instantiate(_object);
+            _newObject = Object.Instantiate(_object);
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
-            return _newObject;
         }
+
+        return _newObject;
     }
 
     /// <summary>
@@ -77,21 +79,22 @@ public static class ObjectPooler
             objectPools.Add(_tag, new Queue<GameObject>());
         }
 
+        GameObject _newObject;
         //If object in pool exist
         if (objectPools[_tag].Count > 0) {
-            GameObject _newObject = objectPools[_tag].Dequeue();
+            _newObject = objectPools[_tag].Dequeue();
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
             _newObject.transform.localScale = _scale;
             _newObject.SetActive(true);
-            return _newObject;
         }
         //Otherwise create a new instance of it
         else {
-            GameObject _newObject = Object.Instantiate(_object);
+            _newObject = Object.Instantiate(_object);
             _newObject.transform.SetPositionAndRotation(_position, _rotation);
             _newObject.transform.localScale = _scale;
-            return _newObject;
         }
+
+        return _newObject;
     }
 
     /// <summary>
@@ -104,6 +107,13 @@ public static class ObjectPooler
         //Create new pool if a pool for that item did not exist
         if (!objectPools.ContainsKey(_tag)) {
             objectPools.Add(_tag, new Queue<GameObject>());
+        }
+
+        //Reset rigidbody
+        Rigidbody _rigidbody = _object.GetComponent<Rigidbody>();
+        if (_rigidbody != null) {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
         }
 
         //Pool

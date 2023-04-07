@@ -12,7 +12,11 @@ public class RayWeapon : Weapon
     public int CurrentClip { get { return currentClip; }
         private set {
             currentClip = value;
-            UpdateAmmoUI();
+            UpdateUI();
+
+            if (currentClip == 0 && CurrentAmmo == 0) {
+                Die();
+            }
         }
     }
     int currentClip;
@@ -20,7 +24,7 @@ public class RayWeapon : Weapon
     public int CurrentAmmo { get { return currentAmmo; }
         private set {
             currentAmmo = value;
-            UpdateAmmoUI();
+            UpdateUI();
         }
     }
     int currentAmmo;
@@ -52,13 +56,12 @@ public class RayWeapon : Weapon
     {
         base.Equip(_parent);
         //Display current weapon ammo
-        ToggleAmmoUI(true);
-        UpdateAmmoUI();
+        UpdateUI();
     }
 
     public override void Holster()
     {
-        ToggleAmmoUI(false);
+        HideUI();
         isReloading = false;
         StopCoroutine(StartReload());
         base.Holster();
@@ -81,7 +84,7 @@ public class RayWeapon : Weapon
             _transform = rayStartPoint;
 
         //Shoot ray
-        Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask, QueryTriggerInteraction.Ignore);
+        Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask);
         if (hit.transform != null) {
             //Apply damage
             colliderHit = hit.transform.GetComponent<IDamagable>();
@@ -141,7 +144,7 @@ public class RayWeapon : Weapon
     /// <summary>
     /// Updates the current ammo information
     /// </summary>
-    void UpdateAmmoUI()
+    void UpdateUI()
     {
         if (playerHolder == null)
             return;
@@ -149,15 +152,11 @@ public class RayWeapon : Weapon
         playerHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
     }
     
-    /// <summary>
-    /// Hides or shows the weapon ammo information
-    /// </summary>
-    /// <param name="_state">State to toggle to</param>
-    void ToggleAmmoUI(bool _state)
+    void HideUI()
     {
         if (playerHolder == null)
             return;
 
-        playerHolder.ToggleAmmoUI(_state);
+        playerHolder.HideWeaponUI();
     }
 }

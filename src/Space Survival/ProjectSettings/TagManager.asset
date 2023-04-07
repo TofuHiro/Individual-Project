@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Oxygen
   - Buildable
+  - Gravity
+  - OxygenGravity
   layers:
   - Default
   - TransparentFX

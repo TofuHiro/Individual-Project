@@ -17,6 +17,8 @@ public class Storage : MonoBehaviour, IInteractable
     [SerializeField] GameObject UIGameObject;
     [Tooltip("The parent for the inventory slots")]
     [SerializeField] Transform slotsParent;
+    [Tooltip("Rotate the UI towards the player when opened")]
+    [SerializeField] bool rotateToPlayer = true;
 
     PlayerController player;
     InterfaceManager interfaceManager;
@@ -50,9 +52,11 @@ public class Storage : MonoBehaviour, IInteractable
         UIGameObject.SetActive(true);
 
         //Rotate canvas to player
-        Vector3 _lookRot = player.GetPlayerPosition() - UIGameObject.transform.position;
-        _lookRot.y = 0;
-        UIGameObject.transform.rotation = Quaternion.LookRotation(_lookRot);
+        if (rotateToPlayer) {
+            Vector3 _lookRot = player.GetPlayerPosition() - UIGameObject.transform.position;
+            _lookRot.y = 0;
+            UIGameObject.transform.rotation = Quaternion.LookRotation(_lookRot);
+        }
     }
 
     /// <summary>

@@ -9,7 +9,11 @@ public class ProjectileWeapon : Weapon
     public int CurrentClip { get { return currentClip; }
         private set {
             currentClip = value;
-            UpdateAmmoUI();
+            UpdateUI();
+
+            if (currentClip == 0 && CurrentAmmo == 0) {
+                Die();
+            }
         }
     }
     int currentClip;
@@ -17,7 +21,7 @@ public class ProjectileWeapon : Weapon
     public int CurrentAmmo { get { return currentAmmo; }
         private set {
             currentAmmo = value;
-            UpdateAmmoUI();
+            UpdateUI();
         }
     }
     int currentAmmo;
@@ -55,13 +59,12 @@ public class ProjectileWeapon : Weapon
     {
         base.Equip(_parent);
         //Display current weapon ammo
-        ToggleAmmoUI(true);
-        UpdateAmmoUI();
+        UpdateUI();
     }
 
     public override void Holster()
     {
-        ToggleAmmoUI(false);
+        HideUI();
         isReloading = false;
         StopCoroutine(StartReload());
         base.Holster();
@@ -141,7 +144,7 @@ public class ProjectileWeapon : Weapon
     /// <summary>
     /// Updates the current ammo information
     /// </summary>
-    void UpdateAmmoUI()
+    void UpdateUI()
     {
         if (playerHolder == null)
             return;
@@ -149,15 +152,11 @@ public class ProjectileWeapon : Weapon
         playerHolder.UpdateAmmoUI(CurrentClip, CurrentAmmo);
     }
 
-    /// <summary>
-    /// Hides or shows the weapon ammo information
-    /// </summary>
-    /// <param name="_state">State to toggle to</param>
-    void ToggleAmmoUI(bool _state)
+    void HideUI()
     {
         if (playerHolder == null)
             return;
 
-        playerHolder.ToggleAmmoUI(_state);
+        playerHolder.HideWeaponUI();
     }
 }

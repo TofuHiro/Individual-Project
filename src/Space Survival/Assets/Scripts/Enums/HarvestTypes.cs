@@ -1,5 +1,7 @@
 public enum HarvestTypes
 {
     Mining,
-    Cutting
+    Cutting,
+    Collecting,
+    Any
 }

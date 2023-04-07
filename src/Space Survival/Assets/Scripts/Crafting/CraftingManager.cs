@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ItemDisplayUI))]
 public class CraftingManager : MonoBehaviour
 {
     #region Singleton
@@ -30,16 +31,23 @@ public class CraftingManager : MonoBehaviour
 
     [Tooltip("Game object holding the crafting user interface")]
     [SerializeField] GameObject UIGameObject;
-    [Tooltip("Scroll box holding standard recipe blocks")]
-    [SerializeField] Transform standardRecipeScrollBox;
-    [Tooltip("Scroll box holding weapon recipe blocks")]
-    [SerializeField] Transform weaponRecipeScrollBox;
+    [Tooltip("Scroll box holding armory recipe blocks")]
+    [SerializeField] Transform armoryRecipeScrollBox;
+    [Tooltip("Scroll box holding manufacturer recipe blocks")]
+    [SerializeField] Transform manufacturerRecipeScrollBox;
+    [Tooltip("Scroll box holding refinery recipe blocks")]
+    [SerializeField] Transform refineryRecipeScrollBox;
+    [Tooltip("Scroll box holding cooking recipe blocks")]
+    [SerializeField] Transform cookingRecipeScrollBox;
+    [Tooltip("Scroll box holding starter recipe blocks")]
+    [SerializeField] Transform starterRecipeScrollBox;
     [Tooltip("Prefab for a UI recipe block that will be instantiated to display a recipe")]
     [SerializeField] CraftingRecipeBlock recipeBlockPrefab;
     [Tooltip("Sets of recipes for a given station type. Make sure there is only one of each type")]
     [SerializeField] List<CraftingTypeSet> recipeSets;
 
     PlayerInventory playerInventory;
+    ItemDisplayUI itemDisplay;
 
     List<CraftingRecipeBlock> recipeBlocks;
 
@@ -47,7 +55,8 @@ public class CraftingManager : MonoBehaviour
     {
         //Cache ref
         playerInventory = PlayerInventory.Instance;
-        
+        itemDisplay = GetComponent<ItemDisplayUI>();
+
         recipeBlocks = new List<CraftingRecipeBlock>();
         
         //Init all set recipe blocks to corresponding scroll boxes
@@ -107,12 +116,16 @@ public class CraftingManager : MonoBehaviour
     Transform GetRecipeScrollBox(CraftingStationType _stationType) 
     {
         switch (_stationType) {
-            case CraftingStationType.Standard:
-                return standardRecipeScrollBox;
-            case CraftingStationType.Weapons:
-                return weaponRecipeScrollBox;
+            case CraftingStationType.Armory:
+                return armoryRecipeScrollBox;
+            case CraftingStationType.Manufacturer:
+                return manufacturerRecipeScrollBox;
+            case CraftingStationType.Smelter:
+                return refineryRecipeScrollBox;
+            case CraftingStationType.Cooking:
+                return cookingRecipeScrollBox;
             default:
-                return null;
+                return starterRecipeScrollBox;
         }
     }
 
@@ -132,10 +145,13 @@ public class CraftingManager : MonoBehaviour
     {
         IsEnabled = false;
         UIGameObject.SetActive(false);
-        
+        itemDisplay.SetItem(null);
+
         //Hide all recipe scroll boxes
-        standardRecipeScrollBox.gameObject.SetActive(false);
-        weaponRecipeScrollBox.gameObject.SetActive(false);
+        armoryRecipeScrollBox.gameObject.SetActive(false);
+        manufacturerRecipeScrollBox.gameObject.SetActive(false);
+        refineryRecipeScrollBox.gameObject.SetActive(false);
+        cookingRecipeScrollBox.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -197,5 +213,10 @@ public class CraftingManager : MonoBehaviour
             playerInventory.AddItem(_newItem);
             ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
         }
+    }
+
+    public void DisplayItem(ItemScriptable _item)
+    {
+        itemDisplay.SetItem(_item);
     }
 }

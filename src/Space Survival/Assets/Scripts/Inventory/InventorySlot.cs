@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(SlotUI))]
 public class InventorySlot : MonoBehaviour
 {
+    [Tooltip("The item for this slot")]
+    [SerializeField] Item startingItem;
     [Tooltip("If this slot is a storage slot")]
     [SerializeField] bool isStorageSlot;
 
@@ -15,12 +17,19 @@ public class InventorySlot : MonoBehaviour
 
     protected ItemType itemType;
 
-    protected virtual void Start()
+    void Awake()
     {
         inventory = PlayerInventory.Instance;
         UI = GetComponent<SlotUI>();
 
+    }
+
+    protected virtual void Start()
+    {
         itemType = ItemType.Item;
+
+        if (startingItem != null)
+            AssignItem(startingItem);
     }
 
     /// <summary>
@@ -72,5 +81,6 @@ public class InventorySlot : MonoBehaviour
     public void MouseExit()
     {
         inventory.SetHoveredSlot(null);
+
     }
 }

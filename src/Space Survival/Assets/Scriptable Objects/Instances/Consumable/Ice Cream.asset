@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e995df9eb707777478896524033af7a1, type: 3}
+  m_Name: Ice Cream
+  m_EditorClassIdentifier: 
+  type: 4
+  name: Ice Cream
+  icon: {fileID: 2800000, guid: 8c8a6807836dd1e48b63ada404336af8, type: 3}
+  description: (+10 health, +40 food, +20 water) Astronaut freeze dried ice cream
+  unique: 0
+  buffs:
+  - type: 0
+    value: 10
+  - type: 2
+    value: 40
+  - type: 3
+    value: 20

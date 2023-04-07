@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3667311998456573565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4156603075814520007}
+  - component: {fileID: 1009056922641857378}
+  - component: {fileID: 3018560349720252328}
+  - component: {fileID: 3504483070306039457}
+  - component: {fileID: -4086807227593978169}
+  - component: {fileID: -3979990180124938111}
+  - component: {fileID: 5525609460241688199}
+  m_Layer: 0
+  m_Name: MediumCrate_Harvest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4156603075814520007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!33 &1009056922641857378
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_Mesh: {fileID: -5495902117074765545, guid: 4bd6aaca8b7d1c5468f94e1995c75842, type: 3}
+--- !u!23 &3018560349720252328
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bcae34c3025e54a4d95c99f3701cb1e9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3504483070306039457
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4086807227593978169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8379f6348db844149a14242a9fd1646b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  minTier: 0
+  harvestType: 3
+  destroyOnHarvest: 1
+  drops:
+  - nameTag: Circuit
+    resource: {fileID: 4605406978825877131, guid: 3d0363ce7dc24194ca0c34ef108cf794,
+      type: 3}
+    spawnChance: 20
+  - nameTag: Battery
+    resource: {fileID: 2113783673883621767, guid: 942d781c4584c5f4c887d6645e5abd19,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Wires
+    resource: {fileID: 9167585993922199270, guid: e54fae2f4b9c5544eb1e4f925881627d,
+      type: 3}
+    spawnChance: 30
+  - nameTag: Advanced Circuit
+    resource: {fileID: 8015278409837124472, guid: e7ad4e0dd0c229a409c6f6874637dba8,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Motor
+    resource: {fileID: 746156009235114982, guid: c4d883e1871e04047933e92aed550c0c,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Stator
+    resource: {fileID: 2093209849667874569, guid: 4598b1ee11f5ca541baaea5dbcb8443d,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Glass Fibre
+    resource: {fileID: 3104643976829532890, guid: 0dd46050224fc434f92034bbd0cfcb4f,
+      type: 3}
+    spawnChance: 20
+  - nameTag: Advanced CPU
+    resource: {fileID: 1839823237629921834, guid: db651460ca7aa704a8dabf05d74e8d76,
+      type: 3}
+    spawnChance: 10
+  - nameTag: CPU
+    resource: {fileID: 1514888002152451945, guid: 4e6f526f083d0104786c55b8c535e3b4,
+      type: 3}
+    spawnChance: 30
+--- !u!54 &-3979990180124938111
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  serializedVersion: 2
+  m_Mass: 20
+  m_Drag: 1
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &5525609460241688199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667311998456573565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae470ee6b38186249b5b2ed2b4b442be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

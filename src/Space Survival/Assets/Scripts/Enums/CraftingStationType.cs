@@ -1,5 +1,8 @@
 public enum CraftingStationType
 {
-    Standard,
-    Weapons
+    Armory,
+    Manufacturer,
+    Smelter,
+    Cooking,
+    Starter
 }

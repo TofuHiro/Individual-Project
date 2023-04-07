@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Advanced Circuit
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 5644261427673359710, guid: e7ad4e0dd0c229a409c6f6874637dba8,
+    type: 3}
+  ingredientItems:
+  - {fileID: -2490355479090975767, guid: db651460ca7aa704a8dabf05d74e8d76, type: 3}
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: -5605493588642687988, guid: bc9e99b80222abc489e6236bbd599e76, type: 3}
+  - {fileID: 915430114994032395, guid: 22ccb3d84faba1c4e8462e576b273837, type: 3}
+  - {fileID: -2510271227751099940, guid: e54fae2f4b9c5544eb1e4f925881627d, type: 3}
+  - {fileID: 1659924267412353056, guid: d312464ac9be7f64fa5df4c4a78bc34b, type: 3}

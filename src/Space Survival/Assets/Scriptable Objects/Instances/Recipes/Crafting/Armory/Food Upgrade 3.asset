@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Food Upgrade 3
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 2687089258193107862, guid: d1c82b18bea307c4ea3f558e0f0505e2,
+    type: 3}
+  ingredientItems:
+  - {fileID: 1659924267412353056, guid: d312464ac9be7f64fa5df4c4a78bc34b, type: 3}
+  - {fileID: 6356603563530570594, guid: 33edb4fdb98f2414bb3cde987172c623, type: 3}
+  - {fileID: 5644261427673359710, guid: e7ad4e0dd0c229a409c6f6874637dba8, type: 3}
+  - {fileID: 2159578646178833010, guid: f6770bfafb381d24caf93e40ca8b89a9, type: 3}

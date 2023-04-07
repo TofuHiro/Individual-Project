@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Photovoltaic Cell
+  m_EditorClassIdentifier: 
+  productItem: {fileID: -6526302983602149178, guid: a239d0250b2038448a6fdecb759b2b65,
+    type: 3}
+  ingredientItems:
+  - {fileID: 915430114994032395, guid: 22ccb3d84faba1c4e8462e576b273837, type: 3}
+  - {fileID: -5605493588642687988, guid: bc9e99b80222abc489e6236bbd599e76, type: 3}
+  - {fileID: 1152513117930877682, guid: 8ba6b232a84d1ba40b0c26d8299c17df, type: 3}

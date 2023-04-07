@@ -15,18 +15,21 @@ public class Item : MonoBehaviour, IPickable
     //References
     PlayerInventory inventory;
     PlayerController player;
+    Rigidbody rigidBody;
 
     //For object pool instantiation, start is not called (disabled upon instantiation)
     void Awake()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
+        rigidBody ??= GetComponent<Rigidbody>();
     }
 
     void Start()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
+        rigidBody ??= GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -53,10 +56,15 @@ public class Item : MonoBehaviour, IPickable
     public void Drop()
     {
         Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        if (item.unique)
+        if (item.unique) {
             gameObject.SetActive(true);
-        else
-            ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation);
+            transform.position = _position;
+            rigidBody.isKinematic = false;
+        }
+        else {
+            rigidBody = ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation).GetComponent<Rigidbody>();
+            rigidBody.isKinematic = false;
+        }
     }
 
     /// <summary>

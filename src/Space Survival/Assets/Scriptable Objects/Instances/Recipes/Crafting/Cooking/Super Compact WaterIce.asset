@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Super Compact WaterIce
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 992180504708364598, guid: b39194270e8bf84439f6b5e00d741622,
+    type: 3}
+  ingredientItems:
+  - {fileID: 2546792744997538850, guid: ebb7eabeb35fd294ebef3ecb2760609c, type: 3}
+  - {fileID: 2546792744997538850, guid: ebb7eabeb35fd294ebef3ecb2760609c, type: 3}

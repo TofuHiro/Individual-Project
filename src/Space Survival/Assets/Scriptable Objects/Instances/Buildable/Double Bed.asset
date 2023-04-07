@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ee35a221e63c941ba33349ed075d5a, type: 3}
+  m_Name: Double Bed
+  m_EditorClassIdentifier: 
+  type: 0
+  name: Double Bed
+  icon: {fileID: 2800000, guid: df31d8ee75b035847a752f4d70dbee36, type: 3}
+  description: A double bed with triple comfiness. Now that's worth the cost
+  unique: 0

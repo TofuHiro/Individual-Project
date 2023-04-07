@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     PlayerMotor playerMotor;
     PlayerCamera playerCamera;
 
-    bool canMove = true, canRotate = true, canAttack = true;
+    bool canMove = true, canRotate = true, canAttack = true, canSwitch = true;
 
     void Awake()
     {
@@ -138,6 +138,20 @@ public class PlayerController : MonoBehaviour
     public void ToggleAttack(bool _state)
     {
         canAttack = _state;
+    }
+
+    public void ToggleSwitchHotbarbool (bool _state)
+    {
+        canSwitch = _state;
+    }
+
+    /// <summary>
+    /// Add a value to the multiplier applied to floating movements
+    /// </summary>
+    /// <param name="_value"></param>
+    public void AddFloatingSpeedMultipier(float _value)
+    {
+        playerMotor.FloatingSpeedMultiplier += _value;
     }
 
     /// <summary>
@@ -291,42 +305,63 @@ public class PlayerController : MonoBehaviour
 
     void SwitchScroll()
     {
+        if (!canSwitch)
+            return;
+
         float _scrollAxis = playerInputs.Player.SwitchScroll.ReadValue<float>();
         if (_scrollAxis != 0f)
             OnScroll?.Invoke((int)_scrollAxis);
     }
     void SwitchTo1(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+            return;
+
         if (context.performed) {
             OnSwitchTo?.Invoke(0);
         }
     }
     void SwitchTo2(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+            return;
+
         if (context.performed) {
             OnSwitchTo?.Invoke(1);
         }
     }
     void SwitchTo3(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+
+            return;
         if (context.performed) {
             OnSwitchTo?.Invoke(2);
         }
     }
     void SwitchTo4(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+            return;
+
         if (context.performed) {
             OnSwitchTo?.Invoke(3);
         }
     }
     void SwitchTo5(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+            return;
+
         if (context.performed) {
             OnSwitchTo?.Invoke(4);
         }
     }
     void SwitchTo6(InputAction.CallbackContext context)
     {
+        if (!canSwitch)
+            return;
+
         if (context.performed) {
             OnSwitchTo?.Invoke(5);
         }

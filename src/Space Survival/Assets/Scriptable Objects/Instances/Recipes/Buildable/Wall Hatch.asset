@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Wall Hatch
+  m_EditorClassIdentifier: 
+  productItem: {fileID: -2675554493868335370, guid: d19e5b7b19e429942bf5a30d08823141,
+    type: 3}
+  ingredientItems:
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: 2853950002871854641, guid: 2e69050ccab38904fb2f5fb1374b2360, type: 3}
+  - {fileID: 6504069647602800051, guid: 0f0aad7725fb57d46ad5d0d1a4a2f13f, type: 3}

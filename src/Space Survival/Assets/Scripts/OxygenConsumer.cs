@@ -11,9 +11,11 @@ public class OxygenConsumer : MonoBehaviour
     [Tooltip("The starting maximum oxygen breathing time")]
     [SerializeField] float maxOxygenTime = 60f;
 
+    List<Collider> enteredColliders;
     BuildingGrid grid;
     StructureSystem currentSystem;
 
+    Vector3 unitPos;
     int gridUnit;
     float oxygen;
     bool inOxygen, inOxygenCollider;
@@ -33,9 +35,9 @@ public class OxygenConsumer : MonoBehaviour
         maxOxygenTime = _value;
     }
 
-    public void AddOxygen(float _value)
+    public void SetOxygen(float _value)
     {
-        oxygen += _value;
+        oxygen = _value;
     }
 
     public void SetMax()
@@ -43,14 +45,19 @@ public class OxygenConsumer : MonoBehaviour
         oxygen = maxOxygenTime;
     }
 
+    void Awake()
+    {
+        enteredColliders = new List<Collider>();
+    }
+
     void Start()
     {
-        gridUnit = BuildingGrid.Instance.GetGridUnit();
         grid = BuildingGrid.Instance;
+        gridUnit = grid.GetGridUnit();
+        
         oxygen = maxOxygenTime;
     }
 
-    Vector3 _unitPos;
     void Update()
     {
         //If in trigger, default to true
@@ -59,14 +66,14 @@ public class OxygenConsumer : MonoBehaviour
         }
         //If not in trigger, check if in a sealed system
         else {
-            _unitPos = transform.position;
-            _unitPos.x = Mathf.FloorToInt((_unitPos.x + 2) / gridUnit) * gridUnit;
-            _unitPos.y = Mathf.FloorToInt(_unitPos.y / gridUnit) * gridUnit;
-            _unitPos.z = Mathf.FloorToInt((_unitPos.z + 2) / gridUnit) * gridUnit;
-            currentSystem = grid.GetSystem(_unitPos);
+            unitPos = transform.position;
+            unitPos.x = Mathf.FloorToInt((unitPos.x + 2) / gridUnit) * gridUnit;
+            unitPos.y = Mathf.FloorToInt(unitPos.y / gridUnit) * gridUnit;
+            unitPos.z = Mathf.FloorToInt((unitPos.z + 2) / gridUnit) * gridUnit;
+            currentSystem = grid.GetSystem(unitPos);
             //If in system check if its sealed.
             if (currentSystem != null) {
-                inOxygen = currentSystem.CheckPosIsSealed(_unitPos);
+                inOxygen = currentSystem.CheckPosIsSealed(unitPos);
             }
             else
                 inOxygen = false;
@@ -84,14 +91,19 @@ public class OxygenConsumer : MonoBehaviour
     //Determine whether player is in oxygen or not
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Oxygen")) {
+        if (other.CompareTag("Oxygen") || other.CompareTag("OxygenGravity")) {
             inOxygenCollider = true;
+            enteredColliders.Add(other);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Oxygen")) {
+        if (other.CompareTag("Oxygen") || other.CompareTag("OxygenGravity")) {
+            enteredColliders.Remove(other);
+        }
+
+        if (enteredColliders.Count == 0) {
             inOxygenCollider = false;
         }
     }

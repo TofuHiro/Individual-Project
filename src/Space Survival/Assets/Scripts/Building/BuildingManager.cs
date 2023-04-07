@@ -3,12 +3,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(ItemDisplayUI))]
 
-[System.Serializable]
-public class BuildableRecipe
-{
-    public Buildable Buildable;
-    public List<Item> Ingredients;
-}
 public class BuildingManager : MonoBehaviour
 {
     #region Singleton
@@ -40,7 +34,7 @@ public class BuildingManager : MonoBehaviour
 
     [Header("Catalog Setup")]
     [Tooltip("Set a catalog of all the buildable objects to be buildable and its required ingredients")]
-    [SerializeField] List<BuildableRecipe> buildableCatalog;
+    [SerializeField] List<BuildingRecipe> buildableCatalog;
 
     InterfaceManager interfaceManager;
     PlayerInventory playerInventory;
@@ -62,13 +56,13 @@ public class BuildingManager : MonoBehaviour
         ingredientSlots = ingredientSlotsParent.GetComponentsInChildren<SlotUI>();
 
         //Create a buildable recipe block for each buildable set in the catalog
-        foreach (BuildableRecipe _item in buildableCatalog) {
+        foreach (BuildingRecipe _item in buildableCatalog) {
             BuildableSlot _newSlot = Instantiate(buildableSlotPrefab, blueprintSlotsParents).GetComponent<BuildableSlot>();
             if (UseIngredients) {
-                _newSlot.Init(_item.Buildable, _item.Ingredients);
+                _newSlot.Init(_item.productItem, _item.ingredientItems);
             }
             else {
-                _newSlot.Init(_item.Buildable, new List<Item>());
+                _newSlot.Init(_item.productItem, new List<Item>());
             }
         }
 
@@ -143,8 +137,8 @@ public class BuildingManager : MonoBehaviour
         if (hoveredSlot == null)
             return;
 
-        if (CheckIngriedients(hoveredSlot.BuildableRecipe.Buildable)) {
-            equippedTool.SetBlueprint(hoveredSlot.BuildableRecipe.Buildable);
+        if (CheckIngriedients(hoveredSlot.BuildableRecipe.productItem)) {
+            equippedTool.SetBlueprint(hoveredSlot.BuildableRecipe.productItem);
             interfaceManager.CloseBuilding();
         }
     }
@@ -190,7 +184,7 @@ public class BuildingManager : MonoBehaviour
     /// <returns>Returns a list of item objects</returns>
     List<Item> GetIngredients(Buildable _buildable)
     {
-        return buildableCatalog[GetBuildableRecipeIndex(_buildable)].Ingredients;
+        return buildableCatalog[GetBuildableRecipeIndex(_buildable)].ingredientItems;
     }
 
     /// <summary>
@@ -201,7 +195,7 @@ public class BuildingManager : MonoBehaviour
     int GetBuildableRecipeIndex(Buildable _buildable)
     {
         for (int i = 0; i < buildableCatalog.Count; i++) {
-            if (buildableCatalog[i].Buildable.ItemInfo.name == _buildable.ItemInfo.name) {
+            if (buildableCatalog[i].productItem.ItemInfo.name == _buildable.ItemInfo.name) {
                 return i;
             }
         }
@@ -212,17 +206,17 @@ public class BuildingManager : MonoBehaviour
     /// Displays the buildable and its info along with all the ingredients required in the UI
     /// </summary>
     /// <param name="_buildable">The recipe to display</param>
-    void DisplayBuildable(BuildableRecipe _buildable)
+    void DisplayBuildable(BuildingRecipe _recipe)
     {
-        if (_buildable != null) {
-            itemDisplay.SetItem(_buildable.Buildable.ItemInfo);
+        if (_recipe != null) {
+            itemDisplay.SetItem(_recipe.productItem.ItemInfo);
             //Display all ingredients in icon
-            for (int i = 0; i < _buildable.Ingredients.Count; i++) {
+            for (int i = 0; i < _recipe.ingredientItems.Count; i++) {
                 ingredientSlots[i].gameObject.SetActive(true);
-                ingredientSlots[i].SetIcon(_buildable.Ingredients[i].ItemScriptableObject.icon);
+                ingredientSlots[i].SetIcon(_recipe.ingredientItems[i].ItemScriptableObject.icon);
             }
             //And hide all other icons
-            for (int i = _buildable.Ingredients.Count; i < ingredientSlots.Length; i++) {
+            for (int i = _recipe.ingredientItems.Count; i < ingredientSlots.Length; i++) {
                 ingredientSlots[i].SetIcon(null);
                 ingredientSlots[i].gameObject.SetActive(false);
             }

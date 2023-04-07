@@ -37,15 +37,4 @@ public static class VoxelData
         {3, 7, 2, 6},     //Top face      - {3, 7, 2, 2, 7, 6}
         {1, 5, 0, 4}      //Bottom face   - {1, 5, 0, 0, 5, 4}
     };
-
-    public static readonly Vector2[] uvs =
-    {
-        //Removed duplicates for optimization
-        new Vector2(0f, 0f),    //1
-        new Vector2(0f, 1f),    //2
-        new Vector2(1f, 0f),    //3
-        /*new Vector2(1f, 0f),  //4
-        new Vector2(0f, 1f),*/  //5
-        new Vector2(1f, 1f)     //6
-    };
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Smelter
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 6342191227331414815, guid: 36421839bb3681c4dadf623b0740f691,
+    type: 3}
+  ingredientItems:
+  - {fileID: -867116084884353394, guid: 1891786eb2b4da44681a31cb646abecf, type: 3}
+  - {fileID: 2853950002871854641, guid: 2e69050ccab38904fb2f5fb1374b2360, type: 3}
+  - {fileID: 2853950002871854641, guid: 2e69050ccab38904fb2f5fb1374b2360, type: 3}
+  - {fileID: -5605493588642687988, guid: bc9e99b80222abc489e6236bbd599e76, type: 3}
+  - {fileID: -5605493588642687988, guid: bc9e99b80222abc489e6236bbd599e76, type: 3}
+  - {fileID: 5996353546227936134, guid: c16a77ec060db7847891b8e0109a8d63, type: 3}
+  - {fileID: 5996353546227936134, guid: c16a77ec060db7847891b8e0109a8d63, type: 3}

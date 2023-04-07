@@ -18,10 +18,12 @@ public class BuildingGrid : MonoBehaviour
     [SerializeField] int gridUnit = 4;
 
     List<StructureSystem> systems;
+    LayerMask mask;
 
     void Start()
     {
         systems = new List<StructureSystem>();
+        mask = LayerMask.GetMask("Ignore Raycast");
     }
 
     public int GetGridUnit()
@@ -178,12 +180,13 @@ public class BuildingGrid : MonoBehaviour
 
             case BuildableType.Misc:
                 return Physics.OverlapBox(
-                    _buildable.GetObject().transform.position,  //Center of actual model object
-                    _buildable.transform.localScale / 2.05f,    //Slightly smaller to avoid edge detection
+                    //Center of actual model object
+                    new Vector3(_buildable.transform.position.x, _buildable.GetSize().y/2f, _buildable.transform.position.z),
+                    _buildable.GetSize() / 2.05f,   //Slightly smaller to avoid edge detection
                     _buildable.transform.rotation,
-                    ~0,                                         //All layers
-                    QueryTriggerInteraction.Ignore)             //Ignore trigger colliders
-                    .Length == 0;                               //Check for overlapping collider, true if none
+                    mask,                           //All layers
+                    QueryTriggerInteraction.Ignore) //Ignore trigger colliders
+                    .Length == 0;                   //Check for overlapping collider, true if none
             default:
                 return true;
         }

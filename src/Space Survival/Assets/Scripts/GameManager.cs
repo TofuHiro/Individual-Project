@@ -55,12 +55,13 @@ namespace SpaceGame
             vitals.SetStarveRate(SelectedDifficulty.starveDamageRate);
             vitals.SetStarveDamage(SelectedDifficulty.starveDamage);
             vitals.UseOxygen(SelectedDifficulty.useOxygen);
-            vitals.SetMaxOxygenTime(SelectedDifficulty.startingMaxOxygen);
+            vitals.MaxOxygen = SelectedDifficulty.startingMaxOxygen;
             vitals.SetSuffocateRate(SelectedDifficulty.suffocateDamageRate);
             vitals.SetSuffocateDamage(SelectedDifficulty.suffocationDamage);
             vitals.SetRespawnHealth(SelectedDifficulty.respawnHealth);
             vitals.SetRespawnWater(SelectedDifficulty.respawnWater);
             vitals.SetRespawnFood(SelectedDifficulty.respawnFood);
+            vitals.FullHeal();
 
             EnemySpawner.EnemiesAllowed = SelectedDifficulty.enemies;
             EnemySpawner.SpawnNumberMultiplier = SelectedDifficulty.enemySpawnMultiplier;

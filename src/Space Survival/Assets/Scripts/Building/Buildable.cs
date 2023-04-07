@@ -12,6 +12,8 @@ public class Buildable : MonoBehaviour
     [SerializeField] GameObject modelObject;
 
     [Header("Building Settings")]
+    [Tooltip("The size of this structure")]
+    [SerializeField] Vector3 structureSize;
     [Tooltip("The type of building this buildable is")]
     [SerializeField] BuildableType type;
     [Tooltip("The grid size this building will snap to when being placed")]
@@ -24,6 +26,11 @@ public class Buildable : MonoBehaviour
     void Start()
     {
         smoothTime = BuildingManager.Instance.GetBuildingSmoothTime();
+    }
+
+    public Vector3 GetSize()
+    {
+        return structureSize;
     }
 
     /// <summary>

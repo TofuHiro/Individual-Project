@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Double Bed
+  m_EditorClassIdentifier: 
+  productItem: {fileID: -2588791341651444203, guid: b506ffdb5945c1f459c79f8573cb46d5,
+    type: 3}
+  ingredientItems:
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: 3451668776810629329, guid: 0dd46050224fc434f92034bbd0cfcb4f, type: 3}
+  - {fileID: 3451668776810629329, guid: 0dd46050224fc434f92034bbd0cfcb4f, type: 3}

@@ -216,15 +216,26 @@ public class PlayerWeapons : MonoBehaviour
     /// <param name="_ammo">Current reserve ammo amount</param>
     public void UpdateAmmoUI(int _clip, int _ammo)
     {
-        weaponUI.UpdateUI(_clip, _ammo);
+        weaponUI.UpdateAmmo(_clip, _ammo);
+    }
+
+    public void UpdateDurabilityUI(int _max, int _current)
+    {
+        weaponUI.UpdateDurability(_max, _current);
     }
 
     /// <summary>
-    /// Hides or shows the weapon ammo information UI
+    /// Hides the weapon information UI
     /// </summary>
-    /// <param name="_state">The state to toggle to</param>
-    public void ToggleAmmoUI(bool _state)
+    public void HideWeaponUI()
     {
-        weaponUI.ToggleUI(_state);
+        weaponUI.Hide();
+    }
+
+    public void RemoveActiveWeapon()
+    {
+        weaponSlots[ActiveHotbar].ClearItem();
+        hotbar[ActiveHotbar] = null;
+        hotbarUI.UpdateUI(hotbar);
     }
 }

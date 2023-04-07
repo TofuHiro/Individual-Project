@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Round Table
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 4165235235566019859, guid: 6d51c8ab777da2e44a6c0fb2b6829c5b,
+    type: 3}
+  ingredientItems:
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: -690189316207063955, guid: e808de1fb0e173f419effc6befb5785a, type: 3}

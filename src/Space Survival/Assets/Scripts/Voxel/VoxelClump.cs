@@ -10,6 +10,9 @@ public class VoxelClump : MonoBehaviour
     [Tooltip("For testing. Whether to continuesly update the mesh")]
     [SerializeField] bool updateGeneration;
 
+    [Header("Texture")]
+    [SerializeField] string textureName;
+
     [Header("Size")]
     [Tooltip("The cube size of this chunk")]
     [SerializeField] int chunkSize = 4;
@@ -38,6 +41,7 @@ public class VoxelClump : MonoBehaviour
     [Tooltip("Controls decrease in noise amplitudes from octaves. Amplitude = Persistance ^ Octave")]
     [SerializeField] float persistance = .5f;
 
+    VoxelTextures voxelTextures;
     MeshFilter meshFilter;
     MeshCollider meshCollider;
 
@@ -50,6 +54,7 @@ public class VoxelClump : MonoBehaviour
 
     protected virtual void Start()
     {
+        voxelTextures = VoxelTextures.Instance;
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
        
@@ -192,10 +197,11 @@ public class VoxelClump : MonoBehaviour
                 vertices.Add((VoxelData.verts[VoxelData.tris[i, 1]] / voxelPerUnit) + _pos);
                 vertices.Add((VoxelData.verts[VoxelData.tris[i, 2]] / voxelPerUnit) + _pos);
                 vertices.Add((VoxelData.verts[VoxelData.tris[i, 3]] / voxelPerUnit) + _pos);
-                uvs.Add(VoxelData.uvs[0]);
-                uvs.Add(VoxelData.uvs[1]);
-                uvs.Add(VoxelData.uvs[2]);
-                uvs.Add(VoxelData.uvs[3]);
+                //Solid texture, one point on a colour
+                uvs.Add(voxelTextures.GetTexture(textureName));
+                uvs.Add(voxelTextures.GetTexture(textureName));
+                uvs.Add(voxelTextures.GetTexture(textureName));
+                uvs.Add(voxelTextures.GetTexture(textureName));
 
                 //Pattern order in voxeldata to exclude duplicates
                 triangles.Add(vertIndex);
@@ -277,5 +283,10 @@ public class VoxelClump : MonoBehaviour
         vertices.Clear();
         triangles.Clear();
         uvs.Clear();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(transform.position + (Vector3.one * chunkSize) / 2, Vector3.one * chunkSize);
     }
 }

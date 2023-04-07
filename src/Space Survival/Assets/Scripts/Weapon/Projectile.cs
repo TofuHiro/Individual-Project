@@ -6,7 +6,8 @@ public class Projectile : MonoBehaviour
     Rigidbody rb;
 
     string projectileTag;
-    float damage, lifeTime, explosionRadius, explosionForce;
+    protected float damage, explosionRadius;
+    float lifeTime, explosionForce;
     bool explodeOnContact;
     float timer;
 
@@ -61,15 +62,15 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// Explode this projectile exerting explosive force and damage to nearby objects
     /// </summary>
-    void Explode()
+    protected virtual void Explode()
     {
         //Get nearby objects
         Collider[] _colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider _col in _colliders) {
             //Apply damage
-            IDamagable _damagle = _col.transform.GetComponent<IDamagable>();
-            if (_damagle != null) {
-                _damagle.TakeDamage(damage);
+            IDamagable _damagable = _col.transform.GetComponent<IDamagable>();
+            if (_damagable != null) {
+                _damagable.TakeDamage(damage);
             }
 
             //Apply explosive force

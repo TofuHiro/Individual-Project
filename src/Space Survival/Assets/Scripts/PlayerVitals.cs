@@ -35,6 +35,8 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         set {
             maxShield = value;
             UI.SetMaxShield(value);
+            if (Shield > maxShield)
+                Shield = maxShield;
         }
     }
 
@@ -65,6 +67,8 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         set {
             maxHealth = value;
             UI.SetMaxHealth(value);
+            if (Health > maxHealth)
+                Health = maxHealth;
         }
     }
 
@@ -93,6 +97,8 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         set {
             maxWater = value;
             UI.SetMaxWater(value);
+            if (Water > maxWater)
+                Water = maxWater;
         }
     }
 
@@ -121,6 +127,32 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         set {
             maxFood = value;
             UI.SetMaxFood(value);
+            if (Food > maxFood)
+                Food = maxFood;
+        }
+    }
+
+    /// <summary>
+    /// The food levels of the player
+    /// </summary>
+    public float Oxygen
+    {
+        get { return playerOxygen.GetOxygen(); }
+        set {
+            playerOxygen.SetOxygen(value);
+            UI.SetOxygen(playerOxygen.GetOxygen());
+        }
+    }
+
+    /// <summary>
+    /// The maximum food levels of the player
+    /// </summary>
+    public float MaxOxygen
+    {
+        get { return playerOxygen.GetMaxOxygen(); }
+        set {
+            playerOxygen.SetMaxOxygenTime(value);
+            UI.SetMaxOxygen(playerOxygen.GetMaxOxygen());
         }
     }
 
@@ -204,21 +236,21 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         GameManager.OnPlayerRespawn += Respawn;
 
         //Shield
-        UI.SetMaxShield(maxShield);
+        MaxShield = maxShield;
         Shield = 0f;
 
         //Health
-        UI.SetMaxHealth(maxHealth);
+        MaxHealth = maxHealth;
         Health = maxHealth;
 
         //Water
-        UI.SetMaxWater(maxWater);
+        MaxWater = maxWater;
         Water = maxWater;
         nextWaterTick = waterDecayRate;
         nextDehydrateTick = dehydrationDamageRate;
 
         //Food
-        UI.SetMaxFood(maxFood);
+        MaxFood = maxFood;
         Food = maxFood;
         nextFoodTick = foodDecayRate;
         nextStarveTick = starveDamageRate;
@@ -320,6 +352,23 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         playerOxygen.SetMax();
     }
 
+    public void FullHeal()
+    {
+        Health = MaxHealth;
+        Water = MaxWater;
+        Food = MaxFood;
+        Oxygen = MaxOxygen;
+    }
+
+    /// <summary>
+    /// Add a value to the maximum oxygen
+    /// </summary>
+    /// <param name="_value"></param>
+    public void AddMaxOxygen(float _value)
+    {
+        MaxOxygen += _value;
+    }
+
     /// <summary>
     /// Add a value to current shield level
     /// </summary>
@@ -362,14 +411,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     /// <param name="_value"></param>
     public void AddOxygen(float _value)
     {
-        playerOxygen.AddOxygen(_value);
-        UI.SetOxygen(playerOxygen.GetOxygen());
-    }
-
-    public void SetMaxOxygenTime(float _value)
-    {
-        playerOxygen.SetMaxOxygenTime(_value);
-        UI.SetMaxOxygen(_value);
+        Oxygen += _value;
     }
 
     /// <summary>

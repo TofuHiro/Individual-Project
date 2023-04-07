@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Stone Wall
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 3318228919177809300, guid: 7fe153b3aa660c14db92cb532d03186e,
+    type: 3}
+  ingredientItems:
+  - {fileID: 5996353546227936134, guid: c16a77ec060db7847891b8e0109a8d63, type: 3}
+  - {fileID: 5996353546227936134, guid: c16a77ec060db7847891b8e0109a8d63, type: 3}
+  - {fileID: 5996353546227936134, guid: c16a77ec060db7847891b8e0109a8d63, type: 3}

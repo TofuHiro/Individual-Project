@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Speed Upgrade 1
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 5346310011380539110, guid: 75ac30e8d8c5dc147b84dcdacd97e77d,
+    type: 3}
+  ingredientItems:
+  - {fileID: 1659924267412353056, guid: d312464ac9be7f64fa5df4c4a78bc34b, type: 3}
+  - {fileID: -8577544450719651560, guid: 4e6f526f083d0104786c55b8c535e3b4, type: 3}
+  - {fileID: 2853950002871854641, guid: 2e69050ccab38904fb2f5fb1374b2360, type: 3}

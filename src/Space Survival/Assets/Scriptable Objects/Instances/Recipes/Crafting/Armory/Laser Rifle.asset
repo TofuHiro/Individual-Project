@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42407201a909cf4b8f1ef2f82344dac, type: 3}
+  m_Name: Laser Rifle
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 3140800682405279723, guid: b6bf2d253dbcd2d4fa66aea8029efcd6,
+    type: 3}
+  ingredientItems:
+  - {fileID: 4325266382661351887, guid: 942d781c4584c5f4c887d6645e5abd19, type: 3}
+  - {fileID: -2490355479090975767, guid: db651460ca7aa704a8dabf05d74e8d76, type: 3}
+  - {fileID: 6356603563530570594, guid: 33edb4fdb98f2414bb3cde987172c623, type: 3}
+  - {fileID: 1659924267412353056, guid: d312464ac9be7f64fa5df4c4a78bc34b, type: 3}
+  - {fileID: 425650037280909811, guid: 4598b1ee11f5ca541baaea5dbcb8443d, type: 3}

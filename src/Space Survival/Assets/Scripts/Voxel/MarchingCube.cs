@@ -10,6 +10,9 @@ public class MarchingCube : MonoBehaviour
     [Tooltip("For testing. Whether to continuesly update the mesh")]
     [SerializeField] bool updateGeneration;
 
+    [Header("Texture")]
+    [SerializeField] string textureName;
+
     [Header("Size")]
     [Tooltip("The cube size of this chunk")]
     [SerializeField] int cubeSize = 4;
@@ -38,19 +41,23 @@ public class MarchingCube : MonoBehaviour
     [Tooltip("Controls decrease in noise amplitudes from octaves. Amplitude = Persistance ^ Octave")]
     [SerializeField] float persistance = .5f;
 
+    VoxelTextures voxelTextures;
     MeshFilter meshFilter;
     MeshCollider meshCollider;
 
     List<Vector3> vertices;
+    List<Vector2> uvs;
     List<int> triangles;
     bool[,,] vertMap;
 
     private void Start()
     {
+        voxelTextures = VoxelTextures.Instance;
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
 
         vertices = new List<Vector3>();
+        uvs = new List<Vector2>();
         triangles = new List<int>();
 
         //+ 1unit, since storing vertices and not voxels themselves
@@ -137,6 +144,7 @@ public class MarchingCube : MonoBehaviour
                     if (_distFromCenter < coreRadius) 
                         vertMap[(int)(x * voxelPerUnit), (int)(y * voxelPerUnit), (int)(z * voxelPerUnit)] = true;
                     
+                    //Random
                     else {
                         float _frequency = 1;
                         float _amplitude = 1;
@@ -247,6 +255,7 @@ public class MarchingCube : MonoBehaviour
             Vector3 _vertPos = (_startVert + _endVert) / 2f;
 
             vertices.Add(_vertPos);
+            uvs.Add(voxelTextures.GetTexture(textureName));
             //Index of added vertex
             triangles.Add(vertices.Count - 1);
         }
@@ -279,6 +288,7 @@ public class MarchingCube : MonoBehaviour
         Mesh _mesh = new Mesh
         {
             vertices = vertices.ToArray(),
+            uv = uvs.ToArray(),
             triangles = triangles.ToArray()
         };
        
@@ -290,6 +300,12 @@ public class MarchingCube : MonoBehaviour
     void ClearMeshData()
     {
         vertices.Clear();
+        uvs.Clear();
         triangles.Clear();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(transform.position + (Vector3.one * cubeSize)/2, Vector3.one * cubeSize);
     }
 }

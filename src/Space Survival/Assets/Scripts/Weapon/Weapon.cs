@@ -17,7 +17,6 @@ public abstract class Weapon : MonoBehaviour
     protected float damage;
     protected float range;
     protected float attackRate, nextTimeToAttack, attackTimer;
-    protected float maxDurablity, durablity;
     bool isAttacking, isSecondaryAttacking;
 
     protected virtual void Awake()
@@ -31,9 +30,6 @@ public abstract class Weapon : MonoBehaviour
 
         attackRate = weaponScriptable.attackRate;
         nextTimeToAttack = attackRate;
-
-        maxDurablity = weaponScriptable.maxDurability;
-        durablity = maxDurablity;
 
         //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -150,5 +146,12 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Reload()
     {
         
+    }
+
+    protected void Die()
+    {
+        playerHolder.RemoveActiveWeapon();
+        playerHolder.HideWeaponUI();
+        Destroy(gameObject);
     }
 }

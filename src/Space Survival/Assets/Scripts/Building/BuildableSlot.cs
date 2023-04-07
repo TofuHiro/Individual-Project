@@ -7,7 +7,7 @@ public class BuildableSlot : MonoBehaviour
     /// <summary>
     /// The recipe stored in this slot
     /// </summary>
-    public BuildableRecipe BuildableRecipe { get; private set; }
+    public BuildingRecipe BuildableRecipe { get; private set; }
 
     BuildingManager buildingManager;
     SlotUI slotUI;
@@ -22,10 +22,10 @@ public class BuildableSlot : MonoBehaviour
         buildingManager = BuildingManager.Instance;
         slotUI = GetComponent<SlotUI>();
 
-        BuildableRecipe = new BuildableRecipe
+        BuildableRecipe = new BuildingRecipe
         {
-            Buildable = _buildable,
-            Ingredients = _ingredients
+            productItem = _buildable,
+            ingredientItems = _ingredients
         };
        
         slotUI.SetIcon(_buildable.ItemInfo.icon);

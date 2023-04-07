@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
 {
+    [Header("Harvesting")]
     [Tooltip("The minimum tool tier required to be harvested")]
     [SerializeField] int minTier;
     [Tooltip("The tool type required to be harvested")]
@@ -54,7 +55,8 @@ public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
             }
         }
         if (_newObject.resource != null) {
-            ObjectPooler.SpawnObject(_newObject.nameTag, _newObject.resource, _pos, Quaternion.identity, Vector3.one / voxelPerUnit);
+            Quaternion _randRot = Quaternion.Euler(new Vector3(Random.Range(-180f, 180f), Random.Range(-180f, 180f), Random.Range(-180f, 180f)));
+            ObjectPooler.SpawnObject(_newObject.nameTag, _newObject.resource, _pos, _randRot);
         }
     }
 }

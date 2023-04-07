@@ -39,4 +39,15 @@ public class CraftingRecipeBlock : MonoBehaviour
     {
         craftingManager.CraftRecipe(recipe);
     }
+
+    //UI
+    public void DisplayItem()
+    {
+        craftingManager.DisplayItem(recipe.productItem.ItemScriptableObject);
+    }
+
+    public void HideItem()
+    {
+        craftingManager.DisplayItem(null);
+    }
 }

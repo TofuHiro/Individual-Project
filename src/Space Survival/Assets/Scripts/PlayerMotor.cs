@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(GravityUser))]
 public class PlayerMotor : MonoBehaviour
 {
+    public float FloatingSpeedMultiplier { get; set; } = 1f;
+
     [Tooltip("Transform storing the orientation of the player")]
     [SerializeField] Transform orientation;
 
@@ -42,6 +45,7 @@ public class PlayerMotor : MonoBehaviour
 
     //References
     Rigidbody rb;
+    GravityUser gravity;
 
     //Variables
     Vector3 moveDir;
@@ -49,14 +53,7 @@ public class PlayerMotor : MonoBehaviour
     float nextTimeToJump = 0f;
     bool isGrounded;
     bool isSpeedingUp;
-
-    public bool IsFloating { get { return isFloating; }
-        private set {
-            isFloating = value;
-            rb.useGravity = !value;
-        }
-    }
-    private bool isFloating = false;
+    bool isWalking;
 
     /// <summary>
     /// Returns the current orientation of the player
@@ -89,27 +86,9 @@ public class PlayerMotor : MonoBehaviour
     /// Toggle the player's movement mode between walking and floating
     /// </summary>
     /// <param name="_state">If true, the player is set to floating mode to move in a 3D axis</param>
-    public void SetFloatingMode(bool _state)
+    public void SetWalkMode(bool _state)
     {
-        IsFloating = _state;
-    }
-
-    /// <summary>
-    /// Change the maximum floating speed of the player
-    /// </summary>
-    /// <param name="_value">The maximum speed the player may reach</param>
-    public void SetMaxFloatingSpeed(float _value)
-    {
-        maxFloatingSpeed = _value;
-    }
-
-    /// <summary>
-    /// Change the base acceleration of the player while floating
-    /// </summary>
-    /// <param name="_value">The new floating acceleration of the player</param>
-    public void SetFloatingSpeed(float _value)
-    {
-        floatingSpeed = _value;
+        isWalking = _state;
     }
 
     /// <summary>
@@ -133,32 +112,44 @@ public class PlayerMotor : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
         rb.drag = groundDrag;
 
         nextTimeToJump = jumpRate;
     }
 
+    void OnEnable()
+    {
+        gravity = GetComponent<GravityUser>();
+        gravity.OnChange += SetWalkMode;
+    }
+
+    void OnDisable()
+    {
+        gravity.OnChange -= SetWalkMode;
+    }
+
     void FixedUpdate()
     {
-        if (isFloating) {
-            FloatingMovement();
-            LimitFloatingMovement();
-        }
-        else {
+        if (isWalking) {
             Movement();
             LimitWalkingMovement();
+        }
+        else {
+            FloatingMovement();
+            LimitFloatingMovement();
         }
     }
 
     void Update()
     {
-        if (isFloating) {
-            FloatingDrag();
-        }
-        else {
+        if (isWalking) {
             WalkingDrag();
             GroundCheck();
             Jump();
+        }
+        else {
+            FloatingDrag();
         }
     }
 
@@ -239,14 +230,14 @@ public class PlayerMotor : MonoBehaviour
             Vector3 _horiDir = moveDir.normalized * floatingSpeed * rb.mass;
             //Holding sprint key
             if (isSpeedingUp) {
-                _horiDir *= floatingSpeedUpMult;
+                _horiDir *= floatingSpeedUpMult * FloatingSpeedMultiplier;
             }
             rb.AddForce(_horiDir, ForceMode.Force);
         }
         if (verticalDir != 0f) {
             Vector3 _vertDir = Vector3.up * verticalDir * floatingSpeed * rb.mass;
             if (isSpeedingUp) {
-                _vertDir *= floatingSpeedUpMult;
+                _vertDir *= floatingSpeedUpMult * FloatingSpeedMultiplier;
             }
             rb.AddForce(_vertDir, ForceMode.Force);
         }
@@ -257,7 +248,7 @@ public class PlayerMotor : MonoBehaviour
     /// </summary>
     void LimitFloatingMovement()
     {
-        if (rb.velocity.magnitude > maxFloatingSpeed) {
+        if (rb.velocity.magnitude > maxFloatingSpeed * FloatingSpeedMultiplier) {
             //Apply max speed to the current direction
             Vector3 _limitedVel = rb.velocity.normalized * maxWalkingSpeed;
             rb.velocity = new Vector3(_limitedVel.x, _limitedVel.y, _limitedVel.z);

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0678bb315a96ab544b4759507af33079, type: 3}
+  m_Name: Reinforced Wall
+  m_EditorClassIdentifier: 
+  productItem: {fileID: 2392305040654479229, guid: de4a556e2edd6a84fb209a15d50f8dda,
+    type: 3}
+  ingredientItems:
+  - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
+  - {fileID: 2853950002871854641, guid: 2e69050ccab38904fb2f5fb1374b2360, type: 3}
+  - {fileID: 6356603563530570594, guid: 33edb4fdb98f2414bb3cde987172c623, type: 3}
+  - {fileID: 8137507776098672298, guid: 5f7951c30eb67b54685126c09057bf7a, type: 3}

@@ -85,6 +85,7 @@ public class InterfaceManager : MonoBehaviour
 
         player.ToggleRotation(false);
         player.ToggleAttack(false);
+        player.ToggleSwitchHotbarbool(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -97,6 +98,7 @@ public class InterfaceManager : MonoBehaviour
 
         player.ToggleRotation(true);
         player.ToggleAttack(true);
+        player.ToggleSwitchHotbarbool(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -112,6 +114,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
+        player.ToggleSwitchHotbarbool(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -126,6 +129,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
+        player.ToggleSwitchHotbarbool(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -138,6 +142,7 @@ public class InterfaceManager : MonoBehaviour
         building.OpenInterface();
         
         player.ToggleRotation(false);
+        player.ToggleSwitchHotbarbool(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -150,6 +155,7 @@ public class InterfaceManager : MonoBehaviour
         building.CloseInterface();
 
         player.ToggleRotation(true);
+        player.ToggleSwitchHotbarbool(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -166,6 +172,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
+        player.ToggleSwitchHotbarbool(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -181,6 +188,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
+        player.ToggleSwitchHotbarbool(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -234,6 +242,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
+        player.ToggleSwitchHotbarbool(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -248,6 +257,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
+        player.ToggleSwitchHotbarbool(true);
         ToggleInterfaceInputs(false);
     }
 

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e995df9eb707777478896524033af7a1, type: 3}
+  m_Name: Super Compact WaterIce
+  m_EditorClassIdentifier: 
+  type: 4
+  name: Super Compact WaterIce
+  icon: {fileID: 2800000, guid: 270f452579732bb498898dfea44834d8, type: 3}
+  description: (+20 food, +80 water, -5 health) Huge amount of water in huge amounts
+    of ice. Watch your teeth
+  unique: 0
+  buffs:
+  - type: 2
+    value: 20
+  - type: 3
+    value: 80
+  - type: 0
+    value: -5

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ee35a221e63c941ba33349ed075d5a, type: 3}
+  m_Name: Locker
+  m_EditorClassIdentifier: 
+  type: 0
+  name: Locker
+  icon: {fileID: 2800000, guid: 7d2765ff715d0ce4a875cdb4540d6539, type: 3}
+  description: A large locker storage holding 25 items
+  unique: 0
