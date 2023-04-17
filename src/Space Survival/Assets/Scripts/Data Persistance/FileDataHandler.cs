@@ -8,7 +8,7 @@ public class FileDataHandler
 {
     string dataDirPath;
     string dataFileName;
-    string encryptionKey = "TofuIsCute";
+    readonly string encryptionKey = "TofuIsCute";
 
     public FileDataHandler(string _dataDirPath, string _dataFileName)
     {
@@ -24,10 +24,9 @@ public class FileDataHandler
         if (File.Exists(_fullPath)) {
             try {
                 string _dataToLoad;
-                using (FileStream _stream = new FileStream(_fullPath, FileMode.Open))
-                using (StreamReader _reader = new StreamReader(_stream))
+                using FileStream _stream = new FileStream(_fullPath, FileMode.Open);
+                using StreamReader _reader = new StreamReader(_stream);
                 _dataToLoad = _reader.ReadToEnd();
-                _dataToLoad = EncryptDecrypt(_dataToLoad);
 
                 _loadedData = JsonUtility.FromJson<GameData>(_dataToLoad);
             }
@@ -48,7 +47,6 @@ public class FileDataHandler
 
             //Serialized game data in json format
             string _dataToStore = JsonUtility.ToJson(_gameData, true);
-            _dataToStore = EncryptDecrypt(_dataToStore);
 
             //'Using' blocks closes connections to file after use
             using FileStream _stream = new FileStream(_fullPath, FileMode.Create);
@@ -58,14 +56,5 @@ public class FileDataHandler
         catch (Exception e) {
             Debug.LogError("Error occured when trying to save game data to file: " + _fullPath + "\n" + e);
         }
-    }
-
-    string EncryptDecrypt(string _data)
-    {
-        string _moddedData = "";
-        for (int i = 0; i < _data.Length; i++) {
-            _moddedData += (char)(_data[i] ^ encryptionKey[i % encryptionKey.Length]);
-        }
-        return _moddedData;
     }
 }
