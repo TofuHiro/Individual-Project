@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5109519142711249798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5636101699116904153}
+  m_Layer: 0
+  m_Name: Attack Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5636101699116904153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5109519142711249798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -8.89, z: 11.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 761261064858340428}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6766787096363699998
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,10 +57,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6766787096363699998}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029206271}
-  m_LocalPosition: {x: 0.000017063583, y: -0, z: 0.7429981}
+  m_LocalPosition: {x: 0.000017063583, y: 6.78, z: 0.7429981}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5636101699116904153}
   m_Father: {fileID: 7612522262732839385}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -150,6 +182,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: da8c19e5facb8af40b7e185e88388cb9, type: 2}
   pickable: 1
+  pickupSound:
+  - GunCock
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &4277977703399327343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +200,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   semiAutomatic: 1
-  rayStartPoint: {fileID: 0}
+  attackType: 1
+  equipSounds:
+  - Teleport
+  - LightSwing
+  attackPoint: {fileID: 5636101699116904153}
+  impactEffects:
+  - Energy Spark
+  attackEffects:
+  - Energy Spark
+  - Laser
+  attackSounds:
+  - LightLaser
 --- !u!65 &8029805091109610089
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -176,4 +224,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.143106, y: 10.892257, z: 14.761226}
-  m_Center: {x: -0, y: -4.94613, z: -3.231469}
+  m_Center: {x: -0, y: 2, z: -3.231469}

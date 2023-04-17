@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1251041181069882889}
   - component: {fileID: 3943007140815225539}
   - component: {fileID: 3867698022590801532}
-  - component: {fileID: 2422099040843515668}
   - component: {fileID: -8442374927655961739}
+  - component: {fileID: 2422099040843515668}
   - component: {fileID: 8958578334689017913}
   m_Layer: 0
   m_Name: AluminiumScraps_Large
@@ -101,35 +101,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 289301614986012343, guid: 57465a296b4b975479189598c99b6838, type: 3}
---- !u!114 &2422099040843515668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3294555109483176726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8379f6348db844149a14242a9fd1646b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 200
-  minTier: 0
-  harvestType: 0
-  destroyOnHarvest: 1
-  drops:
-  - nameTag: Aluminium Scraps
-    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
-      type: 3}
-    spawnChance: 100
-  - nameTag: Aluminium Scraps
-    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
-      type: 3}
-    spawnChance: 100
-  - nameTag: Aluminium Scraps
-    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
-      type: 3}
-    spawnChance: 50
 --- !u!54 &-8442374927655961739
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,6 +117,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2422099040843515668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294555109483176726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8379f6348db844149a14242a9fd1646b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 200
+  minTier: 0
+  harvestType: 1
+  destroyOnHarvest: 1
+  drops:
+  - nameTag: Aluminium Scraps
+    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
+      type: 3}
+    spawnChance: 100
+  - nameTag: Aluminium Scraps
+    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
+      type: 3}
+    spawnChance: 100
+  - nameTag: Aluminium Scraps
+    resource: {fileID: 1943686760558043489, guid: 34298108337f426469bf2009a5484eec,
+      type: 3}
+    spawnChance: 50
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &8958578334689017913
 MonoBehaviour:
   m_ObjectHideFlags: 0

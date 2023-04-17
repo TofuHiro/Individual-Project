@@ -14,9 +14,27 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
     public float Health { get { return health; }
         set {
             health = value;
+            healthDisplayer.ShowHealthBar(transform, maxHealth, health);
+
+            //Harvest effects
+            foreach (string _effect in harvestEffects) {
+                effectsManager.PlayEffect(_effect, transform.position, transform.rotation);
+            }
+            //Sound
+            foreach (string _audio in harvestSounds) {
+                audioManager.PlayClip(_audio, transform.position);
+            }
 
             if (health <= 0f) {
                 Die();
+                //Sound
+                foreach (string _audio in deathSounds) {
+                    audioManager.PlayClip(_audio, transform.position);
+                }
+                //Harvest effects
+                foreach (string _effect in deathEffects) {
+                    effectsManager.PlayEffect(_effect, transform.position, transform.rotation);
+                }
             }
         } 
     }
@@ -32,12 +50,41 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
     [SerializeField] bool destroyOnHarvest = true;
     [Tooltip("Array of item to drop with specified spawn rates")]
     [SerializeField] ObjectChance[] drops;
+    [Tooltip("Visual effects to play on harvest")]
+    [SerializeField] string[] harvestEffects;
+    [Tooltip("Sound effects to play on harvest")]
+    [SerializeField] string[] harvestSounds;
+    [Tooltip("Visual effects to play on death")]
+    [SerializeField] string[] deathEffects;
+    [Tooltip("Sound effects to play on death")]
+    [SerializeField] string[] deathSounds;
 
+
+    AudioManager audioManager;
+    HealthDisplayer healthDisplayer;
+    EffectsManager effectsManager;
     bool isDead = false;
 
     void Start()
     {
+        audioManager = AudioManager.Instance;
+        healthDisplayer = HealthDisplayer.Instance;
+        effectsManager = EffectsManager.Instance;
         health = maxHealth;
+    }
+
+    public HarvestTypes GetHarvestType()
+    {
+        if (!isDead)
+            return harvestType;
+        else
+            return HarvestTypes.None;
+
+    }
+
+    public int GetMinTier()
+    {
+        return minTier;
     }
 
     /// <summary>

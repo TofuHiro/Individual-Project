@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718014788071995391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.6391666, y: 0.6391666, z: 0.6391666}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718607298370312838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.6391666, y: 0.6391666, z: 0.6391666}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -209,10 +209,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3093346354602505849}
-  - component: {fileID: 6626243008592181513}
   - component: {fileID: 4117523254159699003}
   - component: {fileID: 6101468419046785372}
-  m_Layer: 0
+  - component: {fileID: 2132748992615380805}
+  - component: {fileID: 4210713697357940794}
+  m_Layer: 2
   m_Name: Oxygen Bubble
   m_TagString: Oxygen
   m_Icon: {fileID: 0}
@@ -227,26 +228,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8016626419346177744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8778761204864920368}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &6626243008592181513
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8016626419346177744}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &4117523254159699003
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -297,6 +285,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2132748992615380805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8016626419346177744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ed519b001d4d949b8397a52327f567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oxygenTrigger: {fileID: 4210713697357940794}
+  enabledOnStart: 0
+  buildable: {fileID: 8635018986494276468}
+--- !u!135 &4210713697357940794
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8016626419346177744}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8259527367849177482
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +325,6 @@ GameObject:
   - component: {fileID: 4579724746903166017}
   - component: {fileID: 2706442212706452812}
   - component: {fileID: 8635018986494276468}
-  - component: {fileID: -3532795364290106307}
   m_Layer: 0
   m_Name: Electrolyzer
   m_TagString: Untagged
@@ -369,7 +384,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.98
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &8635018986494276468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,21 +400,9 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 58b8749d2af648b4a8ddd7ca94ffc998, type: 2}
   modelObject: {fileID: 4241137752355689383}
   structureSize: {x: 2, y: 2, z: 2}
-  type: 0
+  type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
---- !u!114 &-3532795364290106307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8259527367849177482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26ed519b001d4d949b8397a52327f567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oxygenTrigger: {fileID: 6626243008592181513}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &6125948981616599432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -420,7 +423,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d7f7a176fe6d8e844be6117aad65c843,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d7f7a176fe6d8e844be6117aad65c843,
         type: 3}

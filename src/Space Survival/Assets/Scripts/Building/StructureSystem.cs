@@ -300,6 +300,8 @@ public class StructureSystem
     /// <param name="_worldSpacePos">The world space position of the floor</param>
     public void AddFloor(Vector3 _worldSpacePos)
     {
+
+
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);
 
         if (_gridPos.x < 0 || _gridPos.x > GridSize.x - 1 || _gridPos.y < 0 || _gridPos.y > GridSize.y - 1 || _gridPos.z < 0 || _gridPos.z > GridSize.z - 1) {

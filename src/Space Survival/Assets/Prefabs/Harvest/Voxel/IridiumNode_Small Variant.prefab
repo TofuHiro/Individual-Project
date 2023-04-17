@@ -14,12 +14,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
+      propertyPath: harvestType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
       propertyPath: textureName
       value: Iridium
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
@@ -38,6 +48,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5305521985123008285, guid: ed3e933fb55269643b7516c027e6ad8e,
         type: 3}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.data[0]
+      value: Iridium Ore Impact
+      objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.data[0].spawnChance

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2441074466619715397}
   - component: {fileID: 9098182554224025622}
   - component: {fileID: 6858482417944303527}
+  - component: {fileID: 5247271132124544535}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -26,10 +27,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066852169669039506}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.175, z: -0.138}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8634900657596991452}
   m_Father: {fileID: 7142849402040919997}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -84,6 +86,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5247271132124544535
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066852169669039506}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17721108, y: 0.3721649, z: 0.5378822}
+  m_Center: {x: 0, y: 0.1854623, z: -0.17295893}
+--- !u!1 &3437353421110689160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8634900657596991452}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8634900657596991452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3437353421110689160}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.2982, z: -0.4587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2441074466619715397}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7524300031322684679
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +142,6 @@ GameObject:
   - component: {fileID: 8156094424853161741}
   - component: {fileID: 4336165761366692361}
   - component: {fileID: 5088809297592913929}
-  - component: {fileID: 5139252392847498480}
   m_Layer: 0
   m_Name: BuildingTool
   m_TagString: Untagged
@@ -150,6 +195,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 270f39dfebb301b4d8061c0b855324ae, type: 2}
   pickable: 1
+  pickupSound:
+  - GunCock
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &5088809297592913929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,16 +213,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   semiAutomatic: 1
---- !u!65 &5139252392847498480
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7524300031322684679}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.13101089, y: 0.34825602, z: 0.53292084}
-  m_Center: {x: 0.000000033527613, y: 0.17923583, z: 0.17108098}
+  attackType: 1
+  equipSounds:
+  - Teleport
+  - LightSwing
+  attackPoint: {fileID: 8634900657596991452}
+  buildEffects:
+  - Small Energy Explosion
+  buildImpactEffects:
+  - Energy Spark
+  deleteEffects:
+  - Energy Spark
+  deleteImpactEffects:
+  - Large Energy Explosion
+  buildSounds:
+  - LightLaser
+  deleteSounds:
+  - WaveLaser

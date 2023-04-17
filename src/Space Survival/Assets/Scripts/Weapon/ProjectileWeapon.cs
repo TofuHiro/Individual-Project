@@ -1,13 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-public class ProjectileWeapon : Weapon
+public class ProjectileWeapon : Weapon, IDataPersistance
 {
     [Tooltip("Transform position where projectile spawn from")]
     [SerializeField] Transform projectileStartPoint;
+    [Tooltip("Visual effects to play on attack")]
+    [SerializeField] string[] attackEffects;
+    [Tooltip("Sound effects to play on attack")]
+    [SerializeField] string[] attackSounds;
 
     public int CurrentClip { get { return currentClip; }
-        private set {
+        set {
+            if (unlimited)
+                return;
+
             currentClip = value;
             UpdateUI();
 
@@ -19,7 +26,7 @@ public class ProjectileWeapon : Weapon
     int currentClip;
 
     public int CurrentAmmo { get { return currentAmmo; }
-        private set {
+        set {
             currentAmmo = value;
             UpdateUI();
         }
@@ -34,6 +41,14 @@ public class ProjectileWeapon : Weapon
     bool isReloading;
     int clipSize;
     float reloadTime;
+    
+    Vector3 projectileAngularVel;
+    bool unlimited;
+
+    public override WeaponType GetWeaponType()
+    {
+        return WeaponType.Projectile;
+    }
 
     protected override void Awake()
     {
@@ -48,11 +63,14 @@ public class ProjectileWeapon : Weapon
         projectileLifeTime = projectileScriptable.projectileLifeTime;
         explodeOnContact = projectileScriptable.explodeOnContact;
         projectileUseGravity = projectileScriptable.useGravity;
+        projectileAngularVel = projectileScriptable.angularVelocity;
 
         CurrentAmmo = projectileScriptable.maxAmmo;
         CurrentClip = projectileScriptable.clipSize;
         clipSize = projectileScriptable.clipSize;
         reloadTime = projectileScriptable.reloadTime;
+
+        unlimited = projectileScriptable.unlimited;
     }
 
     public override void Equip(Transform _parent)
@@ -78,6 +96,14 @@ public class ProjectileWeapon : Weapon
             return;
 
         base.Attack();
+        //Attack effects
+        foreach (string _effect in attackEffects) {
+            effectsManager.PlayEffect(_effect, projectileStartPoint.position, transform.rotation);
+        }
+        //Sound
+        foreach (string _audio in attackSounds) {
+            audioManager.PlayClip(_audio, transform.position);
+        }
 
         //Spawn and shoot projectile
         GameObject _projectile = ObjectPooler.SpawnObject(
@@ -95,7 +121,8 @@ public class ProjectileWeapon : Weapon
             explosionForce,
             projectileLifeTime, 
             explodeOnContact, 
-            projectileUseGravity);
+            projectileUseGravity,
+            projectileAngularVel);
         
         CurrentClip--;
     }
@@ -107,6 +134,8 @@ public class ProjectileWeapon : Weapon
         
     }
 
+
+    //AI cant reload
     protected override void Reload()
     {
         if (isReloading)
@@ -122,8 +151,9 @@ public class ProjectileWeapon : Weapon
 
     IEnumerator StartReload()
     {
-        //Start anim
+        playerHolder.StartReload();
         isReloading = true;
+        isAttacking = false;
 
         yield return new WaitForSeconds(reloadTime);
 
@@ -138,6 +168,8 @@ public class ProjectileWeapon : Weapon
             CurrentAmmo = 0;
         }
 
+        //
+        playerHolder.EndReload();
         isReloading = false;
     }
 
@@ -158,5 +190,23 @@ public class ProjectileWeapon : Weapon
             return;
 
         playerHolder.HideWeaponUI();
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if (isEnemyWeapon)
+            return;
+        //If disable, its in a inventory slot, dont save/load, load in storage instead
+        if (!gameObject.activeSelf)
+            return;
+
+        WeaponData _weaponData = new WeaponData(projectileScriptable.name, transform.position, transform.rotation, currentAmmo, currentClip, gameObject.activeSelf);
+        _data.weapons.Add(_weaponData);
+    }
+
+    public void LoadData(GameData _data)
+    {
+        //Replaced in data manager
+        Destroy(gameObject);
     }
 }

@@ -205,8 +205,9 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: e12b312fe77e115498c694414c3ea687, type: 2}
   modelObject: {fileID: 1503416477981871485}
   structureSize: {x: 2, y: 3, z: 2}
-  type: 0
+  type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7944678947988869822
 MonoBehaviour:
   m_ObjectHideFlags: 0

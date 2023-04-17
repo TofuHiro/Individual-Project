@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4126775310057705330}
   m_Layer: 0
   m_Name: Asteroid_Ice_02
-  m_TagString: Untagged
+  m_TagString: No Build
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

@@ -18,7 +18,8 @@ MonoBehaviour:
   description: A utility knife to cut through bars and enemies
   unique: 1
   damage: 20
-  maxRange: 1
+  maxRange: 1.5
   attackRate: 0.3
-  durability: 200
+  unlimited: 0
+  durability: 250
   knockbackForce: 4

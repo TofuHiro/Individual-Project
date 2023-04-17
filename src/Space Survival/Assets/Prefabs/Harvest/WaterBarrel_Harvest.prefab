@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8379f6348db844149a14242a9fd1646b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 80
   minTier: 0
-  harvestType: 0
+  harvestType: 4
   destroyOnHarvest: 1
   drops:
   - nameTag: Ice
@@ -132,6 +132,12 @@ MonoBehaviour:
     resource: {fileID: 4764026946826673972, guid: ebb7eabeb35fd294ebef3ecb2760609c,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!54 &5740297900973584023
 Rigidbody:
   m_ObjectHideFlags: 0

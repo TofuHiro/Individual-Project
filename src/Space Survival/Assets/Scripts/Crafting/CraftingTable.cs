@@ -7,6 +7,11 @@ public class CraftingTable : MonoBehaviour, IInteractable
 
     InterfaceManager interfaceManager;
 
+    public InteractionType GetInteractionType()
+    {
+        return InteractionType.Crafting;
+    }
+
     void Start()
     {
         interfaceManager = InterfaceManager.Instance;

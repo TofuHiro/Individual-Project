@@ -107,13 +107,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2744587561176655493}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.125, z: 0.375}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029653306}
+  m_LocalPosition: {x: 0, y: 0.163, z: -0.491}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8728457056885580010}
-  m_RootOrder: 1
+  m_Father: {fileID: 3322164809941225494}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7383413969930734651
 GameObject:
@@ -139,12 +139,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7383413969930734651}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029653306}
-  m_LocalPosition: {x: 0, y: -0.038, z: -0.116}
+  m_LocalPosition: {x: 0, y: -0.107, z: -0.116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7535465167714637458}
   - {fileID: 9054842365771599010}
+  - {fileID: 2073493502183819220}
   m_Father: {fileID: 8728457056885580010}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -181,7 +182,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3322164809941225494}
-  - {fileID: 2073493502183819220}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -197,7 +197,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.13484254, y: 0.34316838, z: 0.46846595}
-  m_Center: {x: 0, y: 0.06740981, z: 0.065970615}
+  m_Center: {x: 0, y: 0, z: 0.065970615}
 --- !u!54 &1194296758638616444
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -228,6 +228,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 27f095887e01f684eb15822a38d10bbd, type: 2}
   pickable: 1
+  pickupSound:
+  - GunCock
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &4862654979342175260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +246,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   semiAutomatic: 1
+  attackType: 1
+  equipSounds:
+  - Teleport
+  - LightSwing
   projectileStartPoint: {fileID: 2073493502183819220}
+  attackEffects:
+  - Energy Spark
+  attackSounds:
+  - LightLaser
+  - FastLaser
 --- !u!1 &8712339933741983788
 GameObject:
   m_ObjectHideFlags: 0

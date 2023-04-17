@@ -3,6 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    [Tooltip("Visual effects to play on impact")]
+    [SerializeField] string[] impactEffects;
+    [Tooltip("Sound effects to play on delete")]
+    [SerializeField] string[] deathSounds;
+
+    EffectsManager effectsManager;
+    AudioManager audioManager;
     Rigidbody rb;
 
     string projectileTag;
@@ -10,6 +17,12 @@ public class Projectile : MonoBehaviour
     float lifeTime, explosionForce;
     bool explodeOnContact;
     float timer;
+
+    void Start()
+    {
+        effectsManager = EffectsManager.Instance;
+        audioManager = AudioManager.Instance;
+    }
 
     void Update()
     {
@@ -31,7 +44,7 @@ public class Projectile : MonoBehaviour
     /// <param name="_lifeTime">The life time of this projectile before exploding</param>
     /// <param name="_onContact">If true, this projectile explode upon contact with another object</param>
     /// <param name="_gravity">If true, this projectile is affected by gravity</param>
-    public void Init(string _tag, float _damage, float _speed, float _explosionRadius, float _explosionForce, float _lifeTime, bool _onContact, bool _gravity)
+    public void Init(string _tag, float _damage, float _speed, float _explosionRadius, float _explosionForce, float _lifeTime, bool _onContact, bool _gravity, Vector3 _angularVel)
     {
         projectileTag = _tag;
         damage = _damage;
@@ -44,6 +57,7 @@ public class Projectile : MonoBehaviour
 
         rb.AddForce(transform.forward * _speed, ForceMode.VelocityChange);
         rb.useGravity = _gravity;
+        rb.AddRelativeTorque(_angularVel);
 
         timer = 0f;
     }
@@ -64,6 +78,15 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void Explode()
     {
+        //Sound
+        foreach (string _audio in deathSounds) {
+            audioManager.PlayClip(_audio, transform.position);
+        }
+        //Impact effects
+        foreach (string _effect in impactEffects) {
+            effectsManager.PlayEffect(_effect, transform.position, transform.rotation);
+        }
+
         //Get nearby objects
         Collider[] _colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider _col in _colliders) {
@@ -83,4 +106,6 @@ public class Projectile : MonoBehaviour
         //Pool projectile
         ObjectPooler.PoolObject(projectileTag, gameObject);
     }
+
+    
 }

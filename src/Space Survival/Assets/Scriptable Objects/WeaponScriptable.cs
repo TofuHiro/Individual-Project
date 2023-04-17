@@ -8,4 +8,6 @@ public abstract class WeaponScriptable : ItemScriptable
     public float maxRange;
     [Tooltip("The rate of attack this weapon attacks")]
     public float attackRate;
+    [Tooltip("Unlimited ammo/unbreaking tool")]
+    public bool unlimited;
 }

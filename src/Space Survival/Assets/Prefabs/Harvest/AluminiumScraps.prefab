@@ -132,6 +132,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: c79b79d1cf5119a478c539a3bd710394, type: 2}
   pickable: 1
+  pickupSound:
+  - PickaxeHit_Low
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &7682582302167134457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Aluminium
@@ -157,6 +162,12 @@ MonoBehaviour:
     resource: {fileID: 4932676293953242723, guid: ffcc17ffcf2b98448bb260a05a8438f5,
       type: 3}
     spawnChance: 50
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-2617860497470849577
 MonoBehaviour:
   m_ObjectHideFlags: 0

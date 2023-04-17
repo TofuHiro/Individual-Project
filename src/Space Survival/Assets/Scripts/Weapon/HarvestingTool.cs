@@ -1,7 +1,9 @@
 using UnityEngine;
+using System.Collections;
 
 public class HarvestingTool : MeleeWeapon
 {
+    [Header("Harvesting")]
     [Tooltip("The level tier of resource this tool can harvest")]
     [SerializeField] int tier;
     [Tooltip("The type of resource this tool can harvest")]
@@ -12,9 +14,9 @@ public class HarvestingTool : MeleeWeapon
     IHarvestableVoxel voxelChunk;
     IHarvestable harvestable;
 
-    protected override void Attack()
+    protected override IEnumerator DelayedAttack()
     {
-        base.Attack();
+        yield return base.DelayedAttack();
         //Apply damage to resource
         if (hit.collider != null) {
             //All object in radius

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776352318715774349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.6118104}
+  m_LocalPosition: {x: 0, y: 0, z: 4.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -163,6 +163,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: d6ede5e1f1599eb48a43c1c31f7beef2, type: 2}
   pickable: 1
+  pickupSound:
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &1700144504317752704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,4 +180,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   semiAutomatic: 1
+  attackType: 0
+  equipSounds:
+  - LightSwing
   projectileStartPoint: {fileID: 3321650698994559264}
+  attackEffects: []
+  attackSounds:
+  - MediumSwing

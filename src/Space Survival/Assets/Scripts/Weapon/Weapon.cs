@@ -3,37 +3,53 @@ using UnityEngine;
 [RequireComponent(typeof(Item))]
 public abstract class Weapon : MonoBehaviour
 {
+    [Tooltip("Whether this weapon is used by enemies")]
+    [SerializeField] protected bool isEnemyWeapon;
     [Tooltip("Weapon will only fire upon each click")]
     [SerializeField] protected bool semiAutomatic;
+    [Tooltip("The attack animation type")]
+    [SerializeField] AttackType attackType;
 
-    Animator animator;
-    Rigidbody rb;
-
+    protected EffectsManager effectsManager;
+    protected AudioManager audioManager;
     protected PlayerWeapons playerHolder;
     Collider[] weaponColliders;//
+    Rigidbody rb;
 
-    protected WeaponScriptable weaponScriptable;
+    public WeaponScriptable WeaponScriptable { get; private set; }
     float baseDamage;
     protected float damage;
     protected float range;
     protected float attackRate, nextTimeToAttack, attackTimer;
-    bool isAttacking, isSecondaryAttacking;
+    protected bool isAttacking, isSecondaryAttacking;
+
+    public virtual WeaponType GetWeaponType()
+    {
+        //Wont be called
+        return WeaponType.Melee;
+    }
 
     protected virtual void Awake()
     {
         //Init weapon stats
-        weaponScriptable = (WeaponScriptable)GetComponent<Item>().ItemScriptableObject;
+        WeaponScriptable = (WeaponScriptable)GetComponent<Item>().ItemScriptableObject;
 
-        baseDamage = weaponScriptable.damage;
+        baseDamage = WeaponScriptable.damage;
         damage = baseDamage;
-        range = weaponScriptable.maxRange;
+        range = WeaponScriptable.maxRange;
 
-        attackRate = weaponScriptable.attackRate;
+        attackRate = WeaponScriptable.attackRate;
         nextTimeToAttack = attackRate;
 
         //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         weaponColliders = GetComponentsInChildren<Collider>();
+    }
+
+    protected virtual void Start()
+    {
+        effectsManager = EffectsManager.Instance;
+        audioManager = AudioManager.Instance;
     }
 
     public void ApplyDamageMultiplier(float _value)
@@ -57,10 +73,15 @@ public abstract class Weapon : MonoBehaviour
     public void SetPrimaryAttack(bool _state)
     {
         //Trigger attack once if semi auto
-        if (_state == true && semiAutomatic)
-            Attack();
-        else
+        if (_state == true && semiAutomatic) {
+            if (attackTimer >= nextTimeToAttack) {
+                Attack();
+                nextTimeToAttack = attackTimer + attackRate;
+            }
+        }
+        else {
             isAttacking = _state;
+        }
     }
 
     /// <summary>
@@ -95,7 +116,7 @@ public abstract class Weapon : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.Euler(Vector3.zero);
 
-        rb.isKinematic = true;
+        rb.isKinematic = true;  
         //Prevent collision with holder
         foreach (Collider _collider in weaponColliders) {
             _collider.enabled = false;
@@ -135,7 +156,11 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Attack()
     {
-        
+        if (playerHolder == null)
+            return;
+
+        //If player's
+        playerHolder.AttackAnim(attackType);
     }
 
     protected virtual void SecondaryAttack()
@@ -150,8 +175,11 @@ public abstract class Weapon : MonoBehaviour
 
     protected void Die()
     {
-        playerHolder.RemoveActiveWeapon();
-        playerHolder.HideWeaponUI();
+        if (playerHolder != null) {
+            playerHolder.RemoveActiveWeapon();
+            playerHolder.HideWeaponUI();
+        }
+
         Destroy(gameObject);
     }
 }

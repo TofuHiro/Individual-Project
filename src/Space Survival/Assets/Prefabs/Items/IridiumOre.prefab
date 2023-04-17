@@ -349,6 +349,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 8cf9cd5e563b3ed4a9bb087380fa746b, type: 2}
   pickable: 1
+  pickupSound:
+  - WoodHit_High
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &4113924040888198179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,13 +368,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   minTier: 2
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Iridium
     resource: {fileID: 3493195524492587466, guid: 33edb4fdb98f2414bb3cde987172c623,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-5456393435154103349
 MonoBehaviour:
   m_ObjectHideFlags: 0

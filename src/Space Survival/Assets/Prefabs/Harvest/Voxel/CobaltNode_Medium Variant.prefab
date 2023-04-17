@@ -74,12 +74,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
         type: 3}
+      propertyPath: harvestType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
+        type: 3}
       propertyPath: textureName
       value: Cobalt
       objectReference: {fileID: 0}
     - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
         type: 3}
       propertyPath: drops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
+        type: 3}
+      propertyPath: harvestEffects.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
@@ -104,6 +114,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7397408563550713962, guid: 5ebc1eb2792ee6c42a35a05d534cbc3a,
         type: 3}
+    - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
+        type: 3}
+      propertyPath: harvestEffects.Array.data[0]
+      value: Cobalt Ore Impact
+      objectReference: {fileID: 0}
     - target: {fileID: 3697267180439469340, guid: 98d2dc0d8bd1c66439c9e1b66e7b4e1d,
         type: 3}
       propertyPath: drops.Array.data[0].spawnChance

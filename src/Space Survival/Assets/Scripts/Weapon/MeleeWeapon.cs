@@ -1,14 +1,30 @@
 using UnityEngine;
+using System.Collections;
 
-public class MeleeWeapon : Weapon
+public class MeleeWeapon : Weapon, IDataPersistance
 {
-    [Tooltip("Transform position where ray starts from. Leave blank for player camera")]
-    [SerializeField] Transform rayStartPoint;
+    [Tooltip("The delay before damaging during an attack")]
+    [SerializeField] float attackDelay = 0f;
     [Tooltip("The radius around the hit point to apply damage around")]
     [SerializeField] protected float hitRadius;
+    [Tooltip("Transform position where ray starts from. For AIs, add seperate object to AI object to bypass animation")]
+    [SerializeField] Transform attackPoint;
+    [Tooltip("Transform position for attack effects")]
+    [SerializeField] Transform attackPointEffects;
+    [Tooltip("Visual effects to play on impact")]
+    [SerializeField] string[] impactEffects;
+    [Tooltip("Visual effects to play on attack")]
+    [SerializeField] string[] attackEffects;
+    [Tooltip("Sound effects to play on harvest")]
+    [SerializeField] string[] impactSounds;
+    [Tooltip("Sound effects to play on attack")]
+    [SerializeField] string[] attackSounds;
 
     public int Durability { get { return durability; } 
         set {
+            if (unbreakable)
+                return;
+
             durability = value;
             UpdateUI();
 
@@ -18,14 +34,21 @@ public class MeleeWeapon : Weapon
         } 
     }
 
+    Rigidbody hitRigidbody;
     protected LayerMask mask;
     protected RaycastHit hit;
     IDamagable damagable;
-    Rigidbody hitRigidbody;
+    Coroutine attackRoutine;
 
     MeleeWeaponScriptable meleeScriptable;
     int maxDurability, durability;
     float knockbackForce;
+    bool unbreakable;
+
+    public override WeaponType GetWeaponType()
+    {
+        return WeaponType.Melee;
+    }
 
     protected override void Awake()
     {
@@ -33,9 +56,17 @@ public class MeleeWeapon : Weapon
         meleeScriptable = (MeleeWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         maxDurability = meleeScriptable.durability;
         knockbackForce = meleeScriptable.knockbackForce;
+        unbreakable = meleeScriptable.unlimited;
 
         durability = maxDurability;
         mask = ~LayerMask.GetMask("Ignore Raycast");
+    }
+
+    void OnDisable()
+    {
+        if (attackRoutine != null) {
+            StopCoroutine(attackRoutine);
+        }
     }
 
     public override void Equip(Transform _parent)
@@ -54,17 +85,41 @@ public class MeleeWeapon : Weapon
     protected override void Attack()
     {
         base.Attack();
+        attackRoutine = StartCoroutine(DelayedAttack());
+    }
+
+    protected virtual IEnumerator DelayedAttack()
+    {
+        //Attack effects
+        foreach (string _effect in attackEffects) {
+            effectsManager.PlayEffect(_effect, attackPointEffects.position, transform.rotation);
+        }
+        //Sound
+        foreach (string _audio in attackSounds) {
+            audioManager.PlayClip(_audio, transform.position);
+        }
 
         //Determine where to attack from
         Transform _transform;
         if (playerHolder != null)
             _transform = Camera.main.transform;
         else
-            _transform = rayStartPoint;
+            _transform = attackPoint;
+
+        yield return new WaitForSeconds(attackDelay);
 
         //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask);
         if (hit.transform != null) {
+            //Impact effects
+            foreach (string _effect in impactEffects) {
+                effectsManager.PlayEffect(_effect, hit.point, transform.rotation);
+            }
+            //Sound
+            foreach (string _audio in impactSounds) {
+                audioManager.PlayClip(_audio, hit.point);
+            }
+
             //All object in radius
             if (hitRadius > 0) {
                 Collider[] _colliders = Physics.OverlapSphere(hit.transform.position, hitRadius, mask);
@@ -138,5 +193,23 @@ public class MeleeWeapon : Weapon
             return;
 
         playerHolder.HideWeaponUI();
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if (isEnemyWeapon)
+            return;
+        //If disable, its in a inventory slot, dont save/load, load in storage instead
+        if (!gameObject.activeSelf)
+            return;
+
+        WeaponData _weaponData = new WeaponData(meleeScriptable.name, transform.position, transform.rotation, durability, gameObject.activeSelf);
+        _data.weapons.Add(_weaponData);
+    }
+
+    public void LoadData(GameData _data)
+    {
+        //Replaced in data manager
+        Destroy(gameObject);
     }
 }

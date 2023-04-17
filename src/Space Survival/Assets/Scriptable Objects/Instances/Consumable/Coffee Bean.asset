@@ -22,3 +22,5 @@ MonoBehaviour:
     value: 25
   - type: 2
     value: 5
+  consumeSounds:
+  - Eat

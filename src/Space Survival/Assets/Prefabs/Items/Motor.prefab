@@ -130,6 +130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: e6b68cdb76c879c4db82eb1e1bd76647, type: 2}
   pickable: 1
+  pickupSound:
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &-5730124446527064983
 MonoBehaviour:
   m_ObjectHideFlags: 0

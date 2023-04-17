@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7429367262628763599}
   - component: {fileID: 7429367262628763592}
+  - component: {fileID: 7692482130046673846}
   m_Layer: 0
   m_Name: Crafting Manager
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7429367262628763593}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -45,11 +46,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 0}
-  armoryRecipeScrollBox: {fileID: 0}
-  manufacturerRecipeScrollBox: {fileID: 0}
-  refineryRecipeScrollBox: {fileID: 0}
-  cookingRecipeScrollBox: {fileID: 0}
-  starterRecipeScrollBox: {fileID: 0}
+  armoryScrollBase: {fileID: 0}
+  armoryBlocksParent: {fileID: 0}
+  manufacturerScrollBase: {fileID: 0}
+  manufacturerBlocksParent: {fileID: 0}
+  smelteryScrollBase: {fileID: 0}
+  smelteryBlocksParent: {fileID: 0}
+  cookingScrollBase: {fileID: 0}
+  cookingBlocksParent: {fileID: 0}
+  starterScrollBase: {fileID: 0}
+  starterBlocksParent: {fileID: 0}
   recipeBlockPrefab: {fileID: 3396054174814908624, guid: 7efc71da0f202034cb0dd148108ca244,
     type: 3}
   recipeSets:
@@ -135,3 +141,20 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4bac1b7e1629cc042b824a3e763bacc8, type: 2}
     - {fileID: 11400000, guid: a877b839a55350b4a9c4cdbb7d70eaad, type: 2}
     - {fileID: 11400000, guid: 86e498752e83d2143b3166dbd04b427b, type: 2}
+  craftSounds:
+  - LightSwing
+--- !u!114 &7692482130046673846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429367262628763593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5574eddd5095a44fb86b8f52910166e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayIcon: {fileID: 0}
+  displayNameText: {fileID: 0}
+  displayText: {fileID: 0}

@@ -17,9 +17,10 @@ MonoBehaviour:
   icon: {fileID: 2800000, guid: 83148bf4be805b042a9c0badc5a82d43, type: 3}
   description: A laser rifle that shoots rays of energy repeatedly
   unique: 1
-  damage: 40
+  damage: 20
   maxRange: 500
   attackRate: 0.15
+  unlimited: 0
   maxAmmo: 200
   clipSize: 20
   knockbackForce: 30

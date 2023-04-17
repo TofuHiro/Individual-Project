@@ -8,6 +8,8 @@ TagManager:
   - Buildable
   - Gravity
   - OxygenGravity
+  - No Build
+  - HUD
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Outline
+  - Ignore Build
   - Item
   - WorldSpaceUI
   - 

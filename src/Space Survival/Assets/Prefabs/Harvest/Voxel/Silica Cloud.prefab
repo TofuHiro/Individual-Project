@@ -125,9 +125,10 @@ MonoBehaviour:
   octaves: 2
   persistance: 1
   minTier: 0
-  harvestType: 2
+  harvestType: 3
   drops:
   - nameTag: Silica
     resource: {fileID: 5170960411009847622, guid: 5eacde1b8b64b774296226e645636cb1,
       type: 3}
     spawnChance: 15
+  harvestEffects: []

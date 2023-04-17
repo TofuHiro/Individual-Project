@@ -118,6 +118,7 @@ MonoBehaviour:
   structureSize: {x: 4, y: 2, z: 2}
   type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &-6794545229087845351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdb08cb8b5ebf4e449e84b82735b4a10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildableTag: Single Bed
   respawnPoint: {fileID: 955765198387187518}
+  setSounds:
+  - ToneBeep
 --- !u!1 &2883156073917459842
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Buildable : MonoBehaviour
+public class Buildable : MonoBehaviour, IDataPersistance
 {
+    public delegate void BuildAction();
+    public BuildAction OnBuild;
+
     public ItemScriptable ItemInfo { get { return itemInfo; } private set { itemInfo = value; } }
 
     [Tooltip("The item scriptable object for this buildable")]
@@ -18,19 +21,47 @@ public class Buildable : MonoBehaviour
     [SerializeField] BuildableType type;
     [Tooltip("The grid size this building will snap to when being placed")]
     [SerializeField] Vector3 gridSize;
+    [Tooltip("The offset of the model's center from the actual game object's center. This is used to detect overlapping")]
+    [SerializeField] Vector3 centerOffset;
 
+    BuildingManager buildingManager;
+
+    Renderer buildingRenderer;
+    Material deletionMaterial;
     Vector3 velocity;
     Vector3 targetPos;
     float smoothTime;
 
+    Material[] tempMats;
+    Collider[] colliders;
+
     void Start()
     {
-        smoothTime = BuildingManager.Instance.GetBuildingSmoothTime();
+        buildingManager = BuildingManager.Instance;
+        buildingRenderer = GetComponentInChildren<Renderer>();
+
+        deletionMaterial = buildingManager.GetDeletionMaterial();
+        smoothTime = buildingManager.GetBuildingSmoothTime();
+
+        tempMats = buildingRenderer.materials;
     }
 
+    /// <summary>
+    /// Returns the structure size of this buildable
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetSize()
     {
         return structureSize;
+    }
+
+    /// <summary>
+    /// Returns the set grid size of this buildable
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetGridSize()
+    {
+        return gridSize;
     }
 
     /// <summary>
@@ -52,6 +83,24 @@ public class Buildable : MonoBehaviour
     }
 
     /// <summary>
+    /// Set the position for this buildable to smooth to
+    /// </summary>
+    /// <param name="_pos"></param>
+    public void SetTargetPos(Vector3 _pos)
+    {
+        targetPos = _pos;
+    }
+
+    /// <summary>
+    /// Returns the center offset of this building
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetCenterOffset()
+    {
+        return centerOffset;
+    }
+
+    /// <summary>
     /// Returns the model game objects of the buildable
     /// </summary>
     /// <returns>Game object of the buildable model</returns>
@@ -69,9 +118,9 @@ public class Buildable : MonoBehaviour
         _pos.x = Mathf.RoundToInt(_pos.x / gridSize.x) * gridSize.x;
         _pos.y = Mathf.RoundToInt(_pos.y / gridSize.y) * gridSize.y;
         _pos.z = Mathf.RoundToInt(_pos.z / gridSize.z) * gridSize.z;
-        
+
         targetPos = _pos;
-        
+
         //movement interpolation
         transform.position = Vector3.SmoothDamp(transform.position, _pos, ref velocity, smoothTime);
     }
@@ -90,7 +139,9 @@ public class Buildable : MonoBehaviour
     /// </summary>
     public void StartBlueprint()
     {
-        foreach (Collider _col in GetComponentsInChildren<Collider>()) {
+        colliders ??= GetComponentsInChildren<Collider>();
+
+        foreach (Collider _col in colliders) {
             _col.enabled = false;
         }
     }
@@ -100,8 +151,41 @@ public class Buildable : MonoBehaviour
     /// </summary>
     public void Build()
     {
-        foreach (Collider _col in GetComponentsInChildren<Collider>()) {
+        colliders ??= GetComponentsInChildren<Collider>();
+
+        foreach (Collider _col in colliders) {
             _col.enabled = true;
         }
+
+        OnBuild?.Invoke();
+    }
+
+    public void HighlightDelete(bool _state)
+    {
+        if (_state == true) {
+            Material[] _mats = new Material[tempMats.Length];
+            for (int i = 0; i < _mats.Length; i++) {
+                _mats[i] = deletionMaterial;
+            }
+            //Highlight object
+            buildingRenderer.materials = _mats;
+        }
+        else {
+            buildingRenderer.materials = tempMats;
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if (itemInfo.unique)
+            return;
+
+        BuildableData _buildableData = new BuildableData(itemInfo.name, transform.position, transform.rotation);
+        _data.buildables.Add(_buildableData);
+    }
+
+    public void LoadData(GameData _data)
+    {
+        //
     }
 }

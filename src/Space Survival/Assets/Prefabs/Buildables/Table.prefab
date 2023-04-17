@@ -112,7 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: 67483f32646ba2d41b6a2d9661610ece, type: 2}
-  modelObject: {fileID: 0}
+  modelObject: {fileID: 7580104070661879184}
   structureSize: {x: 1, y: 1, z: 3}
   type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
+  centerOffset: {x: 0, y: 0, z: 0}

@@ -14,12 +14,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
+      propertyPath: harvestType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
       propertyPath: textureName
       value: Gold
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
@@ -33,6 +43,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4431458226540842843, guid: a1f9a41ec4f2fbd489eaf451fd52b15b,
         type: 3}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.data[0]
+      value: Gold Ore Impact
+      objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.data[0].spawnChance

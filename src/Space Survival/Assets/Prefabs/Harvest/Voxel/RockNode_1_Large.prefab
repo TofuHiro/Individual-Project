@@ -125,9 +125,13 @@ MonoBehaviour:
   octaves: 2
   persistance: 1
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   drops:
   - nameTag: Rock
     resource: {fileID: 4165770277128221718, guid: c16a77ec060db7847891b8e0109a8d63,
       type: 3}
     spawnChance: 10
+  harvestEffects:
+  - Rocks Impact
+  harvestSounds:
+  - RockBreak

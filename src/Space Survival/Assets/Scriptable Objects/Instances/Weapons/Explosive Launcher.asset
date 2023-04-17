@@ -17,18 +17,20 @@ MonoBehaviour:
   icon: {fileID: 2800000, guid: f764123ae4eedaf478a21babc300b274, type: 3}
   description: A launcher that shoots out impact explosives
   unique: 1
-  damage: 50
+  damage: 90
   maxRange: 500
   attackRate: 2
+  unlimited: 0
   maxAmmo: 20
   clipSize: 1
-  reloadTime: 2
+  reloadTime: 1.5
   projectileName: Explosive
   projectile: {fileID: 8426744881590325105, guid: 1854e4d5ed571e14b90d4993d29f022c,
     type: 3}
-  projectileSpeed: 15
+  projectileSpeed: 20
   projectileLifeTime: 10
   explosionRadius: 2
   explosionForce: 400
   explodeOnContact: 1
   useGravity: 0
+  angularVelocity: {x: 300, y: 0, z: 0}

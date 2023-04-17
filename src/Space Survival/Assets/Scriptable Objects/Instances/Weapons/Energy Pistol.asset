@@ -17,9 +17,10 @@ MonoBehaviour:
   icon: {fileID: 2800000, guid: 82cd9d4bb75aab84390f1491457e4cba, type: 3}
   description: A compact pistol that uses energy to shoot high power projectile orbs
   unique: 1
-  damage: 30
+  damage: 35
   maxRange: 500
   attackRate: 0.3
+  unlimited: 0
   maxAmmo: 120
   clipSize: 8
   reloadTime: 1
@@ -32,3 +33,4 @@ MonoBehaviour:
   explosionForce: 20
   explodeOnContact: 1
   useGravity: 0
+  angularVelocity: {x: 0, y: 0, z: 250}

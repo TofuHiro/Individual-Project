@@ -125,5 +125,8 @@ MonoBehaviour:
   octaves: 2
   persistance: 1
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   drops: []
+  harvestEffects: []
+  harvestSounds:
+  - RockBreak

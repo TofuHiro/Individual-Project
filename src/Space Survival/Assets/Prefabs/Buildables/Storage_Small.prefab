@@ -300,6 +300,7 @@ MonoBehaviour:
   structureSize: {x: 1, y: 2, z: 1}
   type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &348932109742910957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +316,7 @@ MonoBehaviour:
   UIGameObject: {fileID: 6237800237167126546}
   slotsParent: {fileID: 6283865862325278261}
   rotateToPlayer: 1
+  storageTag: Small Storage
 --- !u!1 &6196286534518681846
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +534,8 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bcae34c3025e54a4d95c99f3701cb1e9, type: 2}
+  - {fileID: 2100000, guid: 01a361a45c5cc6943b8c3f64df256f64, type: 2}
+  - {fileID: 2100000, guid: 6152f7b84c9502446a6f3f0cd06091eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -615,7 +618,8 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bcae34c3025e54a4d95c99f3701cb1e9, type: 2}
+  - {fileID: 2100000, guid: 01a361a45c5cc6943b8c3f64df256f64, type: 2}
+  - {fileID: 2100000, guid: 6152f7b84c9502446a6f3f0cd06091eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

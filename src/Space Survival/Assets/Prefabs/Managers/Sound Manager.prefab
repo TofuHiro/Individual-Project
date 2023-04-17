@@ -1,0 +1,469 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5977581989129784648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5977581989129784644}
+  - component: {fileID: 5977581989129784651}
+  - component: {fileID: 5977581989129784645}
+  - component: {fileID: 5977581989129784650}
+  m_Layer: 0
+  m_Name: Sound Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &5977581989129784644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977581989129784648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!169 &5977581989129784651
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977581989129784648}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.045020465
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &5977581989129784645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977581989129784648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750028f84fe81154ab985a606a7ad770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourcePrefab: {fileID: 700836180394453015, guid: 927cb17935be1ec4192a8068dd8ea647,
+    type: 3}
+  backGroundMusic: {fileID: 5977581989129784650}
+  audioTypes:
+  - tag: PickaxeHit
+    audios:
+    - audioClip: {fileID: 8300000, guid: 752ecab1630aaed49aa654a3a07eb3d1, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 5397eead12633a0498db77d117893354, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: c0b48cffac3ddb847bfedb51991ec694, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 9f343bed7ea840f42a6903675e1fef25, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 7207d931aa0a5ec46ac8d06538c99526, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 167d4bc3d7e056a47ba420c2a7c0e553, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: PickaxeHit_Low
+    audios:
+    - audioClip: {fileID: 8300000, guid: 752ecab1630aaed49aa654a3a07eb3d1, type: 3}
+      volume: 0.6
+      pitch: 0.6
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 5397eead12633a0498db77d117893354, type: 3}
+      volume: 0.6
+      pitch: 0.6
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: c0b48cffac3ddb847bfedb51991ec694, type: 3}
+      volume: 0.6
+      pitch: 0.6
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 9f343bed7ea840f42a6903675e1fef25, type: 3}
+      volume: 0.6
+      pitch: 0.6
+      range: {x: 0.5, y: 25}
+  - tag: PickaxeHit_High
+    audios:
+    - audioClip: {fileID: 8300000, guid: 752ecab1630aaed49aa654a3a07eb3d1, type: 3}
+      volume: 0.4
+      pitch: 1.4
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 5397eead12633a0498db77d117893354, type: 3}
+      volume: 0.4
+      pitch: 1.4
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: c0b48cffac3ddb847bfedb51991ec694, type: 3}
+      volume: 0.4
+      pitch: 1.4
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 9f343bed7ea840f42a6903675e1fef25, type: 3}
+      volume: 0.4
+      pitch: 1.4
+      range: {x: 0.5, y: 25}
+  - tag: NailGun
+    audios:
+    - audioClip: {fileID: 8300000, guid: 4badc5ae3416dc6488afaf2d21128c61, type: 3}
+      volume: 0.3
+      pitch: 0.8
+      range: {x: 1, y: 25}
+    - audioClip: {fileID: 8300000, guid: 052f2dca81a8f4648ac8fb7b22014a6b, type: 3}
+      volume: 0.5
+      pitch: 0.8
+      range: {x: 1, y: 25}
+  - tag: MetalRing
+    audios:
+    - audioClip: {fileID: 8300000, guid: 7c11c91c3fc2c9d48bf5a00474564ac7, type: 3}
+      volume: 1
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 9fc6dd418751a06409082122dc9afd06, type: 3}
+      volume: 1
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: RockBreak
+    audios:
+    - audioClip: {fileID: 8300000, guid: d6efe47570c7ce542a463b5790b1deea, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: 353e07cc7bd347144ac16daaa43e9c84, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: WoodHit
+    audios:
+    - audioClip: {fileID: 8300000, guid: e0edfb5dd6a9c5c499832e9cfc45e152, type: 3}
+      volume: 1
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: WoodHit_Low
+    audios:
+    - audioClip: {fileID: 8300000, guid: e0edfb5dd6a9c5c499832e9cfc45e152, type: 3}
+      volume: 1
+      pitch: 0.6
+      range: {x: 0.5, y: 25}
+  - tag: WoodHit_High
+    audios:
+    - audioClip: {fileID: 8300000, guid: e0edfb5dd6a9c5c499832e9cfc45e152, type: 3}
+      volume: 0.5
+      pitch: 1.4
+      range: {x: 0.5, y: 25}
+  - tag: Teleport
+    audios:
+    - audioClip: {fileID: 8300000, guid: 46a01ccec6e637c4589b236bab08f4d2, type: 3}
+      volume: 1
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: LightSwing
+    audios:
+    - audioClip: {fileID: 8300000, guid: fd0c7050c3d21c7468df0f5333050c34, type: 3}
+      volume: 1
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: MediumSwing
+    audios:
+    - audioClip: {fileID: 8300000, guid: 70c9263be058c0a4ab40cbaaff1d3a9f, type: 3}
+      volume: 0.5
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: HeavySwing
+    audios:
+    - audioClip: {fileID: 8300000, guid: 2b10795e9c9ffac49b33d10d03e6fcc5, type: 3}
+      volume: 0.8
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: Explosion
+    audios:
+    - audioClip: {fileID: 8300000, guid: 64cf07e9c6538384eb932ad1ca18cab0, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 100}
+  - tag: WaveLaser
+    audios:
+    - audioClip: {fileID: 8300000, guid: 62318360dd9071e4685859675ccbc168, type: 3}
+      volume: 0.7
+      pitch: 1
+      range: {x: 0.5, y: 35}
+  - tag: FastLaser
+    audios:
+    - audioClip: {fileID: 8300000, guid: b1110a0f9b9bb3741ac4c00e561cfa74, type: 3}
+      volume: 0.8
+      pitch: 1
+      range: {x: 0.5, y: 35}
+  - tag: LightLaser
+    audios:
+    - audioClip: {fileID: 8300000, guid: 75e612ac5bce13940a4f89dae67183f4, type: 3}
+      volume: 0.8
+      pitch: 1
+      range: {x: 0.5, y: 35}
+  - tag: MediumLaser
+    audios:
+    - audioClip: {fileID: 8300000, guid: c230467a0992f4043be1b1efeba94dfd, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 35}
+  - tag: GunCock
+    audios:
+    - audioClip: {fileID: 8300000, guid: fc0dbec864b16b64a9a69f316f0d5e5a, type: 3}
+      volume: 0.3
+      pitch: 1.5
+      range: {x: 0.5, y: 25}
+  - tag: ToneBeep
+    audios:
+    - audioClip: {fileID: 8300000, guid: efaa8200a21ea4e47875399f5b26dd5e, type: 3}
+      volume: 0.2
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: Sword
+    audios:
+    - audioClip: {fileID: 8300000, guid: ab7bdfe84583f09459dbf75a866c4327, type: 3}
+      volume: 0.4
+      pitch: 1.3
+      range: {x: 0.5, y: 25}
+  - tag: Eat
+    audios:
+    - audioClip: {fileID: 8300000, guid: e99cc2e719e088441a5352596cb31e23, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: Drink
+    audios:
+    - audioClip: {fileID: 8300000, guid: 80229865e0a4d1949804a4ad75954b51, type: 3}
+      volume: 0.7
+      pitch: 1
+      range: {x: 0.5, y: 25}
+    - audioClip: {fileID: 8300000, guid: f4848481c6c78ea42b21eddd0cea1330, type: 3}
+      volume: 0.7
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: Breathe
+    audios:
+    - audioClip: {fileID: 8300000, guid: 5aa5a50c5b2c54f4694a3432e69f641c, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 25}
+  - tag: MenuOpen
+    audios:
+    - audioClip: {fileID: 8300000, guid: 6a81e1357782d7d4986957de09ed7a09, type: 3}
+      volume: 0.2
+      pitch: 1
+      range: {x: 0.5, y: 15}
+  - tag: MenuClose
+    audios:
+    - audioClip: {fileID: 8300000, guid: c6aed352a38bb744bbaf82a36ffd368d, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 15}
+  - tag: Anvil
+    audios:
+    - audioClip: {fileID: 8300000, guid: fe6fa353453f3eb4eb28b4e959f5cd81, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 15}
+  - tag: Swoosh
+    audios:
+    - audioClip: {fileID: 8300000, guid: a14f92a628ec0d241820e171cb0bd9c7, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 15}
+  - tag: Flames
+    audios:
+    - audioClip: {fileID: 8300000, guid: 95375376a74c8144cb43b59b3144f404, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 15}
+  - tag: RobotAggro
+    audios:
+    - audioClip: {fileID: 8300000, guid: 02e5cc0158095ab46b3416543c216daf, type: 3}
+      volume: 0.5
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: cc69f0284de3d9140a1862510ca00c71, type: 3}
+      volume: 0.5
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: 110588447db403e4eaddbb70991d0c04, type: 3}
+      volume: 0.5
+      pitch: 1
+      range: {x: 0.5, y: 20}
+  - tag: RobotIdle
+    audios:
+    - audioClip: {fileID: 8300000, guid: 1ed744c96c50d4e4cb2efb3fe246b5d7, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: e2e7a6d3c5fb03b4ebc0a8819339d915, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: e4869f5fcd079504ead0ee6462c55161, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: a56b44835b9847245aacfa118faec125, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+  - tag: RobotHurt
+    audios:
+    - audioClip: {fileID: 8300000, guid: b7fa66b1e5b45974a84dbca3447410ea, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: e8ed4f00923850c47aaeacd3ce833381, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: c793b512b248ccd4baf47fc01abed2c3, type: 3}
+      volume: 0.3
+      pitch: 1
+      range: {x: 0.5, y: 20}
+  - tag: RobotDie
+    audios:
+    - audioClip: {fileID: 8300000, guid: 28c3b215595fcc64e9a07991f7d4a150, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+    - audioClip: {fileID: 8300000, guid: e4fa917df39454a43908f8f3ab8bd335, type: 3}
+      volume: 0.4
+      pitch: 1
+      range: {x: 0.5, y: 20}
+  - tag: Meow
+    audios:
+    - audioClip: {fileID: 8300000, guid: 10b6b2c7742d7c041980e3f412809fa3, type: 3}
+      volume: 0.6
+      pitch: 1
+      range: {x: 0.5, y: 20}
+--- !u!82 &5977581989129784650
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977581989129784648}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

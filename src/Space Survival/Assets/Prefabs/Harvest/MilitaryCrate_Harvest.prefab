@@ -112,6 +112,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   minTier: 0
-  harvestType: 1
+  harvestType: 2
   destroyOnHarvest: 0
-  drops: []
+  drops:
+  - nameTag: Cutter Knife
+    resource: {fileID: 1227626741602086202, guid: 8e5f79eca2cc0fe41b26bf15040a99a7,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Energy Pistol
+    resource: {fileID: 8244514072857082448, guid: 28e0aafa1655d684bada53596c06c5b9,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Explosive
+    resource: {fileID: 8426744881590325105, guid: 961e9fd6a2ee29c449843232d5f17aec,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Launcher
+    resource: {fileID: 9070837506329507965, guid: fa2100e2f05152544b0726556e0bf8e2,
+      type: 3}
+    spawnChance: 10
+  - nameTag: Laser Pistol
+    resource: {fileID: 7128859589944132451, guid: 77e77eb15fdd77443948b3ae037d2114,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Laser Rifle
+    resource: {fileID: 5816517377015614195, guid: b6bf2d253dbcd2d4fa66aea8029efcd6,
+      type: 3}
+    spawnChance: 10
+  harvestEffects: []

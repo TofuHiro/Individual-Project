@@ -115,7 +115,7 @@ MonoBehaviour:
   textureName: Ice
   cubeSize: 2
   coreRadius: 0.2
-  falloffDistance: 0.8
+  falloffDistance: 0.9
   voxelPerUnit: 4
   seed: 0
   useRandomSeed: 1
@@ -125,9 +125,13 @@ MonoBehaviour:
   octaves: 3
   persistance: 0.5
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   drops:
   - nameTag: Ice
     resource: {fileID: 6162707530991450481, guid: 7c25568d2dcf3d94a9a0c73c521dca85,
       type: 3}
     spawnChance: 10
+  harvestEffects:
+  - Ice Impact
+  harvestSounds:
+  - RockBreak

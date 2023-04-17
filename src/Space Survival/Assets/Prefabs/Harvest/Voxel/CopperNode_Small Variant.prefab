@@ -9,12 +9,22 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
+      propertyPath: harvestType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
       propertyPath: textureName
       value: Copper
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
@@ -28,6 +38,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1264849388298992582, guid: 399b9dc476921b74182edef0c2d7420c,
         type: 3}
+    - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
+        type: 3}
+      propertyPath: harvestEffects.Array.data[0]
+      value: Copper Ore Impact
+      objectReference: {fileID: 0}
     - target: {fileID: -3062943017532690090, guid: 402864941d5a86549a9951772e4f7ebd,
         type: 3}
       propertyPath: drops.Array.data[0].spawnChance

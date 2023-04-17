@@ -115,8 +115,9 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 2aaeb185413101642a18b8b2682ec5ea, type: 2}
   modelObject: {fileID: 1332003934973803932}
   structureSize: {x: 0, y: 0, z: 0}
-  type: 0
+  type: 1
   gridSize: {x: 4, y: 4, z: 4}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1708373812306908316
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309557678727395862}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +160,7 @@ GameObject:
   - component: {fileID: 4308253954452870553}
   - component: {fileID: 8100526211833427996}
   - component: {fileID: 2476570970827291874}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Hatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +204,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2809526954394397131}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 0.2}
@@ -219,7 +220,7 @@ GameObject:
   - component: {fileID: 1294668655652517427}
   - component: {fileID: 2786017944702898351}
   - component: {fileID: 7352630301099804945}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Hatch (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +264,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6265424959599730024}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 0.2}
@@ -277,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 982133247278966552}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}

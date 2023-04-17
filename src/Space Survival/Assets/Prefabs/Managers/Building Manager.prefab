@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6288751575892254062}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -50,6 +50,7 @@ MonoBehaviour:
   buildableSlotPrefab: {fileID: 1295805453627197612, guid: 161c1bf50cd3f1746a6e9a1e721b5758,
     type: 3}
   ingredientSlotsParent: {fileID: 0}
+  deletionMaterial: {fileID: 2100000, guid: 53d0611abead62541a0de33d76573e5d, type: 2}
   buildingSmoothTime: 0.05
   buildableCatalog:
   - {fileID: 11400000, guid: c118081965505a24ead4b158035f513b, type: 2}
@@ -80,9 +81,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 176ce5dc787f029418a655da00c21686, type: 2}
   - {fileID: 11400000, guid: dd3df622f79b2bf4492db2be53f3e940, type: 2}
   - {fileID: 11400000, guid: d948d4506a9967d42be4e6128aac1304, type: 2}
-  - {fileID: 11400000, guid: 58203ea3616eb2044af9e68164763375, type: 2}
-  - {fileID: 11400000, guid: 0aeb03d5d79522b43acbaefa0e21379b, type: 2}
-  - {fileID: 11400000, guid: 786ce9d07350d484daa3d023edbc2fbe, type: 2}
 --- !u!114 &6288751575892254061
 MonoBehaviour:
   m_ObjectHideFlags: 0

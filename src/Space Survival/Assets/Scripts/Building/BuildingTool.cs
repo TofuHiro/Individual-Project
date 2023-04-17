@@ -2,25 +2,44 @@ using UnityEngine;
 
 public class BuildingTool : Weapon
 {
+    [Tooltip("The position to play attack effects at when building/deleting")] 
+    [SerializeField] Transform attackPoint;
+    [Tooltip("Visual effects to play on build")]
+    [SerializeField] string[] buildEffects;
+    [Tooltip("Visual effects to play on building when built")]
+    [SerializeField] string[] buildImpactEffects;
+    [Tooltip("Visual effects to play on delete")]
+    [SerializeField] string[] deleteEffects;
+    [Tooltip("Visual effects to play on building when deleted")]
+    [SerializeField] string[] deleteImpactEffects;
+    [Tooltip("Sound effects to play on build")]
+    [SerializeField] string[] buildSounds;
+    [Tooltip("Sound effects to play on delete")]
+    [SerializeField] string[] deleteSounds;
+
     BuildingManager buildingManager;
     InterfaceManager interfaceManager;
 
-    Buildable currentBlueprint;
-
+    Buildable currentBlueprint, hoveredBuild;
+    
     //To switch to blueprint layer and back
     int tempLayer;
     bool isBlueprinting, isRemoving;
+    LayerMask mask;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         buildingManager = BuildingManager.Instance;
         interfaceManager = InterfaceManager.Instance;
         semiAutomatic = true;
+        mask = ~0;
     }
 
     public override void Equip(Transform _parent)
     {
         base.Equip(_parent);
+        buildingManager ??= BuildingManager.Instance;
         buildingManager.SetTool(this);
     }
 
@@ -88,12 +107,34 @@ public class BuildingTool : Weapon
     {
         //Check for a surface within range
         RaycastHit _hit;
-        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range);
-        if (_hit.transform != null) {
-            if (_hit.transform.CompareTag("Buildable")) {
-                //Highlight object
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range + 5f, mask, QueryTriggerInteraction.Ignore);
+
+        //If look at another object
+        if (hoveredBuild != null) {
+            if (_hit.transform != hoveredBuild.transform) {
+                //Reapply mats to other object if was looking at one
+                hoveredBuild.HighlightDelete(false);
+                hoveredBuild = null;
+                return;
             }
         }
+
+        //If look at nothing
+        if (_hit.transform == null) { 
+            return;
+        }
+        //Ignore if looking at same object
+        if (hoveredBuild != null)
+            if (_hit.transform == hoveredBuild.transform)
+                return;
+
+        //If look at something that isnt another buildable
+        hoveredBuild = _hit.transform.GetComponent<Buildable>();
+        if (hoveredBuild == null) {
+            return;
+        }
+
+        hoveredBuild.HighlightDelete(true);
     }
 
     protected override void Attack()
@@ -103,9 +144,11 @@ public class BuildingTool : Weapon
         if (isBlueprinting) {
             BuildBlueprint();
         }
-
-        if (isRemoving) {
+        else if (isRemoving) {
             Remove();
+        }
+        else {
+            return;
         }
     }
 
@@ -116,10 +159,22 @@ public class BuildingTool : Weapon
     {
         //Finish transition for real pos
         currentBlueprint.SetPosition(currentBlueprint.GetTargetPos());
-
         //If overlapping
         if (!buildingManager.BuildObject(currentBlueprint))
             return;
+
+        //Sound
+        foreach (string _audio in buildSounds) {
+            audioManager.PlayClip(_audio, transform.position);
+        }
+        //effects
+        foreach (string _effect in buildEffects) {
+            effectsManager.PlayEffect(_effect, attackPoint.position, attackPoint.rotation);
+        }
+        //On buildable effects
+        foreach (string _effect in buildImpactEffects) {
+            effectsManager.PlayEffect(_effect, currentBlueprint.GetTargetPos(), currentBlueprint.transform.rotation);
+        }
 
         //Create instance
         Buildable _newBuildable = ObjectPooler.SpawnObject(
@@ -143,10 +198,35 @@ public class BuildingTool : Weapon
     void Remove()
     {
         RaycastHit _hit;
-        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range);
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hit, range + 5f, mask, QueryTriggerInteraction.Ignore);
         if (_hit.transform != null) {
+            Storage _storage = _hit.transform.GetComponent<Storage>();
             Buildable _buildable = _hit.transform.GetComponentInParent<Buildable>();
+
+            if (_storage != null && _buildable != null) {
+                if (!_storage.IsEmpty) {
+                    //notify?
+                    return;
+                }
+            } 
+
             if (_buildable != null) {
+                //Sound
+                foreach (string _audio in deleteSounds) {
+                    audioManager.PlayClip(_audio, transform.position);
+                }
+                //shoot effects
+                foreach (string _effect in deleteEffects) {
+                    effectsManager.PlayEffect(_effect, attackPoint.position, attackPoint.rotation);
+                }
+                //impact effects
+                foreach (string _effect in deleteImpactEffects) {
+                    effectsManager.PlayEffect(_effect, _hit.point, _buildable.transform.rotation);
+                }
+
+                hoveredBuild.HighlightDelete(false);
+                hoveredBuild = null;
+
                 ObjectPooler.PoolObject(_buildable.ItemInfo.name, _buildable.gameObject);
                 buildingManager.RemoveBuildable(_buildable);
             }
@@ -192,15 +272,23 @@ public class BuildingTool : Weapon
     /// </summary>
     void CancelBuild()
     {
+        buildingManager ??= BuildingManager.Instance;
+
         if (currentBlueprint != null) {
             currentBlueprint.GetObject().layer = tempLayer;
             ObjectPooler.PoolObject(currentBlueprint.ItemInfo.name + "_blueprint", currentBlueprint.gameObject);
             currentBlueprint = null;
         }
 
+        if (hoveredBuild != null) {
+            hoveredBuild.HighlightDelete(false);
+            hoveredBuild = null;
+        } 
+
         tempLayer = 0;
         isBlueprinting = false;
         isRemoving = false;
+        buildingManager.CancelBuild();
     }
 
     /// <summary>

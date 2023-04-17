@@ -1,16 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
-public class RayWeapon : Weapon
+public class RayWeapon : Weapon, IDataPersistance
 {
     [Tooltip("Transform position where ray starts from")]
-    [SerializeField] Transform rayStartPoint;
+    [SerializeField] Transform attackPoint;
+    [Tooltip("Visual effects to play on impact")]
+    [SerializeField] string[] impactEffects;
+    [Tooltip("Visual effects to play on attack")]
+    [SerializeField] string[] attackEffects;
+    [Tooltip("Sound effects to play on attack")]
+    [SerializeField] string[] attackSounds;
 
-    //Everything
     LayerMask mask;
 
     public int CurrentClip { get { return currentClip; }
-        private set {
+        set {
+            if (unlimited)
+                return;
+
             currentClip = value;
             UpdateUI();
 
@@ -22,7 +30,7 @@ public class RayWeapon : Weapon
     int currentClip;
 
     public int CurrentAmmo { get { return currentAmmo; }
-        private set {
+        set {
             currentAmmo = value;
             UpdateUI();
         }
@@ -38,18 +46,26 @@ public class RayWeapon : Weapon
     int clipSize;
     float reloadTime;
     bool isReloading;
+    bool unlimited;
+
+    public override WeaponType GetWeaponType()
+    {
+        return WeaponType.Ray;
+    }
 
     protected override void Awake()
     {
         //Init
         base.Awake();
+        mask = ~LayerMask.GetMask("Ignore Raycast");
         rayScriptable = (RayWeaponScriptable)GetComponent<Item>().ItemScriptableObject;
         knockbackForce = rayScriptable.knockbackForce;
         CurrentAmmo = rayScriptable.maxAmmo;
         CurrentClip = rayScriptable.clipSize;
         clipSize = rayScriptable.clipSize;
         reloadTime = rayScriptable.reloadTime;
-        mask = ~LayerMask.GetMask("Ignore Raycast");
+
+        unlimited = rayScriptable.unlimited;
     }
 
     public override void Equip(Transform _parent)
@@ -75,17 +91,30 @@ public class RayWeapon : Weapon
             return;
 
         base.Attack();
+        //Attack effects
+        foreach (string _effect in attackEffects) {
+            effectsManager.PlayEffect(_effect, attackPoint.position, transform.rotation);
+        }
+        //Sound
+        foreach (string _audio in attackSounds) {
+            audioManager.PlayClip(_audio, transform.position);
+        }
 
         //Determine where to shoot from
         Transform _transform;
         if (playerHolder != null)
             _transform = Camera.main.transform;
         else
-            _transform = rayStartPoint;
+            _transform = attackPoint;
 
         //Shoot ray
         Physics.Raycast(_transform.position, _transform.forward, out hit, range, mask);
         if (hit.transform != null) {
+            //Impact effects
+            foreach (string _effect in impactEffects) {
+                effectsManager.PlayEffect(_effect, hit.point, transform.rotation);
+            }
+
             //Apply damage
             colliderHit = hit.transform.GetComponent<IDamagable>();
             if (colliderHit != null) {
@@ -107,6 +136,7 @@ public class RayWeapon : Weapon
         //
     }
 
+    //AI cant reload
     protected override void Reload()
     {
         if (isReloading)
@@ -122,8 +152,9 @@ public class RayWeapon : Weapon
 
     IEnumerator StartReload()
     {
-        //Start anim
+        playerHolder.StartReload();
         isReloading = true;
+        isAttacking = false;
 
         yield return new WaitForSeconds(reloadTime);
 
@@ -138,6 +169,7 @@ public class RayWeapon : Weapon
             CurrentAmmo = 0;
         }
 
+        playerHolder.EndReload();
         isReloading = false;
     }
 
@@ -158,5 +190,23 @@ public class RayWeapon : Weapon
             return;
 
         playerHolder.HideWeaponUI();
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if (isEnemyWeapon)
+            return;
+        //If disable, its in a inventory slot, dont save/load, load in storage instead
+        if (!gameObject.activeSelf)
+            return;
+
+        WeaponData _weaponData = new WeaponData(rayScriptable.name, transform.position, transform.rotation, currentAmmo, currentClip, gameObject.activeSelf);
+        _data.weapons.Add(_weaponData);
+    }
+
+    public void LoadData(GameData _data)
+    {
+        //Replaced in data manager
+        Destroy(gameObject);
     }
 }

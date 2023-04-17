@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a581f72928ea4f8409ac300736d30392, type: 2}
+  - {fileID: 2100000, guid: 243a91f253c4d8a45a7d0187fc7706f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -233,6 +233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: e92514d6fbed1ef47952e80d17fc8929, type: 2}
   pickable: 1
+  pickupSound:
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &-1710509857036079299
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ MonoBehaviour:
   respawnFood: 100
   enemies: 1
   enemySpawnMultiplier: 0.8
+  enemyHealthMultiplier: 0.8
   enemyDamageMultiplier: 0.8
   buildingRequirements: 1
   craftingRequirements: 1

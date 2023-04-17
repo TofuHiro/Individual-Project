@@ -744,9 +744,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateGeneration: 1
   textureName: Rock
-  cubeSize: 8
-  coreRadius: 0
-  falloffDistance: 4
+  cubeSize: 4
+  coreRadius: 1
+  falloffDistance: 2
   voxelPerUnit: 1
   seed: 0
   useRandomSeed: 1
@@ -758,3 +758,5 @@ MonoBehaviour:
   minTier: 0
   harvestType: 0
   drops: []
+  harvestEffects: []
+  harvestSounds: []

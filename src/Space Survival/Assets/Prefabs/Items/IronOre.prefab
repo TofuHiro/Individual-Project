@@ -180,6 +180,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: a564333700f802243b9e0bd3722d2e4f, type: 2}
   pickable: 1
+  pickupSound:
+  - WoodHit_High
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &2943058024462031322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,13 +199,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 25
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Iron
     resource: {fileID: 2130047146427998318, guid: 7f86949a7f2240f4182695997242947a,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-3441994210497669641
 MonoBehaviour:
   m_ObjectHideFlags: 0

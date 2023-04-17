@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2306923542748177670}
   - component: {fileID: 5622401004424544031}
   - component: {fileID: 256318342856925390}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Hatch (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,8 +25,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955401704309131953}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.20000002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -55,7 +55,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955401704309131953}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.2, z: 2}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 8886269220898311536}
   - component: {fileID: 2176359981590179456}
   - component: {fileID: 3284802832877987899}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Hatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383811161202911264}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 0.2, z: 2}
@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4408195844063918264}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5127041864260929621}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -268,6 +268,7 @@ MonoBehaviour:
   structureSize: {x: 0, y: 0, z: 0}
   type: 0
   gridSize: {x: 4, y: 4, z: 4}
+  centerOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &9111540883761944427
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2177928649542618605}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +292,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9111540883761944427}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

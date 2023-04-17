@@ -125,9 +125,12 @@ MonoBehaviour:
   octaves: 2
   persistance: 0.8
   minTier: 2
-  harvestType: 0
+  harvestType: 1
   drops:
   - nameTag: Energy Cube
     resource: {fileID: 5568309380949239200, guid: 1891786eb2b4da44681a31cb646abecf,
       type: 3}
     spawnChance: 50
+  harvestEffects: []
+  harvestSounds:
+  - RockBreak

@@ -112,6 +112,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   minTier: 0
-  harvestType: 1
+  harvestType: 2
   destroyOnHarvest: 0
-  drops: []
+  drops:
+  - nameTag: Light Pick
+    resource: {fileID: 2371686584787699032, guid: 173af72210243a74cb12b52072ec3534,
+      type: 3}
+    spawnChance: 50
+  - nameTag: Light Net
+    resource: {fileID: 5816822853781259930, guid: 5a636121e8b3f364da6e5884b813f403,
+      type: 3}
+    spawnChance: 40
+  - nameTag: Standard Pick
+    resource: {fileID: 711813537805422058, guid: d2c6110867551474d859bca0570db645,
+      type: 3}
+    spawnChance: 15
+  - nameTag: Heavy Net
+    resource: {fileID: 9133634798671939816, guid: 28de30c0fc514424a947c9a9b702f24a,
+      type: 3}
+    spawnChance: 10
+  - nameTag: Reinforced Pick
+    resource: {fileID: 7000104351236209827, guid: 477ca16460d66e646b8c1a69c47635a8,
+      type: 3}
+    spawnChance: 10
+  - nameTag: Scrap Rifle
+    resource: {fileID: 7116573909254695862, guid: 8df88f362acce5040af5515c07187783,
+      type: 3}
+    spawnChance: 15
+  harvestEffects: []

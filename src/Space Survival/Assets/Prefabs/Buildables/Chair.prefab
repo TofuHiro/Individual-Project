@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 506e3bd169f0dcd4f9e5dbfa13cbf287, type: 3}
+  - {fileID: 2100000, guid: bcae34c3025e54a4d95c99f3701cb1e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,3 +116,4 @@ MonoBehaviour:
   structureSize: {x: 1, y: 1.5, z: 1}
   type: 2
   gridSize: {x: 0.5, y: 0.5, z: 0.5}
+  centerOffset: {x: 0, y: 0, z: 0}

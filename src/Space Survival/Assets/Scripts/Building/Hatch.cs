@@ -8,6 +8,11 @@ public class Hatch : MonoBehaviour, IInteractable
 
     PlayerController player;
    
+    public InteractionType GetInteractionType()
+    {
+        return InteractionType.Door;
+    }
+
     void Start()
     {
         player = PlayerController.Instance;
@@ -15,6 +20,6 @@ public class Hatch : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        player.transform.position = teleportPosition.position;
+        player.SetPlayerPosition(teleportPosition.position);
     }
 }

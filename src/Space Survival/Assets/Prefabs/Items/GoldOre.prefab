@@ -181,6 +181,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 74023faf11f8fed46a3fa8043befb480, type: 2}
   pickable: 1
+  pickupSound:
+  - WoodHit_High
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &8615523387049716097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,13 +200,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 25
   minTier: 2
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Gold
     resource: {fileID: 3945001324234052583, guid: d312464ac9be7f64fa5df4c4a78bc34b,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-8927097728074969624
 MonoBehaviour:
   m_ObjectHideFlags: 0

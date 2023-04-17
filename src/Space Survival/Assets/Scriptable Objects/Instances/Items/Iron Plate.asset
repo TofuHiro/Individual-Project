@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   name: Iron Plate
-  icon: {fileID: 2800000, guid: 6b7031dfdb5fea7458eaeb8eda18c20e, type: 3}
+  icon: {fileID: 2800000, guid: 3cae11253b98a7049be2b37d3e05c1db, type: 3}
   description: A sturdy plate
   unique: 0

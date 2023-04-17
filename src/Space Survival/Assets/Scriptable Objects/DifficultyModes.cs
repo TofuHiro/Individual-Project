@@ -44,6 +44,8 @@ public class DifficultyModes : ScriptableObject
     public bool enemies;
     [Tooltip("The multiplier applied to the number of enemies used")]
     public float enemySpawnMultiplier;
+    [Tooltip("The multiplier applied to enemy's health")]
+    public float enemyHealthMultiplier;
     [Tooltip("The multiplier applied to enemy's attacks")]
     public float enemyDamageMultiplier;
 

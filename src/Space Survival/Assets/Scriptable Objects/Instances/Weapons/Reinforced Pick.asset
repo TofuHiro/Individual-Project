@@ -20,5 +20,6 @@ MonoBehaviour:
   damage: 35
   maxRange: 2
   attackRate: 0.4
-  durability: 150
+  unlimited: 0
+  durability: 200
   knockbackForce: 25

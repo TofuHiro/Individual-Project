@@ -102,7 +102,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &84732454420960062
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -128,6 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea8ee3549ca3a34596c72945e61ee94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffects:
+  - Large Energy Explosion
+  deathSounds:
+  - Explosion
   tier: 2
-  harvestType: 0
+  harvestType: 1
   harvestVoxel: 1

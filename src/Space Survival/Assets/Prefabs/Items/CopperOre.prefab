@@ -97,6 +97,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: b1f81f337249c87498f2609ff55a5553, type: 2}
   pickable: 1
+  pickupSound:
+  - WoodHit_High
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &9208881175784875270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,13 +116,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 25
   minTier: 0
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Copper
     resource: {fileID: 7853523840453921811, guid: 68e63c5a54fb7144da379ba337f80840,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-5645659189070951740
 MonoBehaviour:
   m_ObjectHideFlags: 0

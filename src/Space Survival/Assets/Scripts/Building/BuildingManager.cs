@@ -1,22 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(ItemDisplayUI))]
 
 public class BuildingManager : MonoBehaviour
 {
-    #region Singleton
-    public static BuildingManager Instance;
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
-            Destroy(this);
-        else 
-            Instance = this;
-    }
-    #endregion
+    public static BuildingManager Instance;   
 
-    public static bool UseIngredients { get; set; }
     public static bool IsEnabled { get; private set; }
 
     [Tooltip("The game object holding the building UI")]
@@ -29,6 +20,8 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] Transform ingredientSlotsParent;
 
     [Header("Building Settings")]
+    [Tooltip("The material to switch to when outlining an object to delete")]
+    [SerializeField] Material deletionMaterial;
     [Tooltip("The transition time when a blueprint snaps to another snap point")]
     [SerializeField] float buildingSmoothTime = .05f;
 
@@ -39,6 +32,7 @@ public class BuildingManager : MonoBehaviour
     InterfaceManager interfaceManager;
     PlayerInventory playerInventory;
     BuildingGrid buildingGrid;
+    PromptDisplay promptDisplay;
 
     BuildingTool equippedTool;
     BuildableSlot hoveredSlot;
@@ -46,19 +40,48 @@ public class BuildingManager : MonoBehaviour
     ItemDisplayUI itemDisplay;
     SlotUI[] ingredientSlots;
 
+    bool useIngredients;
+
+    void Awake()
+    {
+        //Singleton init
+        if (Instance != null && Instance != this) {
+            Destroy(Instance);
+        }
+        Instance = this;
+
+        itemDisplay = GetComponent<ItemDisplayUI>();
+        ingredientSlots = ingredientSlotsParent.GetComponentsInChildren<SlotUI>();
+    }
+
     void Start()
     {
         interfaceManager = InterfaceManager.Instance;
         playerInventory = PlayerInventory.Instance;
         buildingGrid = BuildingGrid.Instance;
+        promptDisplay = PromptDisplay.Instance;
+    }
 
-        itemDisplay = GetComponent<ItemDisplayUI>();
-        ingredientSlots = ingredientSlotsParent.GetComponentsInChildren<SlotUI>();
+    void OnDisable()
+    {
+        PlayerController.OnUIClickStarted -= SelectBuildable;
+        IsEnabled = false;
+    }
+
+    void OnDestroy()
+    {
+        PlayerController.OnUIClickStarted -= SelectBuildable;
+        IsEnabled = false;
+    }
+
+    public void InitRecipes(bool _useIngredients)
+    {
+        useIngredients = _useIngredients;
 
         //Create a buildable recipe block for each buildable set in the catalog
         foreach (BuildingRecipe _item in buildableCatalog) {
             BuildableSlot _newSlot = Instantiate(buildableSlotPrefab, blueprintSlotsParents).GetComponent<BuildableSlot>();
-            if (UseIngredients) {
+            if (_useIngredients) {
                 _newSlot.Init(_item.productItem, _item.ingredientItems);
             }
             else {
@@ -83,6 +106,15 @@ public class BuildingManager : MonoBehaviour
     public float GetBuildingSmoothTime()
     {
         return buildingSmoothTime;
+    }
+
+    /// <summary>
+    /// Returns the set material that outlines objects for deletion
+    /// </summary>
+    /// <returns></returns>
+    public Material GetDeletionMaterial()
+    {
+        return deletionMaterial;
     }
 
     /// <summary>
@@ -138,9 +170,26 @@ public class BuildingManager : MonoBehaviour
             return;
 
         if (CheckIngriedients(hoveredSlot.BuildableRecipe.productItem)) {
+            promptDisplay.ShowBuildPrompt();
             equippedTool.SetBlueprint(hoveredSlot.BuildableRecipe.productItem);
             interfaceManager.CloseBuilding();
         }
+    }
+
+    //UI Button
+    /// <summary>
+    /// Sets the current building tool to remove objects
+    /// </summary>
+    public void StartRemoveMode()
+    {
+        promptDisplay.ShowDeletePrompt();
+        equippedTool.StartRemoveMode();
+        interfaceManager.CloseBuilding();
+    }
+
+    public void CancelBuild()
+    {
+        promptDisplay.HideBuildPrompt();
     }
 
     /// <summary>
@@ -150,8 +199,12 @@ public class BuildingManager : MonoBehaviour
     /// <returns>Returns true if the player is able to craft this recipe</returns>
     public bool CheckIngriedients(Buildable _buildable)
     {
-        List<Item> _playerItems = playerInventory.GetItems();
+        if (!useIngredients) {
+            return true;
+        }
+
         List<Item> _ingredients = GetIngredients(_buildable);
+        List<Item> _playerItems = playerInventory.GetItems();
 
         //Array to keep track of all the required items and if they are acquired
         bool[] _acquired = new bool[_ingredients.Count];
@@ -205,7 +258,7 @@ public class BuildingManager : MonoBehaviour
     /// <summary>
     /// Displays the buildable and its info along with all the ingredients required in the UI
     /// </summary>
-    /// <param name="_buildable">The recipe to display</param>
+    /// <param name="_recipe">The recipe to display</param>
     void DisplayBuildable(BuildingRecipe _recipe)
     {
         if (_recipe != null) {
@@ -243,22 +296,22 @@ public class BuildingManager : MonoBehaviour
 
         List<Item> _ingredients = GetIngredients(_buildable);
 
-        //Remove items
-        foreach (Item _item in _ingredients) {
-            playerInventory.RemoveItem(_item);
+        if (useIngredients) {
+            //Remove items
+            foreach (Item _item in _ingredients) {
+                playerInventory.RemoveItem(_item);
+            }
         }
 
         return true;
     }
 
-    //UI Button
-    /// <summary>
-    /// Sets the current building tool to remove objects
-    /// </summary>
-    public void StartRemoveMode()
+    public void LoadObject(Buildable _buildable)
     {
-        equippedTool.StartRemoveMode();
-        interfaceManager.CloseBuilding();
+        buildingGrid ??= BuildingGrid.Instance;
+
+        _buildable.SetTargetPos(_buildable.transform.position);
+        buildingGrid.AddStructure(_buildable);
     }
 
     /// <summary>
@@ -269,14 +322,16 @@ public class BuildingManager : MonoBehaviour
     {
         buildingGrid.RemoveStructure(_buildable);
 
-        //Give items
-        List<Item> _ingredients = GetIngredients(_buildable);
+        if (useIngredients) {
+            //Give items
+            List<Item> _ingredients = GetIngredients(_buildable);
 
-        foreach (Item _item in _ingredients) {
-            GameObject _newObject = ObjectPooler.SpawnObject(_item.ItemScriptableObject.name, _item.gameObject);
-            Item _newItem = _newObject.GetComponent<Item>();
-            ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
-            playerInventory.AddItem(_newItem);
+            foreach (Item _item in _ingredients) {
+                GameObject _newObject = ObjectPooler.SpawnObject(_item.ItemScriptableObject.name, _item.gameObject);
+                Item _newItem = _newObject.GetComponent<Item>();
+                ObjectPooler.PoolObject(_newItem.ItemScriptableObject.name, _newObject);
+                playerInventory.AddItem(_newItem);
+            }
         }
     }
 

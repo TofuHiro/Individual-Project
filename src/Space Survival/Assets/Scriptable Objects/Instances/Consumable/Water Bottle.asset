@@ -20,3 +20,5 @@ MonoBehaviour:
   buffs:
   - type: 3
     value: 40
+  consumeSounds:
+  - Drink

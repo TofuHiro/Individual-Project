@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 9054338063965486860}
   - component: {fileID: 9214727346161566940}
   - component: {fileID: 5274530908618520098}
-  - component: {fileID: 8563206724484711165}
-  - component: {fileID: 6484644446966692102}
   m_Layer: 0
   m_Name: StandardPick
   m_TagString: Untagged
@@ -67,6 +65,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: ca10a27cc1320cd43a3d38f77a9cdcb9, type: 2}
   pickable: 1
+  pickupSound:
+  - MetalRing
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &5274530908618520098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,38 +82,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a1e2542ad69c54b8d8935bae2a6a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemyWeapon: 0
   semiAutomatic: 0
-  rayStartPoint: {fileID: 0}
+  attackType: 4
+  attackDelay: 0.12
   hitRadius: 0.5
+  attackPoint: {fileID: 0}
+  attackPointEffects: {fileID: 4986817670967351400}
+  impactEffects:
+  - Metal Spark
+  attackEffects: []
+  impactSounds:
+  - PickaxeHit
+  attackSounds:
+  - MediumSwing
   tier: 1
-  harvestType: 0
+  harvestType: 1
   harvestVoxel: 1
---- !u!65 &8563206724484711165
-BoxCollider:
+--- !u!1 &850463384657882006
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711813537805422058}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.7344768, y: 26.674553, z: 2.0269842}
-  m_Center: {x: 0, y: 3.4660695, z: 1.1553594}
---- !u!65 &6484644446966692102
-BoxCollider:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4986817670967351400}
+  m_Layer: 0
+  m_Name: Attack Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4986817670967351400
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711813537805422058}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.2703633, y: 2.1553023, z: 23.78621}
-  m_Center: {x: 0, y: 14.698718, z: 0.545575}
+  m_GameObject: {fileID: 850463384657882006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.65, y: 14.06, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4259754384590762930}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8770843321433493780
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +141,7 @@ GameObject:
   - component: {fileID: 4259754384590762930}
   - component: {fileID: 870167758635039112}
   - component: {fileID: 5625951089444088591}
+  - component: {fileID: 1424196861463390805}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -136,14 +156,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8770843321433493780}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.000011047175, y: 0, z: -0.02}
+  m_LocalRotation: {x: -0.24184473, y: -0.66446304, z: -0.24184473, w: 0.66446304}
+  m_LocalPosition: {x: -4.4149084, y: -6.3529944, z: 0.71000004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4986817670967351400}
   m_Father: {fileID: 192262839594162000}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: -40, y: -90, z: 0}
 --- !u!33 &870167758635039112
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -195,3 +216,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1424196861463390805
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770843321433493780}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7387706064836869012, guid: e11316bd2e6876a409138d8fb8e1fb54, type: 3}

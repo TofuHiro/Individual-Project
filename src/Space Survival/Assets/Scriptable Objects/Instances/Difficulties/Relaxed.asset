@@ -30,6 +30,7 @@ MonoBehaviour:
   respawnFood: 100
   enemies: 0
   enemySpawnMultiplier: 0
+  enemyHealthMultiplier: 0
   enemyDamageMultiplier: 0
   buildingRequirements: 0
   craftingRequirements: 0

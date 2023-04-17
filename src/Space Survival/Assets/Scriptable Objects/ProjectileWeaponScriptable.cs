@@ -25,4 +25,6 @@ public class ProjectileWeaponScriptable : WeaponScriptable
     public bool explodeOnContact;
     [Tooltip("If true, the projectile will be affected by gravity")]
     public bool useGravity;
+    [Tooltip("The angular velocity applied to the projectile")]
+    public Vector3 angularVelocity;
 }

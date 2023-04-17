@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5778253004899938552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7014117949413367354}
+  - component: {fileID: 20808951006117472}
+  m_Layer: 0
+  m_Name: Effects Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &7014117949413367354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5778253004899938552}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &20808951006117472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5778253004899938552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e60733cbb266c448bc68b110be10335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - tag: Energy Spark
+    effect: {fileID: 8657010630320498200, guid: a991e03c136db504a90151f39ead5ba4,
+      type: 3}
+  - tag: Metal Spark
+    effect: {fileID: 8657010630320498200, guid: 2e108580cd4dbf147ad58a95aa7a5186,
+      type: 3}
+  - tag: Rocks Impact
+    effect: {fileID: 7509628844919129452, guid: 5c9a3987c1be9684694caaeea2cbdaae,
+      type: 3}
+  - tag: Cobalt Ore Impact
+    effect: {fileID: 7509628844919129452, guid: 6076ee051b29d27419571da1fb8f243a,
+      type: 3}
+  - tag: Copper Ore Impact
+    effect: {fileID: 7509628844919129452, guid: 68e1469dca63f8b449904b868a35bc2b,
+      type: 3}
+  - tag: Gold Ore Impact
+    effect: {fileID: 7509628844919129452, guid: dd8371b804957fb48863df19ddb51512,
+      type: 3}
+  - tag: Ice Impact
+    effect: {fileID: 7509628844919129452, guid: 31394dee4e52f7a498ad2380c362d224,
+      type: 3}
+  - tag: Iridium Ore Impact
+    effect: {fileID: 7509628844919129452, guid: 59f15876bc7afba4280816967f5d46d9,
+      type: 3}
+  - tag: Iron Ore Impact
+    effect: {fileID: 7509628844919129452, guid: 3e37394381b700d499b70aa46fdb3662,
+      type: 3}
+  - tag: Small Energy Explosion
+    effect: {fileID: 6824474395830538119, guid: 5ff8a45ac9feeb242acb9f87d0e5d02e,
+      type: 3}
+  - tag: Large Energy Explosion
+    effect: {fileID: 6824474395830538119, guid: deea75335c478e44eb17eda54938381c,
+      type: 3}
+  - tag: Laser
+    effect: {fileID: 29355998620587652, guid: cc59fd9138786ed49b93acdf0bf3cf2e, type: 3}

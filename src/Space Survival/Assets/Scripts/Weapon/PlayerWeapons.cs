@@ -10,11 +10,9 @@ public class PlayerWeapons : MonoBehaviour
     {
         //Singleton init
         if (Instance != null && Instance != this) {
-            Destroy(this);
+            Destroy(Instance);
         }
-        else {
-            Instance = this;
-        }
+        Instance = this;
     }
     #endregion
 
@@ -34,9 +32,28 @@ public class PlayerWeapons : MonoBehaviour
 
     [Tooltip("Parent holding weapon inventory slots in the inventory")]
     [SerializeField] Transform weaponSlotsTransform;
-    [Tooltip("The transform of the player's hand")]
-    [SerializeField] Transform handTransform;
+    [Tooltip("The hand transform holding weapons")]
+    [SerializeField] Transform weaponHand;
+    [Tooltip("The hand transform to control swaying")]
+    [SerializeField] Transform handSway;
+    [Tooltip("The hand transform with the animator")]
+    [SerializeField] Animator handAnimator;
+    [Tooltip("The head transform with the animator")]
+    [SerializeField] Animator headAnimator;
+    [Tooltip("Sounds to play when switching weapons")]
+    [SerializeField] string[] switchSounds;
 
+    [Header("Weapon Sway")]
+    [Tooltip("The speed of which the item sways towards the swaying direction")]
+    [SerializeField] float swayMultiplier = 0.01f;
+    [Tooltip("The maximum offset the item can sway to")]
+    [SerializeField] float maxSway = 0.08f;
+    [Tooltip("The smoothness of the item when moving towards the swaying direction")]
+    [SerializeField] float swaySmoothness = 4f;
+    float mouseX, mouseY;
+
+    AudioManager audioManager;
+    PlayerController playerInputs;
     HotbarUI hotbarUI;
     WeaponUI weaponUI;
     Weapon currentWeapon;
@@ -46,6 +63,8 @@ public class PlayerWeapons : MonoBehaviour
 
     void Start()
     {
+        audioManager = AudioManager.Instance;
+        playerInputs = PlayerController.Instance;
         hotbarUI = GetComponent<HotbarUI>();
         weaponUI = GetComponent<WeaponUI>();
         weaponSlots = weaponSlotsTransform.GetComponentsInChildren<WeaponSlot>();
@@ -63,6 +82,7 @@ public class PlayerWeapons : MonoBehaviour
         PlayerController.OnStartSecondaryAttack += StartSecondaryAttacking;
         PlayerController.OnStopSecondaryAttack += StopSecondaryAttacking;
         PlayerController.OnReload += Reload;
+        PlayerController.OnInventoryToggle += StopPrimaryAttacking;
     }
 
     void OnDisable()
@@ -76,6 +96,78 @@ public class PlayerWeapons : MonoBehaviour
         PlayerController.OnStartSecondaryAttack -= StartSecondaryAttacking;
         PlayerController.OnStopSecondaryAttack -= StopSecondaryAttacking;
         PlayerController.OnReload -= Reload;
+        PlayerController.OnInventoryToggle -= StopPrimaryAttacking;
+    }
+
+    void OnDestroy()
+    {
+        PlayerController.OnScroll -= ScrollHotbar;
+        PlayerController.OnSwitchTo -= SwitchHotbar;
+        PlayerInventory.OnItemChange -= CheckActiveHotbar;
+
+        PlayerController.OnStartPrimaryAttack -= StartPrimaryAttacking;
+        PlayerController.OnStopPrimaryAttack -= StopPrimaryAttacking;
+        PlayerController.OnStartSecondaryAttack -= StartSecondaryAttacking;
+        PlayerController.OnStopSecondaryAttack -= StopSecondaryAttacking;
+        PlayerController.OnReload -= Reload;
+        PlayerController.OnInventoryToggle -= StopPrimaryAttacking;
+    }
+
+    void Update()
+    {
+        WeaponSway();
+    }
+
+    void WeaponSway()
+    {
+        Vector2 _mouseInputs = playerInputs.GetMouseInputs() * swayMultiplier;
+        mouseX = -_mouseInputs.x * swayMultiplier;
+        mouseY = -_mouseInputs.y * swayMultiplier;
+
+        //Limits offsets
+        mouseX = Mathf.Clamp(mouseX, -maxSway, maxSway);
+        mouseY = Mathf.Clamp(mouseY, -maxSway, maxSway);
+
+        handSway.localPosition = Vector3.Lerp(handSway.transform.localPosition, new Vector3(mouseX, mouseY, 0f), Time.deltaTime * swaySmoothness);
+    }
+
+    public void AttackAnim(AttackType _type)
+    {
+        switch (_type) {
+            case AttackType.LightGun:
+                handAnimator.SetTrigger("Light Gun");
+                headAnimator.SetTrigger("Light");
+                break;
+            case AttackType.MediumGun:
+                handAnimator.SetTrigger("Medium Gun");
+                headAnimator.SetTrigger("Medium");
+                break;
+            case AttackType.HeavyGun:
+                handAnimator.SetTrigger("Heavy Gun");
+                headAnimator.SetTrigger("Heavy");
+                break;
+            case AttackType.Swing:
+                handAnimator.SetTrigger("Swing");
+                headAnimator.SetTrigger("Medium");
+                break;
+            case AttackType.Stab:
+                handAnimator.SetTrigger("Stab");
+                headAnimator.SetTrigger("Light");
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public void StartReload()
+    {
+        handAnimator.SetBool("Reloading", true);
+    }
+
+    public void EndReload()
+    {
+        handAnimator.SetBool("Reloading", false);
     }
 
     /// <summary>
@@ -117,20 +209,6 @@ public class PlayerWeapons : MonoBehaviour
     }
 
     /// <summary>
-    /// Hide and removes the currently held weapon from the player
-    /// </summary>
-    public void DropWeapon()
-    {
-        if (currentWeapon == null)
-            return;
-
-        currentWeapon.Holster();
-        currentWeapon.SetHolder(null);
-        currentWeapon.gameObject.SetActive(true);
-        currentWeapon = null;
-    }
-
-    /// <summary>
     /// Scrolls up or down the hotbar depending on a value
     /// </summary>
     /// <param name="_dir">1D Vector direction to scroll up or down</param>
@@ -150,12 +228,25 @@ public class PlayerWeapons : MonoBehaviour
         ChangeWeapon(hotbar[ActiveHotbar]);
     }
 
+    public void Holster()
+    {
+        ChangeWeapon(null);
+    }
+
     /// <summary>
     /// Equip a given weapon, displaying it on the player 
     /// </summary>
     /// <param name="_newWeapon">The weapon item scriptable object to equip</param>
     void ChangeWeapon(Item _newWeapon)
     {
+        EndReload();
+
+        if (_newWeapon != null && currentWeapon != _newWeapon.GetComponent<Weapon>()) {
+            foreach (string _sound in switchSounds) {
+                audioManager.PlayClip(_sound, false);
+            }
+        }
+
         //If currently holding weapon before switching, holster it
         if (currentWeapon != null) {
             currentWeapon.Holster();
@@ -168,10 +259,10 @@ public class PlayerWeapons : MonoBehaviour
         if (_newWeapon != null) {
             currentWeapon = _newWeapon.GetComponent<Weapon>();
             currentWeapon.SetHolder(this);
-            currentWeapon.Equip(handTransform);
+            currentWeapon.Equip(weaponHand);
             currentWeapon.gameObject.SetActive(true);
         }
-        
+
         hotbarUI.UpdateSelectorPosition(ActiveHotbar);
     }
 
@@ -185,12 +276,13 @@ public class PlayerWeapons : MonoBehaviour
 
     void StartPrimaryAttacking()
     {
-        if (currentWeapon != null && !PlayerInventory.IsEnabled)
+        if (currentWeapon != null && !PlayerInventory.IsEnabled) {
             currentWeapon.SetPrimaryAttack(true);
+        }
     }
     void StopPrimaryAttacking()
     {
-        if (currentWeapon != null && !PlayerInventory.IsEnabled)
+        if (currentWeapon != null)
             currentWeapon.SetPrimaryAttack(false);
     }
     void StartSecondaryAttacking()
@@ -200,7 +292,7 @@ public class PlayerWeapons : MonoBehaviour
     }
     void StopSecondaryAttacking()
     {
-        if (currentWeapon != null && !PlayerInventory.IsEnabled)
+        if (currentWeapon != null)
             currentWeapon.SetSecondaryAttack(false);
     }
     void Reload()
@@ -237,5 +329,21 @@ public class PlayerWeapons : MonoBehaviour
         weaponSlots[ActiveHotbar].ClearItem();
         hotbar[ActiveHotbar] = null;
         hotbarUI.UpdateUI(hotbar);
+        EndReload();
+    }
+
+    /// <summary>
+    /// Drops the currently held weapon from the player
+    /// </summary>
+    public void DropWeapon()
+    {
+        if (currentWeapon == null)
+            return;
+
+        currentWeapon.Holster();
+        currentWeapon.SetHolder(null);
+        currentWeapon.gameObject.SetActive(true);
+        currentWeapon = null;
+        EndReload();
     }
 }

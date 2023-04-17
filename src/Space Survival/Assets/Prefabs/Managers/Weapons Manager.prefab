@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4879045795150941433}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -47,7 +47,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSlotsTransform: {fileID: 0}
-  handTransform: {fileID: 0}
+  weaponHand: {fileID: 0}
+  handSway: {fileID: 0}
+  handAnimator: {fileID: 0}
+  headAnimator: {fileID: 0}
+  switchSounds:
+  - LightSwing
+  swayMultiplier: 0.1
+  maxSway: 0.08
+  swaySmoothness: 4
 --- !u!114 &4879045795150941438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,6 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339d166b898d84a468828c7d213fd5fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoInfo: {fileID: 0}
   clip: {fileID: 0}
   ammo: {fileID: 0}
-  divider: {fileID: 0}
+  durablityGO: {fileID: 0}
+  durability: {fileID: 0}

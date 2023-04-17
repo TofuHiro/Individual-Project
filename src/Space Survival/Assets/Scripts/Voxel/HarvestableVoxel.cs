@@ -11,6 +11,30 @@ public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
     [SerializeField] HarvestTypes harvestType;
     [Tooltip("Array of item to drop with specified spawn rates")]
     [SerializeField] ObjectChance[] drops;
+    [Tooltip("Visual effects to play on harvest")]
+    [SerializeField] string[] harvestEffects;
+    [Tooltip("Sound effects to play on harvest. To use a random varient, input just the tag without the number")]
+    [SerializeField] string[] harvestSounds;
+
+    EffectsManager effectsManager;
+    AudioManager audioManager;
+
+    protected override void Start()
+    {
+        base.Start();
+        effectsManager = EffectsManager.Instance;
+        audioManager = AudioManager.Instance;
+    }
+
+    public HarvestTypes GetHarvestType()
+    {
+        return harvestType;
+    }
+
+    public int GetMinTier()
+    {
+        return minTier;
+    }
 
     /// <summary>
     /// Harvests voxels within a radius around a point
@@ -23,6 +47,15 @@ public class HarvestableVoxel : VoxelClump, IHarvestableVoxel
     {
         if (_toolTier < minTier || _toolType != harvestType)
             return;
+
+        //Harvest effects
+        foreach (string _effect in harvestEffects) {
+            effectsManager.PlayEffect(_effect, _worldSpacePos, transform.rotation);
+        }
+        //Sound
+        foreach (string _audio in harvestSounds) {
+            audioManager.PlayClip(_audio, _worldSpacePos);
+        }
 
         if (_radius > 0) {
             List<Vector3> _voxels = GetVoxelsInRadius(_worldSpacePos, _radius);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2746416087268351149}
   - component: {fileID: 2746416087268351148}
+  - component: {fileID: 6093004812165775450}
   m_Layer: 0
   m_Name: Interaction Manager
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2746416087268351147}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -46,3 +47,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 0}
   interactRange: 2.5
+--- !u!114 &6093004812165775450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2746416087268351147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20586e73fa072342936e7361de10285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionIcon: {fileID: 0}
+  text: {fileID: 0}
+  pickupIcon: {fileID: 2800000, guid: b5e754775bced064ca0daba0847cf789, type: 3}
+  pickupPrompt: Pick Up Item
+  craftingIcon: {fileID: 2800000, guid: 86d79caca856c604397b85cbd7f1ed0d, type: 3}
+  craftingPrompt: Open Crafting Station
+  doorIcon: {fileID: 2800000, guid: 8de70423b7235b64fa0c1ae2ffa52a5e, type: 3}
+  doorPrompt: Enter Hatch
+  storageIcon: {fileID: 2800000, guid: 6fdae3ca6cb35eb459fac16149ad59e7, type: 3}
+  storagePrompt: Open Storage
+  setRespawnIcon: {fileID: 2800000, guid: b5e754775bced064ca0daba0847cf789, type: 3}
+  setRespawnPrompt: Set Respawn Point
+  harvestIcon: {fileID: 0}
+  miningTier1: {fileID: 2800000, guid: 24cb39d21cc178c44815306b72357dd7, type: 3}
+  miningTier2: {fileID: 2800000, guid: bce67f73aa177ae49b4880fa25654b89, type: 3}
+  miningTier3: {fileID: 2800000, guid: 7b5869fb555f6f74a8cc4aa1cb711421, type: 3}
+  cutters: {fileID: 2800000, guid: 4f21072ecb4ede74f94767fd54f0ecb7, type: 3}
+  collecting: {fileID: 2800000, guid: 5034bbe08b72cc34890078f4ee40e68a, type: 3}
+  anyHarvest: {fileID: 2800000, guid: 96ecfa2c286323a48b7c7d0306592942, type: 3}

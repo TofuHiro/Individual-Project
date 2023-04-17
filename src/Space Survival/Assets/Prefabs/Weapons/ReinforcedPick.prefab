@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1511307067525308933}
   - component: {fileID: 5584202772907097926}
   - component: {fileID: 2163369884509671153}
+  - component: {fileID: 1773345763460268858}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -25,14 +26,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114324161843562168}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.24184473, y: 0.66446304, z: -0.24184473, w: 0.66446304}
+  m_LocalPosition: {x: -5.07, y: -6.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4963923782607313962}
   m_Father: {fileID: 7669222784084076057}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 90, z: 0}
 --- !u!33 &5584202772907097926
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -85,6 +87,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1773345763460268858
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114324161843562168}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2534964839176971238, guid: 9f3c209982250264fb83399bd46eb6ea, type: 3}
 --- !u!1 &7000104351236209827
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,8 +113,6 @@ GameObject:
   - component: {fileID: 7030815057067310456}
   - component: {fileID: 3489918083309602889}
   - component: {fileID: 2742612994588855195}
-  - component: {fileID: 1606510104589819129}
-  - component: {fileID: 1430783454929781729}
   m_Layer: 0
   m_Name: ReinforcedPick
   m_TagString: Untagged
@@ -152,6 +166,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 3536476b1c0625e4982a55b6e7447946, type: 2}
   pickable: 1
+  pickupSound:
+  - MetalRing
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &2742612994588855195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,35 +183,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a1e2542ad69c54b8d8935bae2a6a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemyWeapon: 0
   semiAutomatic: 0
-  rayStartPoint: {fileID: 0}
+  attackType: 4
+  attackDelay: 0.12
   hitRadius: 0.5
+  attackPoint: {fileID: 0}
+  attackPointEffects: {fileID: 4963923782607313962}
+  impactEffects:
+  - Energy Spark
+  - Metal Spark
+  attackEffects: []
+  impactSounds:
+  - PickaxeHit
+  attackSounds:
+  - MediumSwing
   tier: 2
-  harvestType: 0
+  harvestType: 1
   harvestVoxel: 1
---- !u!65 &1606510104589819129
-BoxCollider:
+--- !u!1 &8913015837790366831
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7000104351236209827}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.0664916, y: 25.888899, z: 2.003523}
-  m_Center: {x: 0, y: 4.2985373, z: -0.026408486}
---- !u!65 &1430783454929781729
-BoxCollider:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4963923782607313962}
+  m_Layer: 0
+  m_Name: Attack Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4963923782607313962
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7000104351236209827}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.6663933, y: 4.0851765, z: 27.302866}
-  m_Center: {x: 0, y: 14.694009, z: 0.9507014}
+  m_GameObject: {fileID: 8913015837790366831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.71, y: 14.09, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1511307067525308933}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

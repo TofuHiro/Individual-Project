@@ -22,8 +22,8 @@ public class BuildingGrid : MonoBehaviour
 
     void Start()
     {
-        systems = new List<StructureSystem>();
-        mask = LayerMask.GetMask("Ignore Raycast");
+        systems ??= new List<StructureSystem>();
+        mask = ~LayerMask.GetMask("Ignore Raycast");
     }
 
     public int GetGridUnit()
@@ -171,6 +171,9 @@ public class BuildingGrid : MonoBehaviour
     /// <returns>Returns true if the structure is not overlapping another</returns>
     public bool AddStructure(Buildable _buildable)
     {
+        if (CheckNoBuildZone(_buildable))
+            return false;
+
         switch (_buildable.GetBuildableType()) {
             case BuildableType.Floor:
                 return AddFloor(_buildable.GetTargetPos());
@@ -180,18 +183,36 @@ public class BuildingGrid : MonoBehaviour
 
             case BuildableType.Misc:
                 return Physics.OverlapBox(
-                    //Center of actual model object
-                    new Vector3(_buildable.transform.position.x, _buildable.GetSize().y/2f, _buildable.transform.position.z),
-                    _buildable.GetSize() / 2.05f,   //Slightly smaller to avoid edge detection
+                    //Center
+                    new Vector3(_buildable.GetTargetPos().x, _buildable.GetTargetPos().y + _buildable.GetSize().y / 2f, _buildable.GetTargetPos().z) + _buildable.GetCenterOffset(),
+                    //Slightly smaller to avoid edge detection
+                    _buildable.GetSize() / 2.1f,
                     _buildable.transform.rotation,
-                    mask,                           //All layers
-                    QueryTriggerInteraction.Ignore) //Ignore trigger colliders
-                    .Length == 0;                   //Check for overlapping collider, true if none
+                    //Check for overlapping collider, true if none
+                    mask).Length == 0;
             default:
                 return true;
         }
     }
 
+    /// <summary>
+    /// Returns true if placing in a no build zone
+    /// </summary>
+    /// <param name="_buildable"></param>
+    /// <returns></returns>
+    bool CheckNoBuildZone(Buildable _buildable)
+    {
+        Vector3 _pos = new Vector3(_buildable.GetTargetPos().x, _buildable.GetTargetPos().y + _buildable.GetSize().y / 2f, _buildable.GetTargetPos().z) + _buildable.GetCenterOffset();
+        Collider[] _colliders = Physics.OverlapBox(_pos, Vector3.one / 2f, Quaternion.identity);
+
+        foreach (Collider _collider in _colliders) {
+            if (_collider.CompareTag("No Build"))
+                return true;
+        }
+
+        return false;
+    }
+        
     /// <summary>
     /// Removes a given structure from the grid
     /// </summary>
@@ -237,7 +258,7 @@ public class BuildingGrid : MonoBehaviour
         int _splitPoints = _system.RemoveFloor(_worldSpacePos);
 
         //Remove system as nothing exists
-        if (_splitPoints == 0) {
+        if (_splitPoints == 0 && !_system.CheckPosForStructure(_worldSpacePos)) {
             DeleteSystem(_system);
         }
         //Impossible to split
@@ -277,7 +298,7 @@ public class BuildingGrid : MonoBehaviour
     {
         if (CheckOverlapEdge(_worldSpacePos, _edge))
             return false;
-
+        
         StructureSystem _system = JoinSystem(_worldSpacePos);
         _system.AddEdge(_worldSpacePos, _edge);
         _system.Seal();
@@ -295,7 +316,7 @@ public class BuildingGrid : MonoBehaviour
         int _splitPoints = _system.RemoveEdge(_worldSpacePos, _edge);
 
         //Remove system as nothing exists
-        if (_splitPoints == 0) {
+        if (_splitPoints == 0 && !_system.CheckPosForStructure(_worldSpacePos)) {
             DeleteSystem(_system);
         }
         //Impossible to split

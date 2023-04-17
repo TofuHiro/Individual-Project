@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Item : MonoBehaviour, IPickable
+public class Item : MonoBehaviour, IPickable, IDataPersistance
 {
     public ItemScriptable ItemScriptableObject { get { return item; } set { item = value; } }
 
@@ -9,6 +9,10 @@ public class Item : MonoBehaviour, IPickable
     [SerializeField] ItemScriptable item;
     [Tooltip("Whether this item can be picked up by the player or not")]
     [SerializeField] bool pickable = true;
+    [Tooltip("Sounds played on pickup")]
+    [SerializeField] string[] pickupSound;
+    [Tooltip("Sounds played on drop")]
+    [SerializeField] string[] dropSound;
 
     public bool Pickable { get { return pickable; } set { pickable = value; } }
 
@@ -16,20 +20,19 @@ public class Item : MonoBehaviour, IPickable
     PlayerInventory inventory;
     PlayerController player;
     Rigidbody rigidBody;
+    AudioManager audioManager;
 
-    //For object pool instantiation, start is not called (disabled upon instantiation)
-    void Awake()
+    void InitRef()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
+        audioManager ??= AudioManager.Instance;
         rigidBody ??= GetComponent<Rigidbody>();
     }
 
-    void Start()
+    public InteractionType GetInteractionType()
     {
-        inventory ??= PlayerInventory.Instance;
-        player ??= PlayerController.Instance;
-        rigidBody ??= GetComponent<Rigidbody>();
+        return InteractionType.Pickup;
     }
 
     /// <summary>
@@ -37,12 +40,19 @@ public class Item : MonoBehaviour, IPickable
     /// </summary>
     public void Interact()
     {
+        InitRef();
+
         if (!Pickable) 
             return;
 
-        //Pick up
-        bool _success = inventory.AddItem(this);
-        if (_success) {
+        if (!inventory.IsFull) {
+            inventory.AddItem(this);
+
+            //Sound
+            foreach (string _audio in pickupSound) {
+                audioManager.PlayClip(_audio, transform.position);
+            }
+
             if (item.unique)
                 gameObject.SetActive(false);
             else
@@ -55,15 +65,16 @@ public class Item : MonoBehaviour, IPickable
     /// </summary>
     public void Drop()
     {
-        Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 2f) + (player.transform.up);
-        if (item.unique) {
-            gameObject.SetActive(true);
-            transform.position = _position;
-            rigidBody.isKinematic = false;
-        }
-        else {
-            rigidBody = ObjectPooler.SpawnObject(item.name, gameObject, _position, transform.rotation).GetComponent<Rigidbody>();
-            rigidBody.isKinematic = false;
+        InitRef();
+
+        Vector3 _position = player.GetPlayerPosition() + (player.GetOrientation().forward * 1.5f) + (player.transform.up);
+        Vector3 _offset = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        transform.position = _position + _offset;
+        rigidBody.isKinematic = false;
+
+        //Sound
+        foreach (string _audio in dropSound) {
+            audioManager.PlayClip(_audio, transform.position);
         }
     }
 
@@ -74,5 +85,19 @@ public class Item : MonoBehaviour, IPickable
     public ItemType GetItemType()
     {
         return ItemScriptableObject.type;
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        if (item.unique)
+            return;
+
+        ItemData _item = new ItemData(item.name, transform.position, transform.rotation, gameObject.activeSelf);
+        _data.items.Add(_item);
+    }
+
+    public void LoadData(GameData _data)
+    {
+        Destroy(gameObject);
     }
 }

@@ -22,3 +22,5 @@ MonoBehaviour:
     value: 5
   - type: 3
     value: 35
+  consumeSounds:
+  - Drink

@@ -263,6 +263,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 22af84832413d084d97bf67a9ffbc632, type: 2}
   pickable: 1
+  pickupSound:
+  - WoodHit_High
+  - LightSwing
+  dropSound:
+  - LightSwing
 --- !u!114 &-4587916462549656353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,13 +282,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 25
   minTier: 1
-  harvestType: 0
+  harvestType: 1
   destroyOnHarvest: 1
   drops:
   - nameTag: Cobalt
     resource: {fileID: 4681940715705978657, guid: 5f7951c30eb67b54685126c09057bf7a,
       type: 3}
     spawnChance: 30
+  harvestEffects:
+  - Metal Spark
+  harvestSounds:
+  - MetalRing
+  deathSounds:
+  - WoodHit
 --- !u!114 &-573651572030470016
 MonoBehaviour:
   m_ObjectHideFlags: 0

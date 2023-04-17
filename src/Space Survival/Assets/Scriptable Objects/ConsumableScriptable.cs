@@ -13,10 +13,16 @@ public class ConsumableScriptable : ItemScriptable
 
     [Tooltip("Create effects this consumable gives")]
     public ConsumableValuePair[] buffs;
+    [Tooltip("The sound played when consumed")]
+    public string[] consumeSounds;
 
     public override void Use()
     {
         base.Use();
+        foreach (string _sound in consumeSounds) {
+            AudioManager.Instance.PlayClip(_sound, false);
+        }
+
         foreach (ConsumableValuePair _buff in buffs) {
             switch (_buff.type) {
                 case VitalType.Health:

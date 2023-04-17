@@ -50,7 +50,7 @@ public class MarchingCube : MonoBehaviour
     List<int> triangles;
     bool[,,] vertMap;
 
-    private void Start()
+    protected virtual void Start()
     {
         voxelTextures = VoxelTextures.Instance;
         meshFilter = GetComponent<MeshFilter>();
@@ -62,6 +62,13 @@ public class MarchingCube : MonoBehaviour
 
         //+ 1unit, since storing vertices and not voxels themselves
         vertMap = new bool[(cubeSize * voxelPerUnit) + voxelPerUnit, (cubeSize * voxelPerUnit) + voxelPerUnit, (cubeSize * voxelPerUnit) + voxelPerUnit];
+
+        //Rounded
+        Vector3 _pos = transform.position;
+        _pos.x = Mathf.Round(_pos.x / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _pos.y = Mathf.Round(_pos.y / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _pos.z = Mathf.Round(_pos.z / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        transform.position = _pos;
 
         if (useRandomSeed)
             seed = Random.Range(0, 100000);
@@ -89,10 +96,10 @@ public class MarchingCube : MonoBehaviour
     /// <returns>The 3D index of the vertex in the vertMap</returns>
     public Vector3 GetVert(Vector3 _worldSpacePos)
     {
-        float _x = _worldSpacePos.x - (_worldSpacePos.x % (1f / voxelPerUnit));
-        float _y = _worldSpacePos.y - (_worldSpacePos.y % (1f / voxelPerUnit));
-        float _z = _worldSpacePos.z - (_worldSpacePos.z % (1f / voxelPerUnit));
-        return new Vector3(_x, _y, _z) - transform.position;
+        _worldSpacePos.x = Mathf.Round(_worldSpacePos.x / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _worldSpacePos.y = Mathf.Round(_worldSpacePos.y / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _worldSpacePos.z = Mathf.Round(_worldSpacePos.z / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        return _worldSpacePos - transform.position;
     }
 
     /// <summary>
@@ -103,9 +110,9 @@ public class MarchingCube : MonoBehaviour
     /// <returns></returns>
     public List<Vector3> GetVertsInRadius(Vector3 _worldSpacePos, float _radius)
     {
-        _worldSpacePos.x -= (_worldSpacePos.x % (1f / voxelPerUnit));
-        _worldSpacePos.y -= (_worldSpacePos.y % (1f / voxelPerUnit));
-        _worldSpacePos.z -= (_worldSpacePos.z % (1f / voxelPerUnit));
+        _worldSpacePos.x = Mathf.Round(_worldSpacePos.x / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _worldSpacePos.y = Mathf.Round(_worldSpacePos.y / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
+        _worldSpacePos.z = Mathf.Round(_worldSpacePos.z / (1f / voxelPerUnit)) * (1f / voxelPerUnit);
 
         List<Vector3> _voxelPos = new List<Vector3>();
 
@@ -113,14 +120,13 @@ public class MarchingCube : MonoBehaviour
             for (float y = _worldSpacePos.y - _radius; y < _worldSpacePos.y + _radius; y += (1f / voxelPerUnit)) {
                 for (float z = _worldSpacePos.z - _radius; z < _worldSpacePos.z + _radius; z += (1f / voxelPerUnit)) {
                     if (CheckVert(new Vector3(x, y, z) - transform.position)) {
-                        if ((Vector3.Distance(new Vector3(x, y, z), _worldSpacePos) <= _radius)) {
+                        if (Vector3.Distance(new Vector3(x, y, z), _worldSpacePos) <= _radius) {
                             _voxelPos.Add(new Vector3(x, y, z) - transform.position);
                         }
                     }
                 }
             }
         }
-
         return _voxelPos;
     }
 
