@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8379f6348db844149a14242a9fd1646b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 75
   minTier: 0
   harvestType: 1
   destroyOnHarvest: 1
@@ -166,6 +166,7 @@ MonoBehaviour:
   - Metal Spark
   harvestSounds:
   - MetalRing
+  deathEffects: []
   deathSounds:
   - WoodHit
 --- !u!114 &-2617860497470849577

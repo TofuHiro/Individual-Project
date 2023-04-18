@@ -237,26 +237,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable, IDataPersistance
         gameManager = GameManager.Instance;
         GameManager.OnPlayerRespawn += Respawn;
 
-        //New save
-        if (DataPersistanceManager.GameData == null) {
-            //Shield
-            MaxShield = maxShield;
-            Shield = 0f;
-
-            //Health
-            MaxHealth = maxHealth;
-            Health = maxHealth;
-
-            //Water
-            MaxWater = maxWater;
-            Water = maxWater;
-
-            //Food
-            MaxFood = maxFood;
-            Food = maxFood;
-            //Oxygen
-        }
-
         nextWaterTick = waterDecayRate;
         nextDehydrateTick = dehydrationDamageRate;
 

@@ -37,6 +37,8 @@ public class PromptDisplay : MonoBehaviour
     [SerializeField] string buildPromptText;
     [Tooltip("The text displayed when deleting")]
     [SerializeField] string deletePromptText;
+    [Tooltip("The text displayed when holding a tool gun")]
+    [SerializeField] string openBuildingText;
 
     public void ShowItemPrompt(Item _item)
     {
@@ -79,6 +81,11 @@ public class PromptDisplay : MonoBehaviour
     public void ShowDeletePrompt()
     {
         buildingPromptTextBox.text = deletePromptText;
+    }
+
+    public void ShowOpenInterface()
+    {
+        buildingPromptTextBox.text = openBuildingText;
     }
 
     public void HideBuildPrompt()

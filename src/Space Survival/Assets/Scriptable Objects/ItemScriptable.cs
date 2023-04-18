@@ -10,6 +10,7 @@ public class ItemScriptable : ScriptableObject
     [Tooltip("The icon for this item")]
     public Texture icon;
     [Tooltip("The description for this item")]
+    [TextArea]
     public string description;
     [Tooltip("This item will not be stored with other in the object pool")]
     public bool unique;

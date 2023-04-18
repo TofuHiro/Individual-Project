@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         OnQuickDrop,
         OnSpeedUpStart,
         OnSpeedUpCancel,
-        OnPause;
+        OnPause,
+        OnSkip;
 
     public delegate void HotbarActions(int _num);
     public static event HotbarActions OnScroll, OnSwitchTo;
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.Player.SwitchTo4.performed += SwitchTo4;
         playerInputs.Player.SwitchTo5.performed += SwitchTo5;
         playerInputs.Player.SwitchTo6.performed += SwitchTo6;
+        playerInputs.Player.Skip.performed += Skip;
         #endregion
 
         #region Subscribe UI Inputs
@@ -109,6 +111,7 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.Player.SwitchTo4.performed -= SwitchTo4;
         playerInputs.Player.SwitchTo5.performed -= SwitchTo5;
         playerInputs.Player.SwitchTo6.performed -= SwitchTo6;
+        playerInputs.Player.Skip.performed -= Skip;
         #endregion
 
         playerInputs.UI.Disable();
@@ -418,6 +421,13 @@ public class PlayerController : MonoBehaviour, IDataPersistance
     {
         if (context.performed) {
             OnPause?.Invoke();
+        }
+    }
+
+    void Skip(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnSkip?.Invoke();
         }
     }
 

@@ -124,6 +124,9 @@ public class BuildingManager : MonoBehaviour
     public void SetTool(BuildingTool _newTool)
     {
         equippedTool = _newTool;
+
+        if (equippedTool != null)
+            promptDisplay.ShowOpenInterface();
     }
 
     /// <summary>

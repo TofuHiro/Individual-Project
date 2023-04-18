@@ -34,6 +34,7 @@ public class PrefabCatalog : MonoBehaviour
 
     public GameObject GetItemObject(string _tag)
     {
+        Debug.Log(_tag);
         return itemPrefabs.Find(x => x.ItemScriptableObject.name == _tag).gameObject;
     }
 

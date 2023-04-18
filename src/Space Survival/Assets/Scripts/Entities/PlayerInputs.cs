@@ -170,6 +170,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""62ef6300-4018-413b-878e-aac211bac662"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -434,6 +443,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1045cda7-0dc3-449c-867c-eb1e7bb460ce"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -781,6 +801,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_SwitchTo4 = m_Player.FindAction("SwitchTo4", throwIfNotFound: true);
         m_Player_SwitchTo5 = m_Player.FindAction("SwitchTo5", throwIfNotFound: true);
         m_Player_SwitchTo6 = m_Player.FindAction("SwitchTo6", throwIfNotFound: true);
+        m_Player_Skip = m_Player.FindAction("Skip", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -870,6 +891,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchTo4;
     private readonly InputAction m_Player_SwitchTo5;
     private readonly InputAction m_Player_SwitchTo6;
+    private readonly InputAction m_Player_Skip;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -890,6 +912,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @SwitchTo4 => m_Wrapper.m_Player_SwitchTo4;
         public InputAction @SwitchTo5 => m_Wrapper.m_Player_SwitchTo5;
         public InputAction @SwitchTo6 => m_Wrapper.m_Player_SwitchTo6;
+        public InputAction @Skip => m_Wrapper.m_Player_Skip;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -947,6 +970,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SwitchTo6.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
                 @SwitchTo6.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
                 @SwitchTo6.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchTo6;
+                @Skip.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
+                @Skip.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
+                @Skip.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -999,6 +1025,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SwitchTo6.started += instance.OnSwitchTo6;
                 @SwitchTo6.performed += instance.OnSwitchTo6;
                 @SwitchTo6.canceled += instance.OnSwitchTo6;
+                @Skip.started += instance.OnSkip;
+                @Skip.performed += instance.OnSkip;
+                @Skip.canceled += instance.OnSkip;
             }
         }
     }
@@ -1196,6 +1225,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnSwitchTo4(InputAction.CallbackContext context);
         void OnSwitchTo5(InputAction.CallbackContext context);
         void OnSwitchTo6(InputAction.CallbackContext context);
+        void OnSkip(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

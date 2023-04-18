@@ -30,6 +30,15 @@ public class PlayerWeapons : MonoBehaviour
     }
     int activeHotbar;
 
+    /// <summary>
+    /// returns the current weapon the player is holding
+    /// </summary>
+    /// <returns></returns>
+    public Weapon GetCurrentWeapon()
+    {
+        return currentWeapon;
+    }
+
     [Tooltip("Parent holding weapon inventory slots in the inventory")]
     [SerializeField] Transform weaponSlotsTransform;
     [Tooltip("The hand transform holding weapons")]
