@@ -1,19 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class WorldBounds : MonoBehaviour
 {
+    [Tooltip("Asteroid objects to spawn as hazards")]
     [SerializeField] GameObject[] asteroidProjectilePrefab;
+    [Tooltip("The time delay before starting to attack")]
     [SerializeField] float gracePeriod;
+    [Tooltip("The time delay before attacks")]
     [SerializeField] float attackRate;
+    [Tooltip("The damage each asteroid deals")]
     [SerializeField] float asteroidDamage;
+    [Tooltip("The initial speed the asteroid start with")]
     [SerializeField] float asteroidSpeed;
+    [Tooltip("The maximum time the asteroid stay active")]
     [SerializeField] float asteroidLifeTime;
+    [Tooltip("The distance asteroids are spawned from the player")]
     [SerializeField] float spawnDistance;
+    [Tooltip("The angular velocity applied to asteroids on spawn")]
     [SerializeField] float spawnAngularVel;
+    [Tooltip("The damaging radius of asteroids upon impact")]
     [SerializeField] float explosionRadius;
+    [Tooltip("The UI object displaying a warning for hazards")]
     [SerializeField] GameObject warningUI;
 
     PlayerController player;

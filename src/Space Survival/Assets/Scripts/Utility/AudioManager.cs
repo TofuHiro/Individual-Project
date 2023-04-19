@@ -95,7 +95,7 @@ public class AudioManager : MonoBehaviour
         return null;
     }
     
-    public void PlayClip(string _tag, bool spatial)
+    public void PlayClip(string _tag, bool _spatial)
     {
         player ??= PlayerController.Instance;
 
@@ -106,7 +106,7 @@ public class AudioManager : MonoBehaviour
         _source.pitch = _audio.pitch;
         _source.minDistance = _audio.range.x;
         _source.maxDistance = _audio.range.y;
-        _source.spatialBlend = spatial ? 1f : 0f;
+        _source.spatialBlend = _spatial ? 1f : 0f;
         _source.PlayOneShot(_source.clip);
 
         if (useLowPass)

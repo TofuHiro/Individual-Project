@@ -153,7 +153,11 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         canAttack = _state;
     }
 
-    public void ToggleSwitchHotbarbool (bool _state)
+    /// <summary>
+    /// Toggle the player's ability to switch their hot bar
+    /// </summary>
+    /// <param name="_state"></param>
+    public void ToggleSwitchHotbar(bool _state)
     {
         canSwitch = _state;
     }
@@ -185,6 +189,10 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         transform.position = _pos;
     }
 
+    /// <summary>
+    /// Sets the player's rotation to a given rotation
+    /// </summary>
+    /// <param name="_rot"></param>
     public void SetPlayerRotation(Quaternion _rot)
     {
         playerCamera.SetRotation(_rot);

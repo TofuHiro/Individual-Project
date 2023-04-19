@@ -15,6 +15,9 @@ public class CraftingManager : MonoBehaviour
         public List<ItemRecipe> Recipes;
     }
 
+    /// <summary>
+    /// If the crafting interface is open or not
+    /// </summary>
     public static bool IsEnabled { get; private set; }
 
     [Tooltip("Game object holding the crafting user interface")]

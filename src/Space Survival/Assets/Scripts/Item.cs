@@ -3,7 +3,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Item : MonoBehaviour, IPickable, IDataPersistance
 {
+    /// <summary>
+    /// Info for this item
+    /// </summary>
     public ItemScriptable ItemScriptableObject { get { return item; } set { item = value; } }
+    
+    /// <summary>
+    /// If this item can be picked up
+    /// </summary>
+    public bool Pickable { get { return pickable; } set { pickable = value; } }
 
     [Tooltip("The Item scriptable object with this item's information")]
     [SerializeField] ItemScriptable item;
@@ -14,20 +22,26 @@ public class Item : MonoBehaviour, IPickable, IDataPersistance
     [Tooltip("Sounds played on drop")]
     [SerializeField] string[] dropSound;
 
-    public bool Pickable { get { return pickable; } set { pickable = value; } }
-
     //References
     PlayerInventory inventory;
     PlayerController player;
     Rigidbody rigidBody;
     AudioManager audioManager;
 
+    /// <summary>
+    /// Init references if start not called
+    /// </summary>
     void InitRef()
     {
         inventory ??= PlayerInventory.Instance;
         player ??= PlayerController.Instance;
         audioManager ??= AudioManager.Instance;
         rigidBody ??= GetComponent<Rigidbody>();
+    }
+
+    void Start()
+    {
+        InitRef();
     }
 
     public InteractionType GetInteractionType()
@@ -98,6 +112,7 @@ public class Item : MonoBehaviour, IPickable, IDataPersistance
 
     public void LoadData(GameData _data)
     {
+        //Destroys if already an instance in the scene, generally preplaced in level editting
         Destroy(gameObject);
     }
 }

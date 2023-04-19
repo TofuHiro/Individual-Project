@@ -7,6 +7,9 @@ public class Buildable : MonoBehaviour, IDataPersistance
     public delegate void BuildAction();
     public BuildAction OnBuild;
 
+    /// <summary>
+    /// The item info for this buildables
+    /// </summary>
     public ItemScriptable ItemInfo { get { return itemInfo; } private set { itemInfo = value; } }
 
     [Tooltip("The item scriptable object for this buildable")]
@@ -21,13 +24,14 @@ public class Buildable : MonoBehaviour, IDataPersistance
     [SerializeField] BuildableType type;
     [Tooltip("The grid size this building will snap to when being placed")]
     [SerializeField] Vector3 gridSize;
-    [Tooltip("The offset of the model's center from the actual game object's center. This is used to detect overlapping")]
+    [Tooltip("The offset of the model's center in the x,z axis from the actual game object's center. This is used to detect overlapping")]
     [SerializeField] Vector3 centerOffset;
 
     BuildingManager buildingManager;
-
     Renderer buildingRenderer;
     Material deletionMaterial;
+
+    //Smoothing trans anim
     Vector3 velocity;
     Vector3 targetPos;
     float smoothTime;
@@ -121,7 +125,7 @@ public class Buildable : MonoBehaviour, IDataPersistance
 
         targetPos = _pos;
 
-        //movement interpolation
+        //smooth interpolation
         transform.position = Vector3.SmoothDamp(transform.position, _pos, ref velocity, smoothTime);
     }
 
@@ -160,6 +164,10 @@ public class Buildable : MonoBehaviour, IDataPersistance
         OnBuild?.Invoke();
     }
 
+    /// <summary>
+    /// Highlight this object to indicate it being selected for deletion
+    /// </summary>
+    /// <param name="_state"></param>
     public void HighlightDelete(bool _state)
     {
         if (_state == true) {
@@ -186,6 +194,6 @@ public class Buildable : MonoBehaviour, IDataPersistance
 
     public void LoadData(GameData _data)
     {
-        //
+        
     }
 }

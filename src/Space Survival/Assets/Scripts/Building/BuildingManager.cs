@@ -3,11 +3,13 @@ using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(ItemDisplayUI))]
-
 public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager Instance;   
 
+    /// <summary>
+    /// If the building interface is open or not
+    /// </summary>
     public static bool IsEnabled { get; private set; }
 
     [Tooltip("The game object holding the building UI")]
@@ -74,11 +76,15 @@ public class BuildingManager : MonoBehaviour
         IsEnabled = false;
     }
 
+    /// <summary>
+    /// Create building recipe slots
+    /// </summary>
+    /// <param name="_useIngredients">Whether to initialize with ingredients</param>
     public void InitRecipes(bool _useIngredients)
     {
         useIngredients = _useIngredients;
 
-        //Create a buildable recipe block for each buildable set in the catalog
+        //Create a recipe block for each buildable recipe
         foreach (BuildingRecipe _item in buildableCatalog) {
             BuildableSlot _newSlot = Instantiate(buildableSlotPrefab, blueprintSlotsParents).GetComponent<BuildableSlot>();
             if (_useIngredients) {
@@ -190,6 +196,9 @@ public class BuildingManager : MonoBehaviour
         interfaceManager.CloseBuilding();
     }
 
+    /// <summary>
+    /// On cancel build
+    /// </summary>
     public void CancelBuild()
     {
         promptDisplay.HideBuildPrompt();
@@ -309,6 +318,10 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Load a buildable object
+    /// </summary>
+    /// <param name="_buildable">The buildable instance with set position and rotation</param>
     public void LoadObject(Buildable _buildable)
     {
         buildingGrid ??= BuildingGrid.Instance;

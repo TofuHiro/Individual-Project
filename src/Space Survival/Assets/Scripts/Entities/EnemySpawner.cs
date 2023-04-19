@@ -1,13 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using SpaceGame;
 
 public class EnemySpawner : MonoBehaviour
 {
+    /// <summary>
+    /// If enemies are allowed to spawn
+    /// </summary>
     public static bool EnemiesAllowed = true;
+    /// <summary>
+    /// The multiplier applied to the maximum number of enemies allowed to spawn per spawner
+    /// </summary>
     public static float SpawnNumberMultiplier = 1f;
 
+    /// <summary>
+    /// The number of active enemies the spawner currently has
+    /// </summary>
     public int EnemyNumber { get { return enemyNumber; }
         set {
             enemyNumber = value;
@@ -20,7 +27,10 @@ public class EnemySpawner : MonoBehaviour
     }
     int enemyNumber = 0;
 
-    public bool CanSpawn { get; set; } = false;
+    /// <summary>
+    /// If this spawner can currently spawn enemies
+    /// </summary>
+    public bool CanSpawn { get; private set; } = false;
 
     [Tooltip("The enemy to spawn")]
     [SerializeField] Enemy enemyPrefab;
@@ -67,6 +77,9 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns the set enemy 
+    /// </summary>
     void Spawn()
     {
         Enemy _newEnemy = ObjectPooler.SpawnObject(enemyPrefab.Name, enemyPrefab.gameObject, spawnPoint.position, spawnPoint.rotation).GetComponent<Enemy>();

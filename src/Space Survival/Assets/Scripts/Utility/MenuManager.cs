@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -7,17 +5,26 @@ using SpaceGame;
 
 public class MenuManager : MonoBehaviour
 {
+    [Tooltip("UI element to cover screen to prevent user from interacting with the menu")]
     [SerializeField] GameObject buttonCover;
+    [Tooltip("The 'Load Game' button to disable/enable depending on existing game save data")]
     [SerializeField] Button loadButton;
 
+    AudioSource backGroundAudio;
     Animator menuAnimator;
 
     void Start()
     {
+        backGroundAudio = GetComponent<AudioSource>();
         menuAnimator = GetComponent<Animator>();
 
         //If existing file, allow to press load
         loadButton.interactable = DataPersistanceManager.GameData != null;
+    }
+
+    public void PlayMusic()
+    {
+        backGroundAudio.Play();
     }
 
     //Animation Event

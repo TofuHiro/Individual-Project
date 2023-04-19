@@ -212,14 +212,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4a443a57d0676428dea94a0d564830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemyWeapon: 0
   semiAutomatic: 1
   attackType: 1
-  equipSounds:
-  - Teleport
-  - LightSwing
   attackPoint: {fileID: 8634900657596991452}
   buildEffects:
-  - Small Energy Explosion
+  - Energy Spark
   buildImpactEffects:
   - Energy Spark
   deleteEffects:

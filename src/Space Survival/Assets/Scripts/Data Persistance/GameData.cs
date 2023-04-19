@@ -74,7 +74,7 @@ public struct BuildableData
 public class InventoryData
 {
     public string[] inventItems;
-    public WeaponData[] inventWeapons;
+    public WeaponData[] inventWeapons;//Weapons stored in the main inventory
     public string[] shields;
     public string[] upgrades;
     public WeaponData[] slotWeapons;
@@ -129,12 +129,29 @@ public class WeaponData : ItemData
     public int clipCount;
     public int durability;
 
+    /// <summary>
+    /// Weapon with ammo
+    /// </summary>
+    /// <param name="_tag"></param>
+    /// <param name="_position"></param>
+    /// <param name="_rotation"></param>
+    /// <param name="_ammo"></param>
+    /// <param name="_clip"></param>
+    /// <param name="_isActive"></param>
     public WeaponData(string _tag, Vector3 _position, Quaternion _rotation, int _ammo, int _clip, bool _isActive) : base(_tag, _position, _rotation, _isActive)
     {
         ammoCount = _ammo;
         clipCount = _clip;
     }
 
+    /// <summary>
+    /// Weapon with durability
+    /// </summary>
+    /// <param name="_tag"></param>
+    /// <param name="_position"></param>
+    /// <param name="_rotation"></param>
+    /// <param name="_durability"></param>
+    /// <param name="_isActive"></param>
     public WeaponData(string _tag, Vector3 _position, Quaternion _rotation, int _durability, bool _isActive) : base(_tag, _position, _rotation, _isActive)
     {
         durability = _durability;

@@ -73,6 +73,9 @@ namespace SpaceGame
 
         void StartGame()
         {
+            if (RespawnBeacon.ActiveRespawnBeacon == null) {
+                RespawnBeacon.ActiveRespawnBeacon = staticSpawn;
+            }
             OnGameStart?.Invoke();
         }
 
@@ -86,7 +89,7 @@ namespace SpaceGame
         public void Respawn()
         {
             interfaceManager.CloseDeathScreen();
-            player.transform.position = RespawnBeacon.ActiveRespawnBeacon != null ? RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint() : staticSpawn.GetRespawnPoint();
+            player.transform.position = RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint();
             OnPlayerRespawn?.Invoke();
         }
 
@@ -98,7 +101,7 @@ namespace SpaceGame
         public void EndGame()
         {
             interfaceManager.OpenGameEndScreen();
-            player.transform.position = RespawnBeacon.ActiveRespawnBeacon != null ? RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint() : staticSpawn.GetRespawnPoint();
+            player.transform.position = RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint();
             Time.timeScale = 0f;
         }
 
@@ -108,7 +111,7 @@ namespace SpaceGame
             canPause = true;
             Time.timeScale = 1f;
             interfaceManager.CloseGameEndScreen();
-            player.transform.position = RespawnBeacon.ActiveRespawnBeacon != null ? RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint() : staticSpawn.GetRespawnPoint();
+            player.transform.position = RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint();
             OnPlayerRespawn?.Invoke();
         }
 

@@ -119,6 +119,11 @@ PrefabInstance:
       propertyPath: attackPoint
       value: 
       objectReference: {fileID: 829212464078149477}
+    - target: {fileID: 4277977703399327343, guid: 77e77eb15fdd77443948b3ae037d2114,
+        type: 3}
+      propertyPath: isEnemyWeapon
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7128859589944132451, guid: 77e77eb15fdd77443948b3ae037d2114,
         type: 3}
       propertyPath: m_Name

@@ -33,7 +33,7 @@ public class BuildingTool : Weapon
         buildingManager = BuildingManager.Instance;
         interfaceManager = InterfaceManager.Instance;
         semiAutomatic = true;
-        mask = ~0;
+        mask = ~0;//All
     }
 
     public override void Equip(Transform _parent)
@@ -74,13 +74,11 @@ public class BuildingTool : Weapon
     protected override void Update()
     {
         base.Update();
-        //blueprint set
         if (isBlueprinting) {
             PositionBlueprint();
         }
-
-        if (isRemoving) {
-            GetTarget();
+        else if (isRemoving) {
+            GetDeleteTarget();
         }
     }
 
@@ -103,7 +101,7 @@ public class BuildingTool : Weapon
     /// <summary>
     /// Gets and highlights the buildable the player is looking at
     /// </summary>
-    void GetTarget()
+    void GetDeleteTarget()
     {
         //Check for a surface within range
         RaycastHit _hit;
@@ -112,7 +110,7 @@ public class BuildingTool : Weapon
         //If look at another object
         if (hoveredBuild != null) {
             if (_hit.transform != hoveredBuild.transform) {
-                //Reapply mats to other object if was looking at one
+                //Restore mats to other object if was looking at one
                 hoveredBuild.HighlightDelete(false);
                 hoveredBuild = null;
                 return;
@@ -167,7 +165,7 @@ public class BuildingTool : Weapon
         foreach (string _audio in buildSounds) {
             audioManager.PlayClip(_audio, transform.position);
         }
-        //effects
+        //Weapon attack effects
         foreach (string _effect in buildEffects) {
             effectsManager.PlayEffect(_effect, attackPoint.position, attackPoint.rotation);
         }
@@ -176,7 +174,7 @@ public class BuildingTool : Weapon
             effectsManager.PlayEffect(_effect, currentBlueprint.GetTargetPos(), currentBlueprint.transform.rotation);
         }
 
-        //Create instance
+        //Create new instance
         Buildable _newBuildable = ObjectPooler.SpawnObject(
             currentBlueprint.ItemInfo.name,
             currentBlueprint.gameObject,
@@ -203,6 +201,7 @@ public class BuildingTool : Weapon
             Storage _storage = _hit.transform.GetComponent<Storage>();
             Buildable _buildable = _hit.transform.GetComponentInParent<Buildable>();
 
+            //Check if removing a non empty storage
             if (_storage != null && _buildable != null) {
                 if (!_storage.IsEmpty) {
                     //notify?
@@ -263,7 +262,7 @@ public class BuildingTool : Weapon
             return;
 
         base.Reload();
-        //Rotate
+        //Rotate 90 degrees
         currentBlueprint.SetRotation(Quaternion.Euler(currentBlueprint.transform.rotation.eulerAngles + new Vector3(0f, 90, 0f)));
     }
 
@@ -273,7 +272,7 @@ public class BuildingTool : Weapon
     void CancelBuild()
     {
         buildingManager ??= BuildingManager.Instance;
-
+            
         if (currentBlueprint != null) {
             currentBlueprint.GetObject().layer = tempLayer;
             ObjectPooler.PoolObject(currentBlueprint.ItemInfo.name + "_blueprint", currentBlueprint.gameObject);

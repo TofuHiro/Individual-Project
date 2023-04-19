@@ -71,7 +71,7 @@ public class OxygenConsumer : MonoBehaviour
             unitPos.x = Mathf.FloorToInt((unitPos.x + 2) / gridUnit) * gridUnit;
             unitPos.y = Mathf.FloorToInt(unitPos.y / gridUnit) * gridUnit;
             unitPos.z = Mathf.FloorToInt((unitPos.z + 2) / gridUnit) * gridUnit;
-            currentSystem = grid.GetSystem(unitPos);
+            currentSystem = grid.GetSystem(unitPos, false);
             //If in system check if its sealed.
             if (currentSystem != null) {
                 InOxygen = currentSystem.CheckPosIsSealed(unitPos);

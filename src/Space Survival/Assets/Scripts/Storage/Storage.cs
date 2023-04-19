@@ -49,6 +49,10 @@ public class Storage : MonoBehaviour, IInteractable, IDataPersistance
         slots = slotsParent.GetComponentsInChildren<InventorySlot>();
     }
 
+    /// <summary>
+    /// Returns a list of items in this storage
+    /// </summary>
+    /// <returns></returns>
     public Item[] GetStorage()
     {
         Item[] _items = new Item[slots.Length];
@@ -58,8 +62,13 @@ public class Storage : MonoBehaviour, IInteractable, IDataPersistance
         return _items;
     }
 
+    /// <summary>
+    /// Sets this storage content with a list of items
+    /// </summary>
+    /// <param name="_items"></param>
     public void SetStorage(Item[] _items)
     {
+        //int _min = Mathf.Min(slots.Length, _items.Length);
         for (int i = 0; i < slots.Length; i++) {
             if (_items[i] != null) {
                 slots[i].AssignItem(_items[i]);

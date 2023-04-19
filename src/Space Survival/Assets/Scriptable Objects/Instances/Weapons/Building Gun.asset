@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Building Gun
   icon: {fileID: 2800000, guid: 9e0c1c819e30d5a45a422d200e05a018, type: 3}
   description: A gun used to build structures
-  unique: 0
+  unique: 1
   damage: 0
   maxRange: 3
   attackRate: 0

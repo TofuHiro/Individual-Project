@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hatch : MonoBehaviour, IInteractable
 {
+    [Tooltip("The position to teleport the player to upon using the hatch")]
     [SerializeField] Transform teleportPosition;
 
     PlayerController player;

@@ -26,19 +26,23 @@ public class BuildingGrid : MonoBehaviour
         mask = ~LayerMask.GetMask("Ignore Raycast");
     }
 
+    /// <summary>
+    /// Get the unit grid size of the building grid
+    /// </summary>
+    /// <returns></returns>
     public int GetGridUnit()
     {
         return gridUnit;
     }
 
     /// <summary>
-    /// Creates a new building system 
+    /// Creates a new system 
     /// </summary>
     /// <param name="_worldSpacePos">The origin position of the new system</param>
     /// <returns>Returns the new system created</returns>
     StructureSystem CreateNewSystem(Vector3 _worldSpacePos)
     {
-        StructureSystem _newSystem = new StructureSystem(_worldSpacePos, Vector3Int.one,gridUnit);
+        StructureSystem _newSystem = new StructureSystem(_worldSpacePos, Vector3Int.one, gridUnit);
         systems.Add(_newSystem);
 
         return _newSystem;
@@ -48,12 +52,18 @@ public class BuildingGrid : MonoBehaviour
     /// Returns the system at the given position if there is of an existing structure at the position
     /// </summary>
     /// <param name="_worldSpacePos">The world space position to check</param>
+    /// <param name="_withStructure">Whether to include structures or ignore when checking. Ignoring will return true if player is just within the grid space</param>
     /// <returns>Returns the system at the position</returns>
-    public StructureSystem GetSystem(Vector3 _worldSpacePos)
+    public StructureSystem GetSystem(Vector3 _worldSpacePos, bool _withStructure)
     {
         foreach (StructureSystem _system in systems) {
-            if (_system.CheckPosForStructure(_worldSpacePos)) {
-                return _system;
+            if (_withStructure) {
+                if (_system.CheckPosForStructure(_worldSpacePos)) 
+                    return _system;
+            }
+            else {
+                if (_system.CheckWorldPosInGrid(_worldSpacePos)) 
+                    return _system;
             }
         }
         return null;
@@ -66,8 +76,8 @@ public class BuildingGrid : MonoBehaviour
     /// <returns>Returns a connecting system</returns>
     StructureSystem JoinSystem(Vector3 _worldSpacePos)
     {
-        if (GetSystem(_worldSpacePos) != null) {
-            return GetSystem(_worldSpacePos);
+        if (GetSystem(_worldSpacePos, true) != null) {
+            return GetSystem(_worldSpacePos, true);
         }
 
         List<StructureSystem> _systems = GetConnectedSystems(_worldSpacePos);
@@ -98,7 +108,6 @@ public class BuildingGrid : MonoBehaviour
                 _connectedSystems.Add(_system);
             }
         }
-
         return _connectedSystems;
     }
 
@@ -132,9 +141,11 @@ public class BuildingGrid : MonoBehaviour
         Vector3Int _firstOffset = Vector3Int.RoundToInt(_first.OriginWorldPos - _newOrigin) / gridUnit;
         Vector3Int _secondOffset = Vector3Int.RoundToInt(_second.OriginWorldPos - _newOrigin) / gridUnit;
 
+        //Merge contents with offsets
         _newSystem.CombineGrid(_first.GetGrid(), _first.GridSize, _firstOffset);
         _newSystem.CombineGrid(_second.GetGrid(), _second.GridSize, _secondOffset);
 
+        //Replace systems in list
         DeleteSystem(_first);
         DeleteSystem(_second);
         systems.Add(_newSystem);
@@ -158,9 +169,12 @@ public class BuildingGrid : MonoBehaviour
         return _newSystems;
     }
 
+    /// <summary>
+    /// Removes a system from the list of systems
+    /// </summary>
+    /// <param name="_system"></param>
     void DeleteSystem(StructureSystem _system)
     {
-        _system.OnDelete();
         systems.Remove(_system);
     }
 
@@ -182,6 +196,7 @@ public class BuildingGrid : MonoBehaviour
                 return AddEdge(_buildable.GetTargetPos(), RotationToEdge(_buildable.transform.rotation));
 
             case BuildableType.Misc:
+                //Overlap check to see if overlapping objects
                 return Physics.OverlapBox(
                     //Center
                     new Vector3(_buildable.GetTargetPos().x, _buildable.GetTargetPos().y + _buildable.GetSize().y / 2f, _buildable.GetTargetPos().z) + _buildable.GetCenterOffset(),
@@ -254,7 +269,7 @@ public class BuildingGrid : MonoBehaviour
     void RemoveFloor(Vector3 _worldSpacePos)
     {
         //Get system to remove floor from
-        StructureSystem _system = GetSystem(_worldSpacePos);
+        StructureSystem _system = GetSystem(_worldSpacePos, true);
         int _splitPoints = _system.RemoveFloor(_worldSpacePos);
 
         //Remove system as nothing exists
@@ -265,11 +280,17 @@ public class BuildingGrid : MonoBehaviour
         else if (_splitPoints == 1) {
             _system.Seal();
         }
-        //Check to split
-        else if (_splitPoints > 1) {
+        //Check to split if grid is empty
+        else if (_splitPoints > 1 && !_system.CheckPosForStructure(_worldSpacePos)) {
+            //Split system
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
+                //And seal check each
                 _sys.Seal();
             }
+        }
+        //Seal check as no splits
+        else {
+            _system.Seal();
         }
     }
 
@@ -312,7 +333,7 @@ public class BuildingGrid : MonoBehaviour
     /// <param name="_edge">The type of edge to remove</param>
     void RemoveEdge(Vector3 _worldSpacePos, Edge _edge)
     {
-        StructureSystem _system = GetSystem(_worldSpacePos);
+        StructureSystem _system = GetSystem(_worldSpacePos, true);
         int _splitPoints = _system.RemoveEdge(_worldSpacePos, _edge);
 
         //Remove system as nothing exists
@@ -323,11 +344,17 @@ public class BuildingGrid : MonoBehaviour
         else if (_splitPoints == 1) {
             _system.Seal();
         }
-        //Check to split
-        else if (_splitPoints > 1) {
+        //Check to split if grid is empty
+        else if (_splitPoints > 1 && !_system.CheckPosForStructure(_worldSpacePos)) {
+            //Split system
             foreach (StructureSystem _sys in SplitSystem(_system, _worldSpacePos)) {
+                //And seal check each
                 _sys.Seal();
             }
+        }
+        //Seal check as no splits
+        else {
+            _system.Seal();
         }
     }
 

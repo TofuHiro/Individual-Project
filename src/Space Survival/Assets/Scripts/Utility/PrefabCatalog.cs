@@ -17,7 +17,7 @@ public class PrefabCatalog : MonoBehaviour
     #endregion
 
     [System.Serializable]
-    class StorageName
+    class PrefabName
     {
         public string tag;
         public GameObject prefab;
@@ -25,7 +25,10 @@ public class PrefabCatalog : MonoBehaviour
 
     [SerializeField] List<Buildable> buildablePrefabs;
     [SerializeField] List<Item> itemPrefabs;
-    [SerializeField] List<StorageName> storagePrefabs;
+    [Tooltip("Tag each storage to load with a name")]
+    [SerializeField] List<PrefabName> storagePrefabs;
+    [Tooltip("Tag each storage to load with a name")]
+    [SerializeField] List<PrefabName> spawnerPrefabs;
 
     public GameObject GetBuildableObject(string _tag)
     {
@@ -34,7 +37,6 @@ public class PrefabCatalog : MonoBehaviour
 
     public GameObject GetItemObject(string _tag)
     {
-        Debug.Log(_tag);
         return itemPrefabs.Find(x => x.ItemScriptableObject.name == _tag).gameObject;
     }
 
@@ -46,5 +48,10 @@ public class PrefabCatalog : MonoBehaviour
     public GameObject GetStorage(string _tag)
     {
         return storagePrefabs.Find(x => x.tag == _tag).prefab;
+    }
+
+    public GameObject GetSpawner(string _tag)
+    {
+        return spawnerPrefabs.Find(x => x.tag == _tag).prefab;
     }
 }

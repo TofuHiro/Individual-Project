@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class OxygenDistributer : MonoBehaviour
 {
+    [Tooltip("The oxygen trigger that 'emits' oxygen")]
     [SerializeField] Collider oxygenTrigger;
+    [Tooltip("Whether to start emitting on start")]
     [SerializeField] bool enabledOnStart;
     [Tooltip("The buildable this distributer at attached to. Distributer will enable when the buildable is built")]
     [SerializeField] Buildable buildable;

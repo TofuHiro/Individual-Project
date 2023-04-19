@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StructureSystem
 {
+    //Used to loop over all sides of a cube grid
     readonly Vector3Int[] traverseDir =
     {
         new Vector3Int(0, -1, 0),   //Down
@@ -14,20 +15,25 @@ public class StructureSystem
         new Vector3Int(-1, 0, 0),   //Left
     };
 
+    /// <summary>
+    /// The 3 dimensional grid size of the system
+    /// </summary>
     public Vector3Int GridSize { get; private set; }
-    public Vector3 OriginWorldPos { get; private set; }
 
-    BoxCollider oxygenTrigger;
+    /// <summary>
+    /// The reference world space position of (0,0,0) of the system
+    /// </summary>
+    public Vector3 OriginWorldPos { get; private set; }
 
     GridStructure[,,] grid;
     int gridUnit;
 
     /// <summary>
-    /// 
+    /// Constructor to create a new grid
     /// </summary>
-    /// <param name="_originWorldPos">The starting world space position of the system</param>
-    /// <param name="_gridSize">The 3D size of the grid</param>
-    /// <param name="_gridUnit">The unit size of the building grid</param>
+    /// <param name="_originWorldPos">The origin world space position of the system</param>
+    /// <param name="_gridSize">The 3D integer size of the grid</param>
+    /// <param name="_gridUnit">The unit size of each grid</param>
     public StructureSystem(Vector3 _originWorldPos, Vector3Int _gridSize, int _gridUnit)
     {
         gridUnit = _gridUnit;
@@ -35,7 +41,7 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Returns the current grid of this system
+    /// Returns the current 3D grid array of this system
     /// </summary>
     /// <returns>3D array of the grid</returns>
     public GridStructure[,,] GetGrid()
@@ -44,16 +50,18 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Returns the size of the grid excluding empty rows/columns
+    /// Returns the minimum size of the grid excluding empty rows/columns
     /// </summary>
     /// <returns>The size in a Vector3Int</returns>
     Vector3Int GetStructureSize()
     {
+        //Reference to the lowest and highest x,y,z positions
         Vector3Int _min = GridSize;
         Vector3Int _max = Vector3Int.zero;
         for (int x = 0; x < GridSize.x; x++) {
             for (int y = 0; y < GridSize.y; y++) {
                 for (int z = 0; z < GridSize.z; z++) {
+                    //Find the lowest and highest positions with structure
                     if (CheckGridPosForStructure(new Vector3Int(x, y, z))) {
                         _min = Vector3Int.Min(_min, new Vector3Int(x, y, z));
                         _max = Vector3Int.Max(_max, new Vector3Int(x, y, z));
@@ -61,6 +69,7 @@ public class StructureSystem
                 }
             }
         }
+        //return 3D distance between min and max
         return _max + Vector3Int.one - _min;
     }
 
@@ -68,7 +77,7 @@ public class StructureSystem
     /// Turns the world space position into local 3D grid coordinates
     /// </summary>
     /// <param name="_worldSpacePos">The world space position</param>
-    /// <returns>Indexes in a Vector3Int</returns>
+    /// <returns>3D grid index in integers</returns>
     Vector3Int GetGridPos(Vector3 _worldSpacePos)
     {
         return new Vector3Int(
@@ -78,18 +87,13 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Set a grid position to a new grid structure
+    /// Set a grid structure at a position to a new grid structure
     /// </summary>
     /// <param name="_gridPos">The grid index</param>
-    /// <param name="_gridStructure">The grid structure to set</param>
+    /// <param name="_gridStructure">The new grid structure to set</param>
     void SetGridStructure(Vector3Int _gridPos, GridStructure _gridStructure)
     {
         grid[_gridPos.x, _gridPos.y, _gridPos.z] = _gridStructure;
-    }
-
-    public void SetOxygenTrigger(bool _state)
-    {
-        oxygenTrigger.enabled = _state;
     }
 
     /// <summary>
@@ -103,19 +107,7 @@ public class StructureSystem
         GridSize = _size;
         OriginWorldPos = _originPos;
 
-        if (oxygenTrigger == null) {
-            oxygenTrigger = new GameObject("Oxygen Bubble").AddComponent<BoxCollider>();
-            oxygenTrigger.isTrigger = true;
-            oxygenTrigger.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-            oxygenTrigger.center = new Vector3(0f, 2f, 0f);
-            oxygenTrigger.transform.position = _originPos + (((_size - Vector3Int.one) * gridUnit) / 2);  
-            oxygenTrigger.size = _size * (Vector3Int.one * gridUnit);
-        }
-        else {
-            oxygenTrigger.transform.position = _originPos + (((_size - Vector3Int.one) * gridUnit) / 2);
-            oxygenTrigger.size = _size * (Vector3Int.one * gridUnit);
-        }
-
+        //Init
         for (int x = 0; x < _size.x; x++) {
             for (int y = 0; y < _size.y; y++) {
                 for (int z = 0; z < _size.z; z++) {
@@ -123,11 +115,6 @@ public class StructureSystem
                 }
             }
         }
-    }
-
-    public void OnDelete()
-    {
-        Object.Destroy(oxygenTrigger.gameObject);
     }
 
     /// <summary>
@@ -151,7 +138,7 @@ public class StructureSystem
     /// <param name="_offset">The offset to apply when adding the new grid contents</param>
     public void CombineGrid(GridStructure[,,] _other, Vector3Int _upperLoopBounds, Vector3Int _offset)
     {
-        //Replace grid to new grid with offsets
+        //Assign other grid to current grid with offsets
         for (int x = 0; x < _upperLoopBounds.x; x++) {
             for (int y = 0; y < _upperLoopBounds.y; y++) {
                 for (int z = 0; z < _upperLoopBounds.z; z++) {
@@ -172,6 +159,7 @@ public class StructureSystem
     {
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);
         bool _connected = false;
+        //Check all 6 sides for structure
         for (int i = 0; i < 6; i++) {
             if (CheckGridPosForStructure(_gridPos + (traverseDir[i]))) {
                 _connected = true;
@@ -181,7 +169,7 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks if any structure is built on at an index in the grid
+    /// Checks if any structure is built at a given grid position in world space
     /// </summary>
     /// <param name="_worldSpacePos">The world space position to check</param>
     /// <returns>Returns true if any structure exists on the given position</returns>
@@ -196,7 +184,7 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks if any structure is built on at an index in the grid
+    /// Checks if any structure is built at an index in the grid
     /// </summary>
     /// <param name="_gridPos">The grid index to check</param>
     /// <returns>Returns true if any structure exists on the given position</returns>
@@ -206,6 +194,17 @@ public class StructureSystem
             return false;
         else
             return !grid[_gridPos.x, _gridPos.y, _gridPos.z].IsEmpty;
+    }
+
+    /// <summary>
+    /// Checks if a world position is in this system's grid space
+    /// </summary>
+    /// <param name="_worldSpacePos"></param>
+    /// <returns></returns>
+    public bool CheckWorldPosInGrid(Vector3 _worldSpacePos)
+    {
+        Vector3Int _gridPos = GetGridPos(_worldSpacePos);
+        return CheckPosInGrid(_gridPos);
     }
 
     /// <summary>
@@ -227,10 +226,10 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks if a structure is built on the grid at a given direction
+    /// Checks if a structure is built on the grid at a given direction from a grid position
     /// </summary>
-    /// <param name="_gridPos">The grid index to check</param>
-    /// <param name="_traverseDirIndex">The direction of the edge on the grid to check</param>
+    /// <param name="_gridPos">The grid index to check from</param>
+    /// <param name="_traverseDirIndex">The direction of the grid position to check</param>
     /// <returns>Returns true if a structure exists</returns>
     bool CheckStructureAtDir(Vector3Int _gridPos, int _traverseDirIndex)
     {
@@ -240,7 +239,7 @@ public class StructureSystem
         }
         //Up
         else if (_traverseDirIndex == 1) {
-            return CheckOverlapFloor(_gridPos + new Vector3Int(0, 1, 0));
+            return CheckOverlapFloor(_gridPos + new Vector3Int(0, 1, 0));//Floor on grid above
         }
         //Front
         else if (_traverseDirIndex == 2) {
@@ -261,10 +260,10 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks if a structure is built on a grid given a direction from another grid
+    /// Checks if a structure is built on a grid given a direction coming from another grid
     /// </summary>
-    /// <param name="_gridPos">The grid index to check</param>
-    /// <param name="_traverseFromDir">The incoming direction of the edge from the other grid to check</param>
+    /// <param name="_gridPos">The grid index to check from</param>
+    /// <param name="_traverseFromDir">The incoming direction from the other grid to check</param>
     /// <returns>Returns true if a structure exists</returns>
     bool CheckStructureFromDir(Vector3Int _gridPos, int _traverseFromDir)
     {
@@ -300,40 +299,38 @@ public class StructureSystem
     /// <param name="_worldSpacePos">The world space position of the floor</param>
     public void AddFloor(Vector3 _worldSpacePos)
     {
-
-
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);
 
         if (_gridPos.x < 0 || _gridPos.x > GridSize.x - 1 || _gridPos.y < 0 || _gridPos.y > GridSize.y - 1 || _gridPos.z < 0 || _gridPos.z > GridSize.z - 1) {
             Vector3Int _newSize = GridSize;
             Vector3Int _offset = Vector3Int.zero;
-            //X position is out of bounds of current grid
+            //X position is out of bounds of current grid so make it larger
             if (_gridPos.x > GridSize.x - 1)
                 _newSize.x++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.x < 0) {
                 _newSize.x++;
                 _offset.x = 1;
             }
-            //Y position is out of bounds of current grid
+            //Y position is out of bounds of current grid so make it larger
             if (_gridPos.y > GridSize.y - 1)
                 _newSize.y++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.y < 0) {
                 _newSize.y++;
                 _offset.y = 1;
             }
-            //Z position is out of bounds of current grid
+            //Z position is out of bounds of current grid so make it larger
             if (_gridPos.z > GridSize.z - 1)
                 _newSize.z++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.z < 0) {
                 _newSize.z++;
                 _offset.z = 1;
             }
 
             ResizeGrid(_newSize, _offset);
-            //Re-adjust from offset from resizing grid
+            //Re-adjust with offset from resizing grid
             if (_gridPos.x < 0) _gridPos.x = 0;
             if (_gridPos.y < 0) _gridPos.y = 0;
             if (_gridPos.z < 0) _gridPos.z = 0;
@@ -380,13 +377,16 @@ public class StructureSystem
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);
         int _connections = 0;
         
+        //Get number of connections
         for (int i = 0; i < 6; i++) {
             if (CheckGridPosForStructure(_gridPos + traverseDir[i])) {
                 _connections++;
             }
         }
+        //Remove floor
         grid[_gridPos.x, _gridPos.y, _gridPos.z].Floor = false;
 
+        //Resize grid accordingly
         Vector3Int _newSize = GetStructureSize();
         if (_newSize.magnitude < GridSize.magnitude) {
             Vector3Int _offset = Vector3Int.zero;
@@ -414,33 +414,33 @@ public class StructureSystem
         if (_gridPos.x < 0 || _gridPos.x > GridSize.x - 1 || _gridPos.y < 0 || _gridPos.y > GridSize.y - 1 || _gridPos.z < 0 || _gridPos.z > GridSize.z - 1) {
             Vector3Int _newSize = GridSize;
             Vector3Int _offset = Vector3Int.zero;
-            //X position is out of bounds of current grid
+            //X position is out of bounds of current grid so make it larger
             if (_gridPos.x > GridSize.x - 1)
                 _newSize.x++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.x < 0) {
                 _newSize.x++;
                 _offset.x = 1;
             }
-            //Y position is out of bounds of current grid
+            //Y position is out of bounds of current grid so make it larger
             if (_gridPos.y > GridSize.y - 1)
                 _newSize.y++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.y < 0) {
                 _newSize.y++;
                 _offset.y = 1;
             }
-            //Z position is out of bounds of current grid
+            //Z position is out of bounds of current grid so make it larger
             if (_gridPos.z > GridSize.z - 1)
                 _newSize.z++;
-            //Placed at -1 from origin
+            //Placed at -1 from origin to offset grid when switching origin point
             else if (_gridPos.z < 0) {
                 _newSize.z++;
                 _offset.z = 1;
             }
 
             ResizeGrid(_newSize, _offset);
-            //Re-adjust from offset from resizing grid
+            //Re-adjust with offset from resizing grid
             if (_gridPos.x < 0) _gridPos.x = 0;
             if (_gridPos.y < 0) _gridPos.y = 0;
             if (_gridPos.z < 0) _gridPos.z = 0;
@@ -490,13 +490,17 @@ public class StructureSystem
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);
         int _connections = 0;
 
+        //Get number of connections
         for (int i = 0; i < 6; i++) {
             if (CheckGridPosForStructure(_gridPos + traverseDir[i])) {
                 _connections++;
             }
         }
+
+        //Remove edge
         grid[_gridPos.x, _gridPos.y, _gridPos.z].GetEdge(_edge) = false;
 
+        //Resize accordingly
         Vector3Int _newSize = GetStructureSize();
         if (_newSize.magnitude < GridSize.magnitude) {
             Vector3Int _offset = Vector3Int.zero;
@@ -524,10 +528,13 @@ public class StructureSystem
         //Track grids that has been added to a system
         bool[,,] _added = new bool[GridSize.x, GridSize.y, GridSize.z];
         Vector3Int _gridSplitPos = GetGridPos(_splitPoint);
+
+        //Used to determine size of each system
         Vector3 _minPoint = Vector3.zero;
         Vector3 _maxPoint = Vector3.zero;
 
-        //Marks grids as traversed, return true when traversed closed system
+        //Traverse system marking grids as traversed to create new system with traversed grid
+        //Stops traversing when traversed close system creating a new system
         void Traverse(Vector3Int _pos)
         {
             //Track lowest point on grid reached for origin point
@@ -537,6 +544,7 @@ public class StructureSystem
 
             _traversed[_pos.x, _pos.y, _pos.z] = true;
 
+            //Check each side of grid cube
             for (int i = 0; i < 6; i++) {
                 Vector3Int _traversePos = _pos + traverseDir[i];
                 //Skip if pos not in grid
@@ -558,6 +566,7 @@ public class StructureSystem
                     //Go to next grid structure
                     if (!CheckGridPosForStructure(new Vector3Int(x, y, z)))
                         continue;
+                    //Ignore traversed grids as they are part of another system
                     if (_traversed[x, y, z])
                         continue;
 
@@ -568,7 +577,7 @@ public class StructureSystem
                     //Traverse closed system and mark as traversed
                     Traverse(new Vector3Int(x, y, z));
 
-                    //Offset from old grid
+                    //Offset new system from old grid
                     Vector3 _origin = OriginWorldPos + (_minPoint * gridUnit);
                     Vector3Int _size = Vector3Int.RoundToInt((_maxPoint + Vector3Int.one) - _minPoint);
                     //Create new system with traversed grids
@@ -594,7 +603,7 @@ public class StructureSystem
     }
 
     /// <summary>
-    /// Checks and marks all grids as sealed or unsealed and returns the positions that are sealed
+    /// Checks and marks all grids as sealed or unsealed
     /// </summary>
     /// <returns>3D array of sealed positions</returns>
     public void Seal()
@@ -610,10 +619,10 @@ public class StructureSystem
                     //Find next structure unit that hasnt been checked
                     if (CheckGridPosForStructure(new Vector3Int(x, y, z))) {
                         if (!_traversed[x, y, z]) {
-                            //If no breach found
+                            //True if no breach found, system is sealed
                             if (Traverse(new Vector3Int(x, y, z)))
                                 Seal(new Vector3Int(x, y, z));
-                            //Else breach found
+                            //Else breach found so unsealed
                             else
                                 Unseal(new Vector3Int(x, y, z), _breachPoint);
                         }
@@ -629,14 +638,14 @@ public class StructureSystem
 
             for (int i = 0; i < 6; i++) {
                 Vector3Int _traversePos = _pos + traverseDir[i];
-                //If no wall/floor blocking direction
+                //If no wall/floor is blocking direction
                 if (!CheckStructureAtDir(_pos, i) && !CheckStructureFromDir(_traversePos, i)) {
-                    //If traverse on bounds/edge, return false;
+                    //If traversed out of bounds, return false
                     if (!CheckPosInGrid(_traversePos)) {
                         _breachPoint = _traversePos;
                         return false;
                     }
-                    //If no structure, check if void
+                    //If no structure, check if leads to void
                     if (!CheckGridPosForStructure(_traversePos)) {
                         //Reset array for next traverse
                         _voidCheck = new bool[GridSize.x, GridSize.y, GridSize.z];
@@ -645,6 +654,7 @@ public class StructureSystem
                             return false;
                         }
                     }
+                   
                     //Return false if other not sealed
                     if (!_traversed[_traversePos.x, _traversePos.y, _traversePos.z]) {
                         if (Traverse(_traversePos) == false)
@@ -711,21 +721,22 @@ public class StructureSystem
             //Traverse and try find void
             for (int i = 0; i < 6; i++) {
                 Vector3Int _traverseDir = _startPos + traverseDir[i];
-                //If wall/floor, ignore/no traverse
-                if (CheckStructureAtDir(_startPos, i))
+                //If has wall/floor, ignore/no traverse
+                if (CheckStructureAtDir(_startPos, i)) {
                     continue;
+                }
                 //Check if blocked by walls from other grid
                 if (CheckGridPosForStructure(_traverseDir)) {
                     if (CheckStructureFromDir(_traverseDir, i)) {
                         continue;
                     }
                 }
-                //Check if grid is void/in grid
+                //Check if grid in direction is void/in grid
                 if (!CheckPosInGrid(_traverseDir)) {
                     return true;
                 }
 
-                if (!_voidCheck[_startPos.x, _startPos.y, _startPos.z]) {
+                if (!_voidCheck[_traverseDir.x, _traverseDir.y, _traverseDir.z]) {
                     CheckForVoid(_traverseDir);
                 }
             }
@@ -733,6 +744,11 @@ public class StructureSystem
         }
     }
 
+    /// <summary>
+    /// Returns true if the grid position is sealed
+    /// </summary>
+    /// <param name="_worldSpacePos">The world space position to check</param>
+    /// <returns></returns>
     public bool CheckPosIsSealed(Vector3 _worldSpacePos)
     {
         Vector3Int _gridPos = GetGridPos(_worldSpacePos);

@@ -59,7 +59,6 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
     [Tooltip("Sound effects to play on death")]
     [SerializeField] string[] deathSounds;
 
-
     AudioManager audioManager;
     HealthDisplayer healthDisplayer;
     EffectsManager effectsManager;
@@ -88,7 +87,7 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
     }
 
     /// <summary>
-    /// Applies damage to the resource node depending on the tool used.
+    /// Applies damage to the resource node depending on the tool used
     /// </summary>
     /// <param name="_damage">Damage to apply</param>
     /// <param name="_toolType">The tool type used</param>
@@ -103,6 +102,10 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
         }
     }
 
+    /// <summary>
+    /// Take standard damange if of any harvest type
+    /// </summary>
+    /// <param name="_damage"></param>
     public void TakeDamage(float _damage)
     {
         if (harvestType == HarvestTypes.Any) {
@@ -131,7 +134,7 @@ public class HarvestableResource : MonoBehaviour, IHarvestable, IDamagable
                     transform.rotation,
                     _drop.resource.transform.localScale);
                 }
-                //For multiple item spawns
+                //For multiple item spawns, prevents cluttering
                 else {
                     ObjectPooler.SpawnObject(
                     _drop.nameTag,

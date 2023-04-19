@@ -311,7 +311,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable, IDataPersistance
             }
         }
 
-        //Modify sounds based on oxygen
         if (playerOxygen.InOxygen != inOxygen) {
             OnOxygenTriggerChange?.Invoke(playerOxygen.InOxygen);
             inOxygen = playerOxygen.InOxygen;
@@ -343,6 +342,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable, IDataPersistance
         gameManager.Die();
     }
 
+    /// <summary>
+    /// Resets the player's vitals to the set respawn values by difficulty
+    /// </summary>
     void Respawn()
     {
         IsDead = false;
@@ -352,6 +354,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable, IDataPersistance
         playerOxygen.SetMax();
     }
 
+    /// <summary>
+    /// Fully heals the player to their maximum vitals levels
+    /// </summary>
     public void FullHeal()
     {
         Health = MaxHealth;

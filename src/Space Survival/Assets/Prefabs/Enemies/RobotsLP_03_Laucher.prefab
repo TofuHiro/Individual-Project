@@ -9,6 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 751039254621743821, guid: fa2100e2f05152544b0726556e0bf8e2,
         type: 3}
+      propertyPath: isEnemyWeapon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 751039254621743821, guid: fa2100e2f05152544b0726556e0bf8e2,
+        type: 3}
       propertyPath: projectileStartPoint
       value: 
       objectReference: {fileID: 1505457347090355218}

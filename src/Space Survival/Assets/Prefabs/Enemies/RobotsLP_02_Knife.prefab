@@ -140,6 +140,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1435390142740304890, guid: 8e5f79eca2cc0fe41b26bf15040a99a7,
         type: 3}
+      propertyPath: isEnemyWeapon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1435390142740304890, guid: 8e5f79eca2cc0fe41b26bf15040a99a7,
+        type: 3}
       propertyPath: semiAutomatic
       value: 1
       objectReference: {fileID: 0}

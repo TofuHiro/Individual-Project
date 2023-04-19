@@ -22,12 +22,10 @@ public class BuildableSlot : MonoBehaviour
         buildingManager = BuildingManager.Instance;
         slotUI = GetComponent<SlotUI>();
 
-        BuildableRecipe = new BuildingRecipe
-        {
-            productItem = _buildable,
-            ingredientItems = _ingredients
-        };
-       
+        BuildableRecipe = ScriptableObject.CreateInstance<BuildingRecipe>();
+        BuildableRecipe.productItem = _buildable;
+        BuildableRecipe.ingredientItems = _ingredients;
+
         slotUI.SetIcon(_buildable.ItemInfo.icon);
     }
 

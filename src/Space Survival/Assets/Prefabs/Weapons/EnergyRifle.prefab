@@ -115,11 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f38f32236d74541459fd768dbb7e768e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemyWeapon: 1
   semiAutomatic: 0
   attackType: 1
-  equipSounds:
-  - Teleport
-  - LightSwing
   projectileStartPoint: {fileID: 2073493502183819220, guid: 28e0aafa1655d684bada53596c06c5b9,
     type: 3}
   attackEffects:

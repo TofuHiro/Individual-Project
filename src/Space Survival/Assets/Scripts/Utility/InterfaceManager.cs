@@ -137,7 +137,7 @@ public class InterfaceManager : MonoBehaviour
 
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
         ToggleInterfaceHUD(false);
     }
@@ -156,7 +156,7 @@ public class InterfaceManager : MonoBehaviour
 
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
         ToggleInterfaceHUD(true);
     }
@@ -208,7 +208,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
         ToggleInterfaceHUD(false);
     }
@@ -229,7 +229,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
         ToggleInterfaceHUD(true);
     }
@@ -248,7 +248,7 @@ public class InterfaceManager : MonoBehaviour
         building.OpenInterface();
         
         player.ToggleRotation(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
         ToggleInterfaceHUD(false);
     }
@@ -267,7 +267,7 @@ public class InterfaceManager : MonoBehaviour
         building.CloseInterface();
 
         player.ToggleRotation(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
         ToggleInterfaceHUD(true);
     }
@@ -290,7 +290,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
         ToggleInterfaceHUD(false);
     }
@@ -312,7 +312,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
         ToggleInterfaceHUD(true);
     }
@@ -330,7 +330,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
         ToggleInterfaceHUD(false);
     }
@@ -348,7 +348,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
         ToggleInterfaceHUD(true);
     }
@@ -365,7 +365,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -380,7 +380,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -396,7 +396,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -411,7 +411,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
     }
 
@@ -425,7 +425,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(false);
         player.ToggleRotation(false);
         player.ToggleAttack(false);
-        player.ToggleSwitchHotbarbool(false);
+        player.ToggleSwitchHotbar(false);
         ToggleInterfaceInputs(true);
     }
 
@@ -438,7 +438,7 @@ public class InterfaceManager : MonoBehaviour
         player.ToggleMovement(true);
         player.ToggleRotation(true);
         player.ToggleAttack(true);
-        player.ToggleSwitchHotbarbool(true);
+        player.ToggleSwitchHotbar(true);
         ToggleInterfaceInputs(false);
     }
 

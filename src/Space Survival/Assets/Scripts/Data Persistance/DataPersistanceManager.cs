@@ -7,12 +7,21 @@ using SpaceGame;
 public class DataPersistanceManager : MonoBehaviour
 {
     public static DataPersistanceManager Instance;
+
+    /// <summary>
+    /// The current game data loaded
+    /// </summary>
     public static GameData GameData;
+    /// <summary>
+    /// If game is set to start a new game
+    /// </summary>
     public static bool StartNewGame;
 
+    [Tooltip("The difficulties modes to select from")]
     [SerializeField] DifficultyModes[] difficultyIndex;
 
     [Header("Save settings")]
+    [Tooltip("The file name the game data will be saved with")]
     [SerializeField] string fileName;
 
     FileDataHandler dataHandler;
@@ -42,15 +51,23 @@ public class DataPersistanceManager : MonoBehaviour
         prefabCatalog = PrefabCatalog.Instance;
     }
 
+    /// <summary>
+    /// Creates a new game data with a given difficulty
+    /// </summary>
+    /// <param name="_difficultyIndex"></param>
     public void NewGame(int _difficultyIndex)
     {
         GameData = new GameData(_difficultyIndex);
     }
 
+    /// <summary>
+    /// Saves the world to the gamedata class
+    /// </summary>
     public void SaveGame()
     {
         GameData = new GameData(GameManager.DifficultyIndex);
 
+        //Calls savedata passing game data as ref for the classes to edit
         foreach (IDataPersistance _object in FindAllDataPersistenceObjects()) {
             _object.SaveData(ref GameData);
         }
@@ -58,6 +75,10 @@ public class DataPersistanceManager : MonoBehaviour
         dataHandler.Save(GameData);
     }
 
+    /// <summary>
+    /// Initializes the world with a difficulty or, if loading, the current game data
+    /// </summary>
+    /// <param name="_difficultyIndex">The difficulty to load, using an index to point at the the list of difficulties</param>
     public void Init(int _difficultyIndex)
     {
         //Load data if any, if none leave till player saves
@@ -76,6 +97,10 @@ public class DataPersistanceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes the difficulty settings 
+    /// </summary>
+    /// <param name="_selectedDifficulty"></param>
     void InitDifficulty(DifficultyModes _selectedDifficulty)
     {
         vitals.MaxHealth = _selectedDifficulty.startingMaxHealth;
@@ -109,6 +134,10 @@ public class DataPersistanceManager : MonoBehaviour
         PlayerInventory.Instance.DropArmoursOnDeath(_selectedDifficulty.dropArmoursOnDeath);
     }
 
+    /// <summary>
+    /// Loads the world data given a game data save file
+    /// </summary>
+    /// <param name="_gameData"></param>
     void LoadData(GameData _gameData)
     {
         //Get all interface instances and call LoadData
@@ -118,7 +147,6 @@ public class DataPersistanceManager : MonoBehaviour
             //Player Inventory loaded in LoadData
             //Story loaded in LoadData
             //Pet data loaded in LoadData
-            //Respawn set in LoadData
         }
 
         #region Load Buildables
@@ -194,17 +222,17 @@ public class DataPersistanceManager : MonoBehaviour
         #region Load Spawners
         foreach (BuildableData _spawnerInfo in _gameData.spawners) {
             //Get storage type
-            GameObject _object = prefabCatalog.GetBuildableObject(_spawnerInfo.tag);
-            //Create storage object with type
+            GameObject _object = prefabCatalog.GetSpawner(_spawnerInfo.tag);
+            //Create respawner object with type
             RespawnBeacon _respawner = ObjectPooler.SpawnObject(_spawnerInfo.tag, _object, _spawnerInfo.position, _spawnerInfo.rotation).GetComponent<RespawnBeacon>();
-            //Create array for it's inventory
+            //Check if spawned the active spawner and assign it to become active
             if (_gameData.spawners.IndexOf(_spawnerInfo) == _gameData.activeSpawner) {
                 RespawnBeacon.ActiveRespawnBeacon = _respawner;
             }
         }
         #endregion
 
-        #region Load Items
+        #region Load World Items
         foreach (ItemData _ItemInfo in _gameData.items) {
             GameObject _object = prefabCatalog.GetItemObject(_ItemInfo.tag);
             GameObject _newObject = ObjectPooler.SpawnObject(_ItemInfo.tag, _object, _ItemInfo.position, _ItemInfo.rotation);
@@ -215,7 +243,7 @@ public class DataPersistanceManager : MonoBehaviour
         }
         #endregion
 
-        #region Load Weapons
+        #region Load World Weapons
         foreach (WeaponData _weaponData in _gameData.weapons) {
             GameObject _weapon = Instantiate(prefabCatalog.GetItemObject(_weaponData.tag), _weaponData.position, _weaponData.rotation);
 
@@ -250,6 +278,10 @@ public class DataPersistanceManager : MonoBehaviour
         #endregion
     }
 
+    /// <summary>
+    /// Returns a list of objects implemented the IDataPersistence interface
+    /// </summary>
+    /// <returns></returns>
     List<IDataPersistance> FindAllDataPersistenceObjects()
     {
         IEnumerable<IDataPersistance> _dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();

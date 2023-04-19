@@ -1,4 +1,5 @@
 using UnityEngine;
+using SpaceGame;
 
 [RequireComponent(typeof(HotbarUI))]
 [RequireComponent(typeof(WeaponUI))]
@@ -110,6 +111,7 @@ public class PlayerWeapons : MonoBehaviour
 
     void OnDestroy()
     {
+        GameManager.OnGameStart -= CheckActiveHotbar;
         PlayerController.OnScroll -= ScrollHotbar;
         PlayerController.OnSwitchTo -= SwitchHotbar;
         PlayerInventory.OnItemChange -= CheckActiveHotbar;
