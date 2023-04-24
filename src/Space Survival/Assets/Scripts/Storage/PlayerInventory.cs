@@ -100,6 +100,37 @@ public class PlayerInventory : MonoBehaviour, IDataPersistance
     }
 
     /// <summary>
+    /// Show inventory UI
+    /// </summary>
+    void OpenInventory()
+    {
+        PlayerController.OnUIClickStarted += SelectHoveredSlot;
+        PlayerController.OnUIClickCancelled += SwitchSelectedSlot;
+        PlayerController.OnInteraction += UseSlot;
+        PlayerController.OnQuickDrop += QuickDrop;
+
+        IsEnabled = true;
+        UIGameObject.SetActive(true);
+        OnInventoryOpen?.Invoke();
+    }
+
+    /// <summary>
+    /// Hide inventory UI
+    /// </summary>
+    void CloseInventory()
+    {
+        PlayerController.OnUIClickStarted -= SelectHoveredSlot;
+        PlayerController.OnUIClickCancelled -= SwitchSelectedSlot;
+        PlayerController.OnInteraction -= UseSlot;
+        PlayerController.OnQuickDrop -= QuickDrop;
+
+        IsEnabled = false;
+        UIGameObject.SetActive(false);
+        OnInventoryClose?.Invoke();
+        ResetInventory();
+    }
+
+    /// <summary>
     /// Returns all the players items in inventory slots
     /// </summary>
     /// <returns></returns>
@@ -123,19 +154,9 @@ public class PlayerInventory : MonoBehaviour, IDataPersistance
     {
         if (_state == true) {
             OpenInventory();
-
-            PlayerController.OnUIClickStarted += SelectHoveredSlot;
-            PlayerController.OnUIClickCancelled += SwitchSelectedSlot;
-            PlayerController.OnInteraction += UseSlot;
-            PlayerController.OnQuickDrop += QuickDrop;
         }
         else {
             CloseInventory();
-
-            PlayerController.OnUIClickStarted -= SelectHoveredSlot;
-            PlayerController.OnUIClickCancelled -= SwitchSelectedSlot;
-            PlayerController.OnInteraction -= UseSlot;
-            PlayerController.OnQuickDrop -= QuickDrop;
         }
 
         ResetInventory();
@@ -168,27 +189,6 @@ public class PlayerInventory : MonoBehaviour, IDataPersistance
             DisplayItemInfo(null);
             promptDisplay.HideItemPrompt();
         }
-    }
-
-    /// <summary>
-    /// Show inventory UI
-    /// </summary>
-    void OpenInventory()
-    {
-        IsEnabled = true;
-        UIGameObject.SetActive(true);
-        OnInventoryOpen?.Invoke();
-    }
-
-    /// <summary>
-    /// Hide inventory UI
-    /// </summary>
-    void CloseInventory()
-    {
-        IsEnabled = false;
-        UIGameObject.SetActive(false);
-        OnInventoryClose?.Invoke();
-        ResetInventory();
     }
 
     /// <summary>

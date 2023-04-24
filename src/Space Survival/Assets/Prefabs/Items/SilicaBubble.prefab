@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5405331968566636699}
   - component: {fileID: 5405331968566636693}
   - component: {fileID: -2471196110224949232}
+  - component: {fileID: 712343428780390520}
   m_Layer: 0
   m_Name: SilicaBubble
   m_TagString: Untagged
@@ -180,6 +181,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae470ee6b38186249b5b2ed2b4b442be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &712343428780390520
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170960411009847622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.74
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7783840103821936943
 GameObject:
   m_ObjectHideFlags: 0

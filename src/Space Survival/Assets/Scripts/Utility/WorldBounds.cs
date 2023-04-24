@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class WorldBounds : MonoBehaviour
 {
+    [Tooltip("The UI object displaying a warning for hazards")]
+    [SerializeField] GameObject warningUI;
+
+    [Header("Asteroid")]
     [Tooltip("Asteroid objects to spawn as hazards")]
     [SerializeField] GameObject[] asteroidProjectilePrefab;
     [Tooltip("The time delay before starting to attack")]
@@ -20,8 +24,6 @@ public class WorldBounds : MonoBehaviour
     [SerializeField] float spawnAngularVel;
     [Tooltip("The damaging radius of asteroids upon impact")]
     [SerializeField] float explosionRadius;
-    [Tooltip("The UI object displaying a warning for hazards")]
-    [SerializeField] GameObject warningUI;
 
     PlayerController player;
 

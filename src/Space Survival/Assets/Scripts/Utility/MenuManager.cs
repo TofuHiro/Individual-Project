@@ -19,7 +19,7 @@ public class MenuManager : MonoBehaviour
         menuAnimator = GetComponent<Animator>();
 
         //If existing file, allow to press load
-        loadButton.interactable = DataPersistanceManager.GameData != null;
+        loadButton.interactable = DataPersistenceManager.GameData != null;
     }
 
     public void PlayMusic()
@@ -56,7 +56,7 @@ public class MenuManager : MonoBehaviour
     //UI Button - Load world scene
     public void StartNewGame()
     {
-        DataPersistanceManager.StartNewGame = true;
+        DataPersistenceManager.StartNewGame = true;
         buttonCover.SetActive(true);
         Invoke("LoadScene", 2f);
     }
@@ -64,8 +64,8 @@ public class MenuManager : MonoBehaviour
     //UI Button - Set the difficulty to initialise with based on the loaded save, and load world scene
     public void StartLoadGame()
     {
-        DataPersistanceManager.StartNewGame = false;
-        GameManager.DifficultyIndex = DataPersistanceManager.GameData.difficulty;
+        DataPersistenceManager.StartNewGame = false;
+        GameManager.DifficultyIndex = DataPersistenceManager.GameData.difficulty;
 
         buttonCover.SetActive(true);
         Invoke("LoadScene", 2f);

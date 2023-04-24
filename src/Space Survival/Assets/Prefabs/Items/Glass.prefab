@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1152513117930877682}
   - component: {fileID: 4529987420271928073}
   - component: {fileID: 3816172780930278413}
+  - component: {fileID: 154787732777140616}
   m_Layer: 0
   m_Name: Glass
   m_TagString: Untagged
@@ -146,4 +147,17 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2138983, y: 0.24864355, z: 1.6}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &154787732777140616
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216275049061456543}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}

@@ -179,6 +179,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""004510f4-108b-4704-a1c6-8ebb9dab0921"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -456,6 +465,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Skip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ecf18f5-619b-4603-809b-200882359305"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -539,6 +559,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""name"": ""FastDrop"",
                     ""type"": ""Button"",
                     ""id"": ""4a3d3df8-847f-4943-b399-deb876c2c896"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe694e42-1d64-4990-81cc-0a4fb1531eac"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -688,32 +717,26 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""FastDrop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Menu"",
-            ""id"": ""d942dcc7-eafc-4797-828a-8d939e030440"",
-            ""actions"": [
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""279fdbb9-6413-4b9c-9260-501c85ec5b8e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""083c107a-ac37-4037-a0ff-6535762552c7"",
+                    ""id"": ""ad6780a2-46d3-438c-b43e-a1049f3e7b97"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88a89175-ab87-4081-916d-8f807c96da0e"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Pause"",
+                    ""groups"": """",
+                    ""action"": ""ExitUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -802,6 +825,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_SwitchTo5 = m_Player.FindAction("SwitchTo5", throwIfNotFound: true);
         m_Player_SwitchTo6 = m_Player.FindAction("SwitchTo6", throwIfNotFound: true);
         m_Player_Skip = m_Player.FindAction("Skip", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -813,9 +837,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_FastDrop = m_UI.FindAction("FastDrop", throwIfNotFound: true);
-        // Menu
-        m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
-        m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
+        m_UI_ExitUI = m_UI.FindAction("ExitUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -892,6 +914,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchTo5;
     private readonly InputAction m_Player_SwitchTo6;
     private readonly InputAction m_Player_Skip;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -913,6 +936,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @SwitchTo5 => m_Wrapper.m_Player_SwitchTo5;
         public InputAction @SwitchTo6 => m_Wrapper.m_Player_SwitchTo6;
         public InputAction @Skip => m_Wrapper.m_Player_Skip;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -973,6 +997,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Skip.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
                 @Skip.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
                 @Skip.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkip;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1028,6 +1055,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Skip.started += instance.OnSkip;
                 @Skip.performed += instance.OnSkip;
                 @Skip.canceled += instance.OnSkip;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1045,6 +1075,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_MiddleClick;
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_FastDrop;
+    private readonly InputAction m_UI_ExitUI;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1058,6 +1089,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @FastDrop => m_Wrapper.m_UI_FastDrop;
+        public InputAction @ExitUI => m_Wrapper.m_UI_ExitUI;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1094,6 +1126,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @FastDrop.started -= m_Wrapper.m_UIActionsCallbackInterface.OnFastDrop;
                 @FastDrop.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnFastDrop;
                 @FastDrop.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnFastDrop;
+                @ExitUI.started -= m_Wrapper.m_UIActionsCallbackInterface.OnExitUI;
+                @ExitUI.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnExitUI;
+                @ExitUI.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnExitUI;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1125,43 +1160,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @FastDrop.started += instance.OnFastDrop;
                 @FastDrop.performed += instance.OnFastDrop;
                 @FastDrop.canceled += instance.OnFastDrop;
+                @ExitUI.started += instance.OnExitUI;
+                @ExitUI.performed += instance.OnExitUI;
+                @ExitUI.canceled += instance.OnExitUI;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // Menu
-    private readonly InputActionMap m_Menu;
-    private IMenuActions m_MenuActionsCallbackInterface;
-    private readonly InputAction m_Menu_Pause;
-    public struct MenuActions
-    {
-        private @PlayerInputs m_Wrapper;
-        public MenuActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Pause => m_Wrapper.m_Menu_Pause;
-        public InputActionMap Get() { return m_Wrapper.m_Menu; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
-        public void SetCallbacks(IMenuActions instance)
-        {
-            if (m_Wrapper.m_MenuActionsCallbackInterface != null)
-            {
-                @Pause.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
-            }
-            m_Wrapper.m_MenuActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
-            }
-        }
-    }
-    public MenuActions @Menu => new MenuActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1226,6 +1231,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnSwitchTo5(InputAction.CallbackContext context);
         void OnSwitchTo6(InputAction.CallbackContext context);
         void OnSkip(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1238,9 +1244,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnFastDrop(InputAction.CallbackContext context);
-    }
-    public interface IMenuActions
-    {
-        void OnPause(InputAction.CallbackContext context);
+        void OnExitUI(InputAction.CallbackContext context);
     }
 }

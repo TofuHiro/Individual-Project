@@ -15,8 +15,8 @@ MonoBehaviour:
   productItem: {fileID: 3291166871108195192, guid: 38c216c0030b7f041b1244528c72d25d,
     type: 3}
   ingredientItems:
+  - {fileID: -6526302983602149178, guid: a239d0250b2038448a6fdecb759b2b65, type: 3}
   - {fileID: 6522370266235537247, guid: 3d0363ce7dc24194ca0c34ef108cf794, type: 3}
   - {fileID: 8137507776098672298, guid: 5f7951c30eb67b54685126c09057bf7a, type: 3}
   - {fileID: 5721435675027526050, guid: 31b85e10e5deb42439a4f78bd94a4737, type: 3}
   - {fileID: -2510271227751099940, guid: e54fae2f4b9c5544eb1e4f925881627d, type: 3}
-  - {fileID: -867116084884353394, guid: 1891786eb2b4da44681a31cb646abecf, type: 3}

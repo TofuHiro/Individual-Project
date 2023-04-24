@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         OnSpeedUpStart,
         OnSpeedUpCancel,
         OnPause,
-        OnSkip;
+        OnSkip,
+        OnExitUI;
 
     public delegate void HotbarActions(int _num);
     public static event HotbarActions OnScroll, OnSwitchTo;
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.Player.SwitchTo5.performed += SwitchTo5;
         playerInputs.Player.SwitchTo6.performed += SwitchTo6;
         playerInputs.Player.Skip.performed += Skip;
+        playerInputs.Player.Pause.performed += Pause;
         #endregion
 
         #region Subscribe UI Inputs
@@ -86,10 +88,8 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.UI.Click.started += ClickUI;
         playerInputs.UI.Click.canceled += ClickUI;
         playerInputs.UI.FastDrop.performed += FastDropSlot;
+        playerInputs.UI.ExitUI.performed += ExitUI;
         #endregion
-
-        playerInputs.Menu.Enable();
-        playerInputs.Menu.Pause.performed += Pause;
     }
     
     void OnDisable()
@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.Player.SwitchTo5.performed -= SwitchTo5;
         playerInputs.Player.SwitchTo6.performed -= SwitchTo6;
         playerInputs.Player.Skip.performed -= Skip;
+        playerInputs.Player.Pause.performed -= Pause;
         #endregion
 
         playerInputs.UI.Disable();
@@ -120,10 +121,8 @@ public class PlayerController : MonoBehaviour, IDataPersistance
         playerInputs.UI.Click.started -= ClickUI;
         playerInputs.UI.Click.canceled -= ClickUI;
         playerInputs.UI.FastDrop.performed -= FastDropSlot;
+        playerInputs.UI.ExitUI.performed -= ExitUI;
         #endregion
-
-        playerInputs.Menu.Disable();
-        playerInputs.Menu.Pause.performed -= Pause;
     }
 
     /// <summary>
@@ -365,7 +364,7 @@ public class PlayerController : MonoBehaviour, IDataPersistance
     {
         if (!canSwitch)
             return;
-
+        //Returns 1D vector depending on scroll dir
         float _scrollAxis = playerInputs.Player.SwitchScroll.ReadValue<float>();
         if (_scrollAxis != 0f)
             OnScroll?.Invoke((int)_scrollAxis);
@@ -436,6 +435,13 @@ public class PlayerController : MonoBehaviour, IDataPersistance
     {
         if (context.performed) {
             OnSkip?.Invoke();
+        }
+    }
+    
+    void ExitUI(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            OnExitUI?.Invoke();
         }
     }
 

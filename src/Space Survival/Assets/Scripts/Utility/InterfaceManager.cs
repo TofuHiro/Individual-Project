@@ -62,6 +62,8 @@ public class InterfaceManager : MonoBehaviour
     StoryManager storyManager;
     GameManager gameManager;
 
+    bool canPause;
+
     void Start()
     {
         audioManager = AudioManager.Instance;
@@ -75,59 +77,79 @@ public class InterfaceManager : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerController.OnInventoryToggle += ToggleInventory;
+        PlayerController.OnInventoryToggle += OpenInventory;
+        PlayerController.OnExitUI += ExitUI;
+        PlayerController.OnPause += TogglePause;
     }
 
     void OnDisable()
     {
-        PlayerController.OnInventoryToggle -= ToggleInventory;
+        PlayerController.OnInventoryToggle -= OpenInventory;
+        PlayerController.OnStartSecondaryAttack -= ExitBuilding;
+        PlayerController.OnExitUI -= ExitUI;
+        PlayerController.OnPause -= TogglePause;
     }
 
     void OnDestroy()
     {
-        PlayerController.OnInventoryToggle -= ToggleInventory;
+        PlayerController.OnInventoryToggle -= OpenInventory;
+        PlayerController.OnStartSecondaryAttack -= ExitBuilding;
+        PlayerController.OnExitUI -= ExitUI;
+        PlayerController.OnPause -= TogglePause;
+    }
+   
+    void ExitUI()
+    {
+        if (PlayerVitals.IsDead)
+            return;
+
+        if (PlayerInventory.IsEnabled)
+            CloseInventory();
+        
+        if (CraftingManager.IsEnabled) 
+            CloseCrafting();
+          
+        if (BuildingManager.IsEnabled) 
+            CloseBuilding();
+            
+        if (Storage.StorageIsActive) 
+            CloseStorage();    
+
+        if (StoryManager.ConsoleIsEnabled) 
+            CloseConsole();
     }
 
-    /// <summary>
-    /// Toggle inventory to its not state
-    /// </summary>
-    void ToggleInventory()
+    void ExitBuilding()
     {
-        if (PlayerVitals.IsDead) {
-            return;
-        }
-
-        if (CraftingManager.IsEnabled) {
-            CloseCrafting();
-            return;
-        }
-
         if (BuildingManager.IsEnabled) {
             CloseBuilding();
             return;
         }
+    }
 
-        if (Storage.StorageIsActive) {
-            CloseStorage();
+    void TogglePause()
+    {
+        if (!GameManager.CanPause || !canPause)
             return;
-        }
-
-        if (StoryManager.ConsoleIsEnabled) {
-            CloseConsole();
+        if (PlayerVitals.IsDead)
             return;
-        }
 
-        if (!PlayerInventory.IsEnabled) 
-            OpenInventory();
-        else 
-            CloseInventory();
+        if (!GameManager.IsPaused) {
+            OpenPauseMenu();
+        }
+        else {
+            ClosePauseMenu();
+        }
     }
 
     /// <summary>
     /// Shows inventory interface
     /// </summary>
-    public void OpenInventory()
+    void OpenInventory()
     {
+        PlayerController.OnInventoryToggle -= OpenInventory;
+        canPause = false;
+
         //Sounds
         foreach (string _sound in inventOpenSounds) {
             audioManager.PlayClip(_sound, false);
@@ -147,6 +169,9 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     public void CloseInventory()
     {
+        PlayerController.OnInventoryToggle += OpenInventory;
+        canPause = true;
+
         //Sounds
         foreach (string _sound in inventCloseSounds) {
             audioManager.PlayClip(_sound, false);
@@ -167,6 +192,8 @@ public class InterfaceManager : MonoBehaviour
     /// <param name="_type">The set of recipes to display</param>
     public void OpenCrafting(CraftingStationType _type)
     {
+        canPause = false;
+
         switch (_type) {
             case CraftingStationType.Armory:
                 //Sounds
@@ -218,6 +245,8 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     void CloseCrafting()
     {
+        canPause = true;
+
         //Sounds
         foreach (string _sound in craftingCloseSounds) {
             audioManager.PlayClip(_sound, false);
@@ -239,6 +268,9 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     public void OpenBuilding()
     {
+        PlayerController.OnStartSecondaryAttack += ExitBuilding;
+        canPause = false;
+
         //Sounds
         foreach (string _sound in buildingOpenSounds) {
             audioManager.PlayClip(_sound, false);
@@ -258,6 +290,9 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     public void CloseBuilding()
     {
+        PlayerController.OnStartSecondaryAttack -= ExitBuilding;
+        canPause = true;
+
         //Sounds
         foreach (string _sound in buildingCloseSounds) {
             audioManager.PlayClip(_sound, false);
@@ -278,6 +313,8 @@ public class InterfaceManager : MonoBehaviour
     /// <param name="_storage">The storage to open</param>
     public void OpenStorage(Storage _storage)
     {
+        canPause = false;
+
         //Sounds
         foreach (string _sound in storageOpenSounds) {
             audioManager.PlayClip(_sound, false);
@@ -300,6 +337,8 @@ public class InterfaceManager : MonoBehaviour
     /// </summary>
     void CloseStorage()
     {
+        canPause = true;
+
         //Sounds
         foreach (string _sound in storageCloseSounds) {
             audioManager.PlayClip(_sound, false);
@@ -319,6 +358,8 @@ public class InterfaceManager : MonoBehaviour
 
     public void OpenConsole()
     {
+        canPause = false;
+
         //Sounds
         foreach (string _sound in consoleOpenSounds) {
             audioManager.PlayClip(_sound, false);
@@ -337,6 +378,8 @@ public class InterfaceManager : MonoBehaviour
 
     public void CloseConsole()
     {
+        canPause = true;
+
         //Sounds
         foreach (string _sound in consoleCloseSounds) {
             audioManager.PlayClip(_sound, false);

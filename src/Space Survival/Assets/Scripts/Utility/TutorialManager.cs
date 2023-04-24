@@ -78,7 +78,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        if (!DataPersistanceManager.StartNewGame) {
+        if (!DataPersistenceManager.StartNewGame) {
             DisableTutorial();
         }
 

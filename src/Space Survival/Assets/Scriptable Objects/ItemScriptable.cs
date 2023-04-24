@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
 public class ItemScriptable : ScriptableObject
 {
-    [Tooltip("The tpye of item this item is")]
+    [Tooltip("The type of item this item is")]
     public ItemType type;
     [Tooltip("The name of this item")]
     new public string name;

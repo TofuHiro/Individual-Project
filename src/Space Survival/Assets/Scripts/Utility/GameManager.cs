@@ -19,7 +19,9 @@ namespace SpaceGame
         }
         #endregion
 
-        public static int DifficultyIndex;
+        public static int DifficultyIndex { get; set; }
+        public static bool IsPaused { get; set; }
+        public static bool CanPause { get; set; }
 
         public delegate void GameEvent();
         public static event GameEvent OnGameStart, OnPlayerDie, OnPlayerRespawn;
@@ -37,25 +39,8 @@ namespace SpaceGame
         [Tooltip("Fade out object to trigger")]
         [SerializeField] FadeOut fadeOut;
 
-        DataPersistanceManager dataManager;
+        DataPersistenceManager dataManager;
         InterfaceManager interfaceManager;
-
-        bool isPaused = false, canPause = true;
-
-        void OnEnable()
-        {
-            PlayerController.OnPause += Pause;
-        }
-
-        void OnDisable()
-        {
-            PlayerController.OnPause -= Pause;
-        }
-
-        void OnDestroy()
-        {
-            PlayerController.OnPause -= Pause;
-        }
 
         public Vector3 GetStaticSpawn()
         {
@@ -64,7 +49,7 @@ namespace SpaceGame
 
         void Start()
         {
-            dataManager = DataPersistanceManager.Instance;
+            dataManager = DataPersistenceManager.Instance;
             interfaceManager = InterfaceManager.Instance;
 
             dataManager.Init(DifficultyIndex);
@@ -77,6 +62,7 @@ namespace SpaceGame
                 RespawnBeacon.ActiveRespawnBeacon = staticSpawn;
             }
             OnGameStart?.Invoke();
+            CanPause = true;
         }
 
         public void Die()
@@ -93,11 +79,6 @@ namespace SpaceGame
             OnPlayerRespawn?.Invoke();
         }
 
-        public void StartEndGame()
-        {
-            canPause = false;
-        }
-
         public void EndGame()
         {
             interfaceManager.OpenGameEndScreen();
@@ -108,11 +89,11 @@ namespace SpaceGame
         //UI Button
         public void ContinueGame()
         {
-            canPause = true;
             Time.timeScale = 1f;
             interfaceManager.CloseGameEndScreen();
             player.transform.position = RespawnBeacon.ActiveRespawnBeacon.GetRespawnPoint();
             OnPlayerRespawn?.Invoke();
+            CanPause = true;
         }
 
         //UI Button
@@ -127,27 +108,10 @@ namespace SpaceGame
             SceneManager.LoadScene(0);
         }
 
-        void Pause()
-        {
-            if (!canPause)
-                return;
-
-            if (isPaused) {
-                Resume();
-            }
-            else {
-                interfaceManager.OpenPauseMenu();
-                Time.timeScale = 0f;
-                isPaused = true;
-            }
-        }
-
         //UI Button
         public void Resume()
         {
             interfaceManager.ClosePauseMenu();
-            Time.timeScale = 1f;
-            isPaused = false;
         }
 
         //UI Button
@@ -161,7 +125,6 @@ namespace SpaceGame
         /// </summary>
         public void ShowDeathScreen()
         {
-            canPause = false;
             deathScreenUI.SetActive(true);
         }
 
@@ -170,7 +133,6 @@ namespace SpaceGame
         /// </summary>
         public void HideDeathScreen()
         {
-            canPause = true;
             deathScreenUI.SetActive(false);
         }
 
@@ -195,6 +157,7 @@ namespace SpaceGame
         /// </summary>
         public void ShowPauseMenu()
         {
+            Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
         }
 
@@ -203,6 +166,7 @@ namespace SpaceGame
         /// </summary>
         public void HidePauseMenu()
         {
+            Time.timeScale = 1f;
             pauseMenuUI.SetActive(false);
         }
     }

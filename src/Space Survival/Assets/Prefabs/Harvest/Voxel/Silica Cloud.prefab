@@ -130,5 +130,6 @@ MonoBehaviour:
   - nameTag: Silica
     resource: {fileID: 5170960411009847622, guid: 5eacde1b8b64b774296226e645636cb1,
       type: 3}
-    spawnChance: 15
+    spawnChance: 10
   harvestEffects: []
+  harvestSounds: []

@@ -84,6 +84,55 @@ public class CraftingManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Opens a crafting interface with recipe blocks
+    /// </summary>
+    /// <param name="_type">The type of set of recipes to displays</param>
+    public void OpenCraftingInterface(CraftingStationType _type)
+    {
+        IsEnabled = true;
+        UIGameObject.SetActive(true);
+        GetScrollBox(_type).gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Disables and closes interface
+    /// </summary>
+    public void CloseInterface()
+    {
+        //Hide all recipe scroll boxes
+        armoryScrollBase.SetActive(false);
+        manufacturerScrollBase.SetActive(false);
+        smelteryScrollBase.SetActive(false);
+        cookingScrollBase.SetActive(false);
+        starterScrollBase.SetActive(false);
+
+        IsEnabled = false;
+        UIGameObject.SetActive(false);
+        itemDisplay.SetItem(null);
+    }
+
+    /// <summary>
+    /// Returns the corresponding scroll box for a crafting station
+    /// </summary>
+    /// <param name="_stationType"></param>
+    /// <returns></returns>
+    GameObject GetScrollBox(CraftingStationType _stationType)
+    {
+        switch (_stationType) {
+            case CraftingStationType.Armory:
+                return armoryScrollBase;
+            case CraftingStationType.Manufacturer:
+                return manufacturerScrollBase;
+            case CraftingStationType.Smelter:
+                return smelteryScrollBase;
+            case CraftingStationType.Cooking:
+                return cookingScrollBase;
+            default:
+                return starterScrollBase;
+        }
+    }
+
+    /// <summary>
     /// /// <summary>
     /// Initializes all set recipe blocks to corresponding scroll boxes
     /// </summary>
@@ -115,16 +164,6 @@ public class CraftingManager : MonoBehaviour
         CraftingRecipeBlock _newRecipe = Instantiate(recipeBlockPrefab, GetRecipeParent(_stationType)).GetComponent<CraftingRecipeBlock>();
         _newRecipe.Init(_recipe, _useIngredients);
     }
-
-    /// <summary>
-    /// Opens a crafting interface with recipe blocks
-    /// </summary>
-    /// <param name="_type">The type of set of recipes to displays</param>
-    public void OpenCraftingInterface(CraftingStationType _type)
-    {
-        OpenInterface();
-        GetScrollBox(_type).gameObject.SetActive(true);
-    }
     
     /// <summary>
     /// Returns the corresponding parent holding all recipe blocks of a type
@@ -145,53 +184,6 @@ public class CraftingManager : MonoBehaviour
             default:
                 return starterBlocksParent;
         }
-    }
-
-    /// <summary>
-    /// Returns the corresponding scroll box for a crafting station
-    /// </summary>
-    /// <param name="_stationType"></param>
-    /// <returns></returns>
-    GameObject GetScrollBox(CraftingStationType _stationType)
-    {
-        switch (_stationType) {
-            case CraftingStationType.Armory:
-                return armoryScrollBase;
-            case CraftingStationType.Manufacturer:
-                return manufacturerScrollBase;
-            case CraftingStationType.Smelter:
-                return smelteryScrollBase;
-            case CraftingStationType.Cooking:
-                return cookingScrollBase;
-            default:
-                return starterScrollBase;
-        }
-    }
-
-    /// <summary>
-    /// Enables and opens interface
-    /// </summary>
-    void OpenInterface()
-    {
-        IsEnabled = true;
-        UIGameObject.SetActive(true);
-    }
-    
-    /// <summary>
-    /// Disables and closes interface
-    /// </summary>
-    public void CloseInterface()
-    {
-        //Hide all recipe scroll boxes
-        armoryScrollBase.SetActive(false);
-        manufacturerScrollBase.SetActive(false);
-        smelteryScrollBase.SetActive(false);
-        cookingScrollBase.SetActive(false);
-        starterScrollBase.SetActive(false);
-
-        IsEnabled = false;
-        UIGameObject.SetActive(false);
-        itemDisplay.SetItem(null);
     }
 
     /// <summary>

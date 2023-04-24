@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1157848176127628083}
   - component: {fileID: 2286888056298574480}
   - component: {fileID: 7894573783153850806}
+  - component: {fileID: 2531994024318493434}
   m_Layer: 0
   m_Name: OxygenBall
   m_TagString: Untagged
@@ -203,6 +204,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae470ee6b38186249b5b2ed2b4b442be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &2531994024318493434
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5040048408146327692}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8922228155063508223
 GameObject:
   m_ObjectHideFlags: 0

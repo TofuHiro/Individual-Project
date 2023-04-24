@@ -4,9 +4,9 @@ using UnityEngine;
 using System.Linq;
 using SpaceGame;
 
-public class DataPersistanceManager : MonoBehaviour
+public class DataPersistenceManager : MonoBehaviour
 {
-    public static DataPersistanceManager Instance;
+    public static DataPersistenceManager Instance;
 
     /// <summary>
     /// The current game data loaded

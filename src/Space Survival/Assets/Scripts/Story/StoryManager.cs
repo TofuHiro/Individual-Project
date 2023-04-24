@@ -249,7 +249,7 @@ public class StoryManager : MonoBehaviour, IDataPersistance
     {
         ending = true;
         startPos = player.GetPlayerPosition();
-        GameManager.Instance.StartEndGame();
+        GameManager.CanPause = false;
     }
 
     void EndAnimation()

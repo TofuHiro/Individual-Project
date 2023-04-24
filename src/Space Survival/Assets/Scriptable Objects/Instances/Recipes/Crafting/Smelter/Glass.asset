@@ -16,5 +16,4 @@ MonoBehaviour:
     type: 3}
   ingredientItems:
   - {fileID: 5145987618591768050, guid: 7c25568d2dcf3d94a9a0c73c521dca85, type: 3}
-  - {fileID: 5145987618591768050, guid: 7c25568d2dcf3d94a9a0c73c521dca85, type: 3}
   - {fileID: 6103572595685755323, guid: 68e63c5a54fb7144da379ba337f80840, type: 3}

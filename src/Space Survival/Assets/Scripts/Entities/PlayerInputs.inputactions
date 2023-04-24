@@ -157,6 +157,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "004510f4-108b-4704-a1c6-8ebb9dab0921",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -434,6 +443,17 @@
                     "action": "Skip",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ecf18f5-619b-4603-809b-200882359305",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -517,6 +537,15 @@
                     "name": "FastDrop",
                     "type": "Button",
                     "id": "4a3d3df8-847f-4943-b399-deb876c2c896",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ExitUI",
+                    "type": "Button",
+                    "id": "fe694e42-1d64-4990-81cc-0a4fb1531eac",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -666,32 +695,26 @@
                     "action": "FastDrop",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Menu",
-            "id": "d942dcc7-eafc-4797-828a-8d939e030440",
-            "actions": [
-                {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "279fdbb9-6413-4b9c-9260-501c85ec5b8e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "083c107a-ac37-4037-a0ff-6535762552c7",
+                    "id": "ad6780a2-46d3-438c-b43e-a1049f3e7b97",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88a89175-ab87-4081-916d-8f807c96da0e",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Pause",
+                    "groups": "",
+                    "action": "ExitUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -24,6 +24,7 @@ public class PlayerInteraction : MonoBehaviour
     [Tooltip("The maximum range of player interactions with interactable objects")]
     [SerializeField] float interactRange = 3f;
 
+    Outline currentOutline;
     InteractionUI interactionUI;
     Transform targetTransform;
     RaycastHit hit;
@@ -83,11 +84,18 @@ public class PlayerInteraction : MonoBehaviour
             GetTarget();
         }
 
+        //Outline
+        if (currentOutline != null) {
+            currentOutline.ShowOutline();
+        }
+
         //Interact
-        if (target != null) 
+        if (target != null) {
             interactionUI.DisplayInteraction(target.GetInteractionType());
-        else 
+        }
+        else {
             interactionUI.DisplayInteraction(InteractionType.None);
+        }
         
         //Harvest
         if (harvestable != null) {
@@ -111,13 +119,23 @@ public class PlayerInteraction : MonoBehaviour
             if (hit.transform == targetTransform)
                 return;
 
+            if (currentOutline != null) {
+                currentOutline.HideOutline();
+            }
+
             targetTransform = hit.transform;
+            currentOutline = targetTransform.GetComponent<Outline>();
             target = targetTransform.GetComponent<IInteractable>();
             harvestable = targetTransform.GetComponent<IHarvestable>();
             harvestableVoxel = targetTransform.GetComponent<IHarvestableVoxel>();
         }
         else {
+            if (currentOutline != null) {
+                currentOutline.HideOutline();
+            }
+
             targetTransform = null;
+            currentOutline = null;
             target = null;
             harvestable = null;
             harvestableVoxel = null;

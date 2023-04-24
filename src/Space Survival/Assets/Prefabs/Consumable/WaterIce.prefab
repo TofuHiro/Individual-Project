@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4697843367216805555}
   - component: {fileID: 1152394279396062607}
   - component: {fileID: 8813986631813771394}
+  - component: {fileID: 8782892223902082359}
   m_Layer: 0
   m_Name: WaterIce
   m_TagString: Untagged
@@ -97,6 +98,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8215804180744794619, guid: 1524b242e575d6247b508a05d5c28131, type: 3}
+--- !u!135 &8782892223902082359
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31722443780622377}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6307016926970727241
 GameObject:
   m_ObjectHideFlags: 0

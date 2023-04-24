@@ -130,7 +130,7 @@ MonoBehaviour:
   - nameTag: Ice
     resource: {fileID: 6162707530991450481, guid: 7c25568d2dcf3d94a9a0c73c521dca85,
       type: 3}
-    spawnChance: 10
+    spawnChance: 20
   harvestEffects:
   - Ice Impact
   harvestSounds:

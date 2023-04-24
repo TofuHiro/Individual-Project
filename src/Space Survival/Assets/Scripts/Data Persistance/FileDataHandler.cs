@@ -15,7 +15,7 @@ public class FileDataHandler
         dataDirPath = _dataDirPath;
         dataFileName = _dataFileName;
     }
-    
+
     /// <summary>
     /// Deserializes game save file from json format to gamedata class format
     /// </summary>

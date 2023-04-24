@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 2546792744997538850}
   - component: {fileID: -1710509857036079299}
   - component: {fileID: 8518549780835371258}
+  - component: {fileID: 1469976463505711448}
   m_Layer: 0
   m_Name: CompactWaterIce
   m_TagString: Untagged
@@ -263,3 +264,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8215804180744794619, guid: 06805d8e9e3c01646bd73579128ec183, type: 3}
+--- !u!135 &1469976463505711448
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764026946826673972}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.38
+  m_Center: {x: 0, y: 0, z: 0}
