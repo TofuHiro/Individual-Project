@@ -16,4 +16,4 @@ MonoBehaviour:
   name: Large Storage
   icon: {fileID: 2800000, guid: 83dc272c317102a4b9b2b2d269ea82dd, type: 3}
   description: A small compact storage box holding 49 items
-  unique: 0
+  unique: 1

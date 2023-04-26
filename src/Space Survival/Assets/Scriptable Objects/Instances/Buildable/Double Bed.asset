@@ -16,4 +16,4 @@ MonoBehaviour:
   name: Double Bed
   icon: {fileID: 2800000, guid: df31d8ee75b035847a752f4d70dbee36, type: 3}
   description: A double bed with triple comfiness. Now that's worth the cost
-  unique: 0
+  unique: 1

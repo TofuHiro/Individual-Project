@@ -16,4 +16,4 @@ MonoBehaviour:
   name: Locker
   icon: {fileID: 2800000, guid: 7d2765ff715d0ce4a875cdb4540d6539, type: 3}
   description: A large locker storage holding 25 items
-  unique: 0
+  unique: 1
