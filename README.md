@@ -68,7 +68,7 @@ Structures built by the players are modular as each wall and floor is used to de
 
 A simple finite state machine is used to control the enemy AI in the game. The AI loops through the process of detecting if a player is nearby, chasing them, then attempt to attack them with the weapon they equip.
 
-## World Space UI
+### World Space UI
 
 ![Gameplay GIF](https://github.com/TofuHiro/Individual-Project/blob/main/media/Invent.gif)
 
